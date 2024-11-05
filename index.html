@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+</head>
+<body>
+    <nav class="header">
+        <div>
+            <button class="close" title="Salir"><i class="fas  fa-sign-out-alt" style="font-size: 24px;color: #585858"></i></button>
+
+            <h1 class="header-Titulo"><i class='fas fa-hospital' style='font-size:36px'></i> Administración</h1>
+
+
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="searh-container" >
+
+                <fieldset class="fieldset fieldset-search">
+                    <legend class="legend">
+                        FILTROS DE BÚSQUEDA
+                    </legend>
+                  <form class="buscar">
+
+                <label for="user-search">Nombre y Apellidos</label>
+                <input name="nombre" type="text" id="user-search" placeholder="Alejandro Mateo Ochoa">
+                <label for="depa-search">Departamentos</label>
+                <select name="type-of-depa" id="">
+                    <option value="Administrador">Administrador</option>
+                    <option value="Director">Director</option>
+                    <option value="Doctor">Doctor</option>
+                    <option value="Recepcionista">Recepcionista</option>
+                </select>
+                <label for="role-search">Roles</label>
+                <select name="type-of-depa" id="">
+                    <option value="Administrador">Administrador</option>
+                    <option value="Director">Director</option>
+                    <option value="Doctor">Doctor</option>
+                    <option value="Recepcionista">Recepcionista</option>
+                </select>
+
+                <input type="submit" class="search-user" value="Buscar"></input>
+              </form>
+            </fieldset>
+
+        </div>
+
+        <div class="modal__content-adduser">
+                    <h2>
+                        Agregar Nuevo Usuario
+                    </h2>
+            <form class="myFormAdd">
+                <label for="nombre">Nombre y Apellidos</label>
+                <input type="text" id="nombre" placeholder="Alejandro Mateo Ochoa" required>
+                <label for="usuario">Usuario</label>
+                <input type="text" id="usuario" required placeholder="amateo">
+                <label for="roles">Roles</label>
+                <select name="roles" id="roles">
+                    <option value="Administrador">Administrador</option>
+                    <option value="Director">Director</option>
+                    <option value="Doctor">Doctor</option>
+                    <option value="Recepcionista">Recepcionista</option>
+                </select>
+
+                <label for="departamentos">Departamentos</label>
+                <select name="departamentos" id="departamentos">
+                    <option value="Administrador">Administrador</option>
+                    <option value="Dirección">Dirección</option>
+                    <option value="Dermatología">Dermatología</option>
+                    <option value="Recepcionista">Recepcionista</option>
+                </select>
+                <input type="submit" class="button_add" value="ENVIAR"></input>
+                <button class="cancel" onclick="cancelar()">CANCELAR
+                </button>
+            </form>
+        </div>
+        <div class="modal__content-edituser" id="ventana2">
+                    <h2>
+                        Modificar Usuario
+                    </h2>
+          <form class="myFormEdit">
+                <label for="nombre">Nombre y Apellidos</label>
+                <input type="text" id="nombre" placeholder="Alejandro Mateo Ochoa">
+                <label for="usuario">Usuario</label>
+                <input type="text" id="usuario" placeholder="amateo">
+                <label for="roles">Roles</label>
+                <select name="roles" id="roles">
+                    <option value="Administrador">Administrador</option>
+                    <option value="Director">Director</option>
+                    <option value="Doctor">Doctor</option>
+                    <option value="Recepcionista">Recepcionista</option>
+                </select>
+
+                <label for="departamentos">Departamentos</label>
+                <select name="departamentos" id="departamentos">
+                    <option value="Administrador">Administrador</option>
+                    <option value="Dirección">Dirección</option>
+                    <option value="Dermatología">Dermatología</option>
+                    <option value="Recepcionista">Recepcionista</option>
+                </select>
+                <label for="newPassword">Nueva Contraseña</label>
+                <input id="newPassword" type="password" placeholder="C0ntr4seña#124"></input>
+                <label for="repeatPassword">Repita la Contraseña</label>
+                <input id="repeatPassword" type="password" placeholder="C0ntr4seña#124"></input>
+                <input type="submit" class="button_add" value="ENVIAR"></input>
+                <input type="submit" class="button_remove" value="ELIMINAR"></input>
+                <button class="cancel" onclick="cancelar()">CANCELAR</button>
+          </form>
+            
+        </div>
+
+        <div class="searh-container">
+            <div class="usuarios__container users"> 
+            <fieldset class="fieldset">
+                <legend class="legend">GESTIÓN DE USUARIOS</legend>
+            <table>
+
+                <thead>
+                    <tr>
+                    <th>#</th>
+                    <th>Nombre</th>
+                    <th>Usuario</th> 
+                    <th>Roles</th>
+                    <th>Departamento</th>
+                    <th>Acción</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                    <td>1</td>
+                    <td>Alejandro Mateo Ochoa </td>
+                    <td>amateo</td>
+                    <td>Administrador</td>
+                    <td>Administración</td>
+                    <td><button class="boton__editar" onclick="editForm()"><i class="fas fa-edit"></i> Editar</button></td>
+                    </tr>
+                    <td>2</td>
+                    <td>Christopher Frias Ramos </td>
+                    <td>ffrias</td>
+                    <td>Doctor</td>
+                    <td>Dermatología</td>
+                    <td><button class="boton__editar" onclick="editForm()"><i class="fas fa-edit"></i> Editar</button></td>
+                    </tr>
+                    <tr>
+                    <td>2</td>
+                    <td>Daymar Guerrero Santiago</td>
+                    <td>day</td>
+                    <td>Director</td>
+                    <td>Dirección</td>
+                    <td><button class="boton__editar" onclick="editForm()"><i class="fas fa-edit"></i> Editar</button></td>
+                    </tr>
+                </tbody>
+                </table>
+            </fieldset>
+
+        </div>
+                <div class="add__user">
+                    <button class="add__user-button">
+                        <i class="fas fa-user-plus"></i> 
+                        AÑADIR USUARIO
+                    </button>
+                </div>
+        </div>
+
+
+
+
+    </div>
+
+    
+<script src="./script.js"></script>
+
+</body>
+</html>

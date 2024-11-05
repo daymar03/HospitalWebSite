@@ -1,0 +1,259 @@
+body{
+    margin: 0;
+    font-family: sans-serif;
+}
+
+.header{
+    background: #2196f3;
+    padding: 5px;
+    color: white;
+}
+
+
+.header-Titulo{
+    text-shadow: 0px 0px 45px #fff;
+    font-size: 25px;
+    margin-left: 10px;
+
+}
+
+
+.container{
+    max-width: 100%;
+    background-color: white;
+}
+
+
+.search-user,.button_add,.cancel, .button_remove{
+    margin-left: 10px;
+    margin-top: 7px;
+    padding: 0.5rem 1rem;
+    background-color: #2196f3;
+    color: #fff;
+    font-weight: 500;
+    text-align: center;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    float: right;
+}
+
+
+.button_remove{
+  background-color: red;
+}
+
+.searh-container{
+    width: 95%;
+    background-color: white;
+    margin: auto;
+    margin-top: 20px;
+}
+
+input,select{
+    width: 100%;
+    margin: auto;
+    padding: 6px 8px;
+    box-sizing: border-box;
+}
+
+
+
+.close{
+    margin-right: 10px;
+    margin-top: 5px;
+    background-color: transparent;
+    color: white;
+    border: none;
+    position: fixed;
+    right: 0;
+    width: 30px;
+    cursor: pointer;
+}
+
+
+.search-user{
+  width: 150px;
+}
+
+.option{
+    width: 210px;
+    height: 190px;
+    right: 0;
+    margin: auto;
+    margin-right: 10px;
+    box-sizing: border-box;
+    text-align: left;
+    background-color: white;
+    box-shadow: 0px 0px 30px #0009;
+    display: none;
+    position: fixed;
+}
+
+
+.option-items{
+    color: black;
+    margin: 10px;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.option-items:hover{
+    background-color: grey;
+}
+
+
+ul{
+    list-style-type: none;
+    padding: 0;
+}
+
+
+
+
+.title-search {
+    text-align: center;
+    color: #444;
+    margin-top: 0px;
+}
+
+
+.gestion-usuario{
+    margin: auto;
+    margin-top: 20px;
+    width: 90%;
+
+}
+
+
+legend{
+    font-weight: 500;
+    margin-left: 20px;
+}
+
+
+.fieldset{
+    border-radius: 10px;
+    border: 1px solid #2196f2;
+}
+
+
+.users{
+    width: 100%;
+    overflow: auto;
+
+}
+
+
+td{
+
+    border-bottom: 1px solid #222;
+    text-align: left;
+    padding: 5px;
+    font-family: sans-serif;
+    color: #666;
+    box-shadow: 0px 0px 1px #222;
+}
+
+    
+    table{
+    width: 100%;
+    box-sizing: 12px;
+    border: 1px solid #666;
+    max-width: 95%;
+    margin: auto;
+    margin-top: 10px;
+    border-radius: 5px;
+    }
+    
+    
+    th{
+    border-bottom: 1px solid #222;
+    }
+    
+.boton__editar{
+    margin: auto;
+    width: 100%;
+    background-color:#2196f2;
+    border-radius: 5px;
+    padding: 2px 0px;
+    color: white;
+    cursor: pointer;
+}
+
+.add__user{
+    margin: auto;
+    width: 50%;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.add__user-button{
+    color: white;
+    margin: auto;
+    width: 100%;
+    background-color: #2196f2;
+    padding:10px 0;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+
+}
+
+.modal__content-adduser{
+    width: 85%;
+    margin: 10px;
+    position:absolute;
+    display: none;
+    z-index: 10;
+    background-color: white;
+    margin-left: 30px;
+    margin-bottom: 10px;
+    box-shadow: 0px 0px 900px #000f;
+    border-radius: 5px;
+    border: 2px solid #2196f2;
+    padding: 0 4px 4px 5px ;
+    bottom: 5px;
+}
+.modal__content-edituser{
+    width: 85%;
+    margin: 10px;
+    position:absolute;
+    display: none;
+    z-index: 10;
+    background-color: white;
+    margin-left: 30px;
+    margin-bottom: 10px;
+    box-shadow: 0px 0px 900px #000f;
+    border-radius: 5px;
+    border: 2px solid #2196f2;
+    padding: 0 4px 4px 5px ;
+    bottom: 5px;
+}
+
+.cancel{
+    background-color: #a00;
+    display: inline-block;
+    margin:0;
+    margin-top: 7px;
+
+}
+
+.H2 {
+  top: 0;
+}
+
+h2{
+    top: 0;
+    font-family: sans-serif;
+    text-align: center;
+    background-color: #2196f2;
+    border-radius: 5px;
+    color: white;
+    text-shadow: 0px 0px 45px #fff;
+    font-size: 25px;
+    padding: 5px 0;
+}
