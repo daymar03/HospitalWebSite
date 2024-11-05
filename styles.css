@@ -1,0 +1,150 @@
+body{
+    margin: 0;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+
+.header{
+    background: #2196f3;
+    padding: 5px;
+    color: white;
+}
+
+.header-Titulo{
+    text-shadow: 0px 0px 45px #fff;
+    font-size: 25px;
+    margin-left: 10px;
+}
+
+.Titulo{
+    margin-top: 20px;
+}
+
+.close{
+    margin-right: 10px;
+    margin-top: 5px;
+    background-color: transparent;
+    color: white;
+    border: none;
+    position: fixed;
+    right: 0;
+    width: 30px;
+    cursor: pointer;
+}
+
+.contenido{
+    text-align: center;
+    margin: 0;
+    margin-top: 20px;
+}
+
+
+
+.formulario{
+    margin-top: 20px;
+}
+
+input[type="submit"] { 
+    font-size: 10.5px;
+    color: #000d;
+    
+    background-color: #2196f3;
+}
+
+.boton{
+    font-size: 10.5px;
+    color: #000d;
+    
+    background-color: #2196f3;
+}
+
+
+/*Ventanas modales utilizadas*/
+
+.operaciones_rango_tiempo{
+    width: 70%;
+    position: relative;
+    align-items: center;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    padding: auto;
+    display: inline-block;
+    border: 2px solid #2196f3;
+    border-radius: 10px;
+    display: none;
+    box-shadow: 0 0 45px #2196f3;
+}
+
+.operaciones_urgencia_en_un_mes{
+    width: 70%;
+    position: relative;
+    align-items: center;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    padding: auto;
+    display: inline-block;
+    border: 2px solid #2196f3;
+    border-radius: 10px;
+    display: none;
+    box-shadow: 0 0 45px #2196f3;
+}
+
+.mes{
+  margin-top: 50px;
+}
+
+
+h3{
+    padding:10px;
+    background-color: #2196f3;
+    color: white;
+    text-shadow: 0px 0px 45px #fff;
+    font-weight: bold;
+    
+}
+
+
+.tiempo_a_definir{
+    margin: auto;
+    margin-top: 20px;
+
+}
+
+.fecha{
+
+    display: inline-block;
+}
+
+.fecha_inicio{
+
+    width: 200px;
+
+    padding: 10px 2px;
+}
+
+.fecha_final{
+
+
+    width: 200px;
+}
+
+.enviar_tiempo{
+    margin-top: 20px;
+    width: 150px;
+    padding: 8px 0;
+    border: none;
+   
+}
+
+.cancel {
+    margin-top: 10px;
+    width: 150px;
+    padding: 8px 0;
+    border: none;
+    background-color: #ba0000;
+    font-size: 10.5px;
+    margin-bottom: 20px;
+}
+
