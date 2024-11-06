@@ -2,7 +2,7 @@ let botones = document.querySelectorAll(".cancel")
 let cerrar = document.querySelector(".close")
 
 cerrar.addEventListener("click", ()=>{
-  window.open("../login/index.html", "self")
+  window.open("../login/index.html", "_self")
 })
 
 botones.forEach(boton =>{
