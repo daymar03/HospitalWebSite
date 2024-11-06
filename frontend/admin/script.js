@@ -1,7 +1,7 @@
 function confirmarCierre() {
     let confirmacion = confirm("¿Desea cerrar sesión?");
     if (confirmacion) {
-      window.open('../login/index.html', 'self');
+      window.open('../login/index.html', '_self');
     } else {
     alert("Operación cancelada.");
     }
