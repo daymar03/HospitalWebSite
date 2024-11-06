@@ -8,6 +8,9 @@ function login() {
             } else if (username === "director" && password === "director") {
                 window.open('../direct/index.html', '_blank');
                 window.location.reload();
+            } else if (username === "doctor" && password === "doctor") {
+                window.open('../doctor/index.html', '_blank');
+                window.location.reload();
             } else {
                 alert("Credenciales incorrectas");
             }
