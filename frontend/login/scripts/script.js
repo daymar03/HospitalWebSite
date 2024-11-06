@@ -16,6 +16,6 @@ function changeEye() {
 
 
 cerrar.addEventListener("click", ()=>{
-  window.open("../welcome/index.html", "self")
+  window.open("../welcome/index.html", "_self")
 })
 
