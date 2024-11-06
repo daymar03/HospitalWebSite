@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="icon" href="favicon-16x16.png" type="image/png">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+    
+    <header>
+        <nav class="header">
+            <div>
+                <button class="close" title="Salir"><i class="fas  fa-sign-out-alt" style="font-size: 24px;color: #585858"></i></button>
+                
+                <i class="material-icons" title="Notifications">notifications</i>
+
+                <i class='fas fa-calendar-alt' title="Calendario"></i>
+                
+                <h1 class="header-Titulo"><i class='fas fa-hospital' style='font-size:36px'></i> Doctor</h1>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="campo_busqueda">
+            <fieldset>
+                <legend>
+                    BUSCAR PACIENTES 
+                </legend>
+                    <form>
+                        <label for="sala">Sala</label>
+                        <select name="sala" id="sala">
+                            <option value="sala1">Sala 1</option>
+                            <option value="sala2">Sala 2</option>
+                            <option value="sala3">Sala 3</option>
+                            <option value="sala4">Sala 4</option>
+                        </select>
+                        <label for="cama">Cama</label>
+                        <select name="cama" id="cama">
+                            <option value="cama1">Cama 1</option>
+                            <option value="cama2">Cama 2</option>
+                            <option value="cama3">Cama 3</option>
+                            <option value="cama4">Cama 4</option>
+                            <option value="cama5">Cama 5</option>
+                            <option value="cama6">Cama 6</option>
+                            <option value="cama7">Cama 7</option>
+                            <option value="cama8">Cama 8</option>
+                            <option value="cama9">Cama 9</option>
+                            <option value="cama10">Cama 10</option>
+                        </select>
+                        
+                        <input type="submit" value="ENVIAR">
+                            
+                    </form>
+            </fieldset>
+        </div>
+    </div>
+
+
+<!-- Code injected by live-server -->
+<script>
+	// <![CDATA[  <-- For SVG support
+	if ('WebSocket' in window) {
+		(function () {
+			function refreshCSS() {
+				var sheets = [].slice.call(document.getElementsByTagName("link"));
+				var head = document.getElementsByTagName("head")[0];
+				for (var i = 0; i < sheets.length; ++i) {
+					var elem = sheets[i];
+					var parent = elem.parentElement || head;
+					parent.removeChild(elem);
+					var rel = elem.rel;
+					if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
+						var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
+						elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
+					}
+					parent.appendChild(elem);
+				}
+			}
+			var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
+			var address = protocol + window.location.host + window.location.pathname + '/ws';
+			var socket = new WebSocket(address);
+			socket.onmessage = function (msg) {
+				if (msg.data == 'reload') window.location.reload();
+				else if (msg.data == 'refreshcss') refreshCSS();
+			};
+			if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
+				console.log('Live reload enabled.');
+				sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
+			}
+		})();
+	}
+	else {
+		console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
+	}
+	// ]]>
+</script>
+</body>
+</html>

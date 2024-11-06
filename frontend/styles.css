@@ -1,0 +1,109 @@
+body{
+    margin: 0;
+    font-family: sans-serif;
+}
+
+
+.header{
+    background: #2196f3;
+    padding: 5px;
+    color: white;
+}
+
+
+.header-Titulo{
+    text-shadow: 0px 0px 45px #fff;
+    font-size: 25px;
+    margin-left: 10px;
+
+}
+
+
+.material-icons{
+    float: right;
+    margin-right: 45px;
+    margin-top: 6px;
+    cursor: pointer;
+}
+
+
+.fa-calendar-alt{
+    float: right;
+    margin-right: 12px;
+    margin-top: 9px;
+    cursor: pointer;
+}
+
+.close{
+    margin-right: 10px;
+    margin-top: 5px;
+    background-color: transparent;
+    color: white;
+    border: none;
+    position: fixed;
+    right: 0;
+    width: 30px;
+    cursor: pointer;
+}
+
+
+
+
+.container{
+    margin: auto;
+}
+
+.campo_busqueda{
+    margin: 20px 5px;
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+
+fieldset{
+    border: 1px solid #2196f3;
+    border-radius: 5px;
+    width: 80%;
+    box-shadow:0px 0px 5px #2196f3;
+}
+
+
+label{
+    margin: 10px 5px;
+    font-weight: bold;
+    flex-grow: 1;
+}
+
+form{
+    margin:auto;
+    margin-top: 10px;
+}
+
+
+legend{
+    font-weight: bold;
+    background-color: white;
+    border-radius: 10px;
+    
+}
+
+
+input{
+    background-color: #2196f3;
+    border-radius: 5PX;
+    border: none;
+    margin: auto;
+    padding: 4px 5px;
+    width: 110px;
+    float: right;
+    margin: auto;
+    margin-top: 20px;
+    cursor: pointer;
+}
+
+select{
+    cursor: pointer;
+}
