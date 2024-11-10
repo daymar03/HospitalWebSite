@@ -2,12 +2,24 @@ body{
     margin: 0;
     font-family: sans-serif;
 }
+.nav-cont{
+    background: #2196f3;
+    padding: 0 5px;
+    color: white;
+    position: fixed;
+    width: 100%;
+    z-index: 10;
+    top:0;
+}
 
 
 .header{
     background: #2196f3;
     padding: 5px;
     color: white;
+    width: 100%;
+    position: fixed;
+    top: 0;
 }
 
 
@@ -51,6 +63,7 @@ body{
 
 .container{
     margin: auto;
+    margin-top: 120px;
 }
 
 .campo_busqueda{
