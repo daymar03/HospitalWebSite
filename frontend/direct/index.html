@@ -3,105 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dirección</title>
+    <title>Doctor</title>
     <link rel="stylesheet" href="styles.css">
-    <link href="bootstrap-5.1.3-dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link rel="icon" href="./img/favicon-16x16.png" type="image/png">
+    <link rel="icon" href="favicon-16x16.png" type="image/png">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
-
 <body>
+    
+    <header>
+        <nav class="header">
+            <div>
+                <button class="close" title="Salir"><i class="fas  fa-sign-out-alt" style="font-size: 24px;color: #585858"></i></button>
+                
+                <i class="material-icons" title="Notifications">notifications</i>
 
-    <nav class="header">
-      <button class="close" title="Salir"><i class="fas  fa-sign-out-alt" style="font-size: 24px;color: #585858"></i></button>
-      <h1 class="header-Titulo"><i class='fas fa-hospital' style='font-size:36px'></i> Dirección</h1>
-    </nav>
-
-    <div class="contenido">
-
-      <details>
-        <summary>LISTADO DE CONCULTAS</summary>
-        <button class="rango bg-info mx-auto w-75 mt-3 p-3 mb-2 form-control">OPERACIONES EN UN RANGO DE TIEMPO</button>
-        <form>
-          <input type="submit" class="ocupacion mx-auto w-75 p-3 mb-2 form-control" value="PORCENTAJE DE OCUPACIÓN POR SALA">
-        </form>
-
-        <!-- #############################[VENTANA MODAL OPERACIONES EN UN TIEMPO]##################################-->
-        <div class="operaciones_rango_tiempo">
-          <h3>Defina el rango de tiempo</h3>
-
-          <form class="tiempo_a_definir" action="/api/direct/consultas">
-
-          <div class="fecha">
-            <div class="fecha_inicio">
-              <label for="desde">DESDE</label>
-              <input name="start_date" type="date" id="desde">
+                <i class='fas fa-calendar-alt' title="Calendario"></i>
+                
+                <h1 class="header-Titulo"><i class='fas fa-hospital' style='font-size:36px'></i> Doctor</h1>
             </div>
+        </nav>
+    </header>
 
-            <div class="fecha_final">
-              <label for="hasta">HASTA</labe>
-              <input name="final_date" type="date" id="hasta">
-            </div>
-          </div>
-          <div class="enviar">
-            <input type="submit" value="ENVIAR" class="enviar_tiempo">
-          </div>
-          </form>
-          <button class="cancel">CANCELAR</button>
+    <div class="container">
+        <div class="campo_busqueda">
+            <fieldset>
+                <legend>
+                    BUSCAR PACIENTES 
+                </legend>
+                    <form>
+                        <label for="sala">Sala</label>
+                        <select name="sala" id="sala">
+                            <option value="sala1">Sala 1</option>
+                            <option value="sala2">Sala 2</option>
+                            <option value="sala3">Sala 3</option>
+                            <option value="sala4">Sala 4</option>
+                        </select>
+                        <label for="cama">Cama</label>
+                        <select name="cama" id="cama">
+                            <option value="cama1">Cama 1</option>
+                            <option value="cama2">Cama 2</option>
+                            <option value="cama3">Cama 3</option>
+                            <option value="cama4">Cama 4</option>
+                            <option value="cama5">Cama 5</option>
+                            <option value="cama6">Cama 6</option>
+                            <option value="cama7">Cama 7</option>
+                            <option value="cama8">Cama 8</option>
+                            <option value="cama9">Cama 9</option>
+                            <option value="cama10">Cama 10</option>
+                        </select>
+                        
+                        <input type="submit" value="ENVIAR">
+                            
+                    </form>
+            </fieldset>
         </div>
-      <!-- ##########################################################################################################-->
-
-        <!-- #############################[VENTANA MODAL OPERACIONES URGENTES DE UN MES]#############################-->
-        <div class="operaciones_urgencia_en_un_mes">
-          <h3>Defina el mes</h3>
-
-          <form class="mes_a_definir">
-
-          <div class="mes">
-            <label for="mes_seleccionado">MES</label>
-              <select name="mes" class="mes_seleccionado">
-                <option>Enero</option>
-                <option>Febrero</option>
-                <option>Marzo</option>
-                <option>Abril</option>
-                <option>Mayo</option>
-                <option>Junio</option>
-                <option>Julio</option>
-                <option>Agosto</option>
-                <option>Septiembre</option>
-                <option>Octubre</option>
-                <option>Noviembre</option>
-                <option>Diciembre</option>
-              </select>
-          </div>
-          <div class="enviar">
-            <input type="submit" value="ENVIAR" class="enviar_tiempo">
-          </div>
-          </form>
-          <button class="cancel">CANCELAR</button>
-        </div>
-      <!-- ##########################################################################################################-->
-
-        <form>
-          <input type="submit" class="mx-auto w-75 p-3 mb-2  form-control" value="OPERACIONES CON DURACIÓN PROLONGADA">
-        </form>
-
-        <form>
-          <input type="submit" class="mx-auto w-75 p-3 mb-2  form-control" value="OPERACIONES DEL DÍA">
-        </form>
-
-        <button class="mes_boton bg-info mx-auto w-75 mt-3 p-3 mb-2 form-control">OPERACIONES DE URGENCIA DEL MES</button>
-
-        <form>
-          <input type="submit" class="mx-auto w-75 p-3 mb-2  form-control" value="ESTADO DE OPERACIONES DE RIESGO">
-        </form>
-
-        <form>
-          <input type="submit" class="mx-auto w-75 p-3 mb-2  form-control" value="CONSULTAR PACIENTES INGRESADOS">
-          <!-- Agrupados por sala -->
-        </form>
-      </details> 
     </div>
-  <script src="script.js"></script>
+
+
+<script src="script.js"></script>
 </body>
 </html>
