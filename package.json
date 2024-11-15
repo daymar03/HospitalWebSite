@@ -1,0 +1,19 @@
+{
+  "dependencies": {
+    "cors": "2.8.5",
+    "express": "4.21.1",
+    "zod": "3.23.8"
+  },
+  "name": "backend",
+  "version": "1.0.0",
+  "main": "app.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}

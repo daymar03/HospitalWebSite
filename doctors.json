@@ -1,0 +1,68 @@
+[
+  {
+    "id": 1,
+    "password": "Anamuela123",
+    "name": "Dr. Ana Gómez",
+    "specialty": "Cardiología",
+    "experience": 15,
+    "contact": {
+      "email": "ana.gomez@hospital.com",
+      "phone": "555-1234"
+    },
+    "usuario": "agomez",
+    "roles": ["Doctor"]
+  },
+  {
+    "id": 2,
+    "password": "Aewfreuela123",
+    "name": "Dr. Juan Pérez",
+    "specialty": "Neurología",
+    "experience": 10,
+    "contact": {
+      "email": "juan.perez@hospital.com",
+      "phone": "555-5678"
+    },
+    "usuario": "jperez",
+    "roles": ["Doctor"]
+  },
+  {
+    "id": 3,
+    "password": "Anamuelavfreqb123",
+    "name": "Dra. María Martínez",
+    "specialty": "Pediatría",
+    "experience": 8,
+    "contact": {
+      "email": "maria.martinez@hospital.com",
+      "phone": "555-8765"
+    },
+    "usuario": "mmartinez",
+    "roles": ["Administrador"]
+  },
+  {
+    "id": 4,
+    "password": "frqteyj723",
+    "name": "Dr. Carlos López",
+    "specialty": "Ortopedia",
+    "experience": 12,
+    "contact": {
+      "email": "carlos.lopez@hospital.com",
+      "phone": "555-4321"
+    },
+    "usuario": "clopez",
+    "roles": ["Director", "Doctor"]
+  },
+  {
+    "id": 5,
+    "password": "vrkkknvqwemvo3",
+    "name": "Dra. Laura Fernández",
+    "specialty": "Ginecología",
+    "experience": 20,
+    "contact": {
+      "email": "laura.fernandez@hospital.com",
+      "phone": "555-6789"
+    },
+    "usuario": "lfernandez",
+    "roles": ["Recepcionista"]
+  }
+]
+
