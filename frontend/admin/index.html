@@ -9,15 +9,12 @@
 
 </head>
 <body>
-        <div class="nav-cont">
-    <nav class="header">
+    <div class="nav-cont">
+        <nav class="header">
             <button class="close" title="Salir"><i class="fas  fa-sign-out-alt" style="font-size: 24px;color: #585858"></i></button>
-
             <h1 class="header-Titulo"><i class='fas fa-hospital' style='font-size:36px'></i> Administración</h1>
-
-
-    </nav>
-        </div>
+        </nav>
+    </div>
 
     <div class="container">
         <div class="searh-container" >
@@ -57,20 +54,21 @@
                     <h2>
                         Agregar Nuevo Usuario
                     </h2>
-            <form class="myFormAdd">
+            <form class="myFormAdd" onsubmit="post(event)">
                 <label for="nombre">Nombre y Apellidos</label>
-                <input type="text" id="nombre" placeholder="Alejandro Mateo Ochoa" required>
+                <input name="name"type="text" id="add-nombre" placeholder="Alejandro Mateo Ochoa" required>
                 <label for="usuario">Usuario</label>
-                <input type="text" id="usuario" required placeholder="amateo">
-                <label for="Roles">Roles</label>
-                <select name="Roles" id="Roles">
+                <input name="usuario" type="text" id="add-usuario" required placeholder="amateo">
+                <label for="roles">Roles</label>
+                <select name="roles" id="add-roles">
                     <option value="Administrador">Administrador</option>
-                    <option value="Dirección">Dirección</option>
-                    <option value="Dermatología">Dermatología</option>
+                    <option value="Director">Director</option>
+                    <option value="Doctor">Doctor</option>
                     <option value="Recepcionista">Recepcionista</option>
                 </select>
+
                 <label for="departamentos">Departamentos</label>
-                <select name="departamentos" id="departamentos">
+                <select name="specialty" id="add-departamento">
                     <option value="Administrador">Administrador</option>
                     <option value="Dirección">Dirección</option>
                     <option value="Dermatología">Dermatología</option>
@@ -78,10 +76,9 @@
                 </select>
                 <input type="submit" class="button_add" value="ENVIAR"></input>
             </form>
-                <button class="cancel" onclick="cancelar()">CANCELAR
-                </button>
+            <button class="cancel" onclick="cancelar()">CANCELAR</button>
         </div>
-        <div class="modal__content-edituser" id="ventana2">
+        <div class="modal__content-edituser" id="">
                     <h2>
                         Modificar Usuario
                     </h2>
@@ -110,18 +107,18 @@
                 <label for="repeatPassword">Repita la Contraseña</label>
                 <input id="repeatPassword" type="password" placeholder="C0ntr4seña#124"></input>
                 <input type="submit" class="button_add" value="ENVIAR"></input>
+          </form>
+          <form class="myFormEdit" id="deleteButton" onsubmit="delet(event)">
                 <input type="submit" class="button_remove" value="ELIMINAR"></input>
+                <input name="id" id="hidden" type="hidden" value=""></input>
           </form>
           <button class="cancel" onclick="cancelar()">CANCELAR</button>
-
         </div>
-
         <div class="searh-container">
             <div class="usuarios__container users"> 
             <fieldset class="fieldset">
                 <legend class="legend">GESTIÓN DE USUARIOS</legend>
             <table>
-
                 <thead>
                     <tr>
                     <th>#</th>
@@ -133,30 +130,7 @@
                     </tr>
                 </thead>
 
-                <tbody>
-                    <tr>
-                    <td>1</td>
-                    <td>Alejandro Mateo Ochoa </td>
-                    <td>amateo</td>
-                    <td>Administrador</td>
-                    <td>Administración</td>
-                    <td><button class="boton__editar" onclick="editForm()"><i class="fas fa-edit"></i> Editar</button></td>
-                    </tr>
-                    <td>2</td>
-                    <td>Christopher Frias Ramos </td>
-                    <td>ffrias</td>
-                    <td>Doctor</td>
-                    <td>Dermatología</td>
-                    <td><button class="boton__editar" onclick="editForm()"><i class="fas fa-edit"></i> Editar</button></td>
-                    </tr>
-                    <tr>
-                    <td>2</td>
-                    <td>Daymar Guerrero Santiago</td>
-                    <td>day</td>
-                    <td>Director</td>
-                    <td>Dirección</td>
-                    <td><button class="boton__editar" onclick="editForm()"><i class="fas fa-edit"></i> Editar</button></td>
-                    </tr>
+                <tbody class="resultado">
                 </tbody>
                 </table>
             </fieldset>
@@ -169,14 +143,12 @@
                     </button>
                 </div>
         </div>
-
-
-
-
     </div>
 
-    
 <script src="./script.js"></script>
+<script type="module" src="./get.js"></script>
+<script type="module" src="./post.js"></script>
+<script type="module" src="./delete.js"></script>
 
 </body>
 </html>

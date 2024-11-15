@@ -19,11 +19,17 @@ document.querySelector(".add__user-button").addEventListener("click",()=>{docume
 document.querySelector(".cancel").addEventListener("click",()=>{document.querySelector(".modal__content-adduser").style.display="none"})
 
 
-function editForm(){
-  document.querySelector("#ventana2").style.display="block";
+function editForm(e){
+  e.preventDefault()
+  let id = e.target.id;
+  document.querySelector('#hidden').value = id
+  document.querySelector(".modal__content-edituser").style.display="block";
+  document.querySelector(".modal__content-edituser").id = id;
+
 }
+
 function cancelar(){
-  document.querySelector("#ventana2").style.display="none";
+  document.querySelector(".modal__content-edituser").style.display="none";
 }
 
 newPassword = document.querySelector("#newPassword");
