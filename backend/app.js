@@ -5,6 +5,7 @@ const crypto = require('node:crypto')
 const z = require('zod')
 const port = process.env.PORT ?? 1234
 const cors = require('cors')
+const fs = require('fs')
 
 const app = express()
 
@@ -50,8 +51,9 @@ app.post('/doctors', (req, res)=>{
     id : crypto.randomUUID(),
     ...result.data
   }
-
   doctors.push(newDoctor)
+  // write
+  fs.writeFileSync('doctors.json',JSON.stringify(doctors))
   res.json(doctors)
 })
 

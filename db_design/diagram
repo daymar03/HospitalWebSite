@@ -1,0 +1,104 @@
+// Use DBML to define your database structure
+// Docs: https://dbml.dbdiagram.io/docs
+
+Table Patient {
+  id integer [primary key]
+  createdAt timestamp
+  bed integer [unique]
+  dni varchar [unique]
+  name varchar
+  age integer
+  weight integer
+  height integer 
+  phoneNumber varchar 
+}
+
+table Patient_Preconditions {
+ id integer [primary key]
+ patient_id integer
+ preconditions_id integer
+}
+
+table Preconditions {
+   id integer [primary key]
+   name varchar [unique]
+}
+
+table Patient_Allergies {
+ id integer [primary key]
+ patient_id integer
+ allergies_id integer 
+}
+
+table Allergies {
+   id integer [primary key]
+   name varchar [unique]
+}
+
+table Patient_Current_Medications {
+ id integer [primary key]
+ patient_id integer
+ current_medications_id integer
+}
+
+table Current_Medications {
+  id integer [primary key]
+  name varchar [unique]
+}
+
+table Patient_Entry_Dates {
+ id integer [primary key]
+ patient_id integer
+ entry_dates_id integer
+}
+
+table Entry_Dates {
+  id integer [primary key]
+  date timestamp
+}
+
+table  Entry_Dates_Consultation_Reasons {
+  id integer [primary key]
+  entry_dates_id integer
+  consultation_reasons_id integer
+}
+
+table  Consultation_Reasons {
+  id integer [primary key]
+  reason text
+}
+
+Table History {
+  id integer [primary key]
+  createdAt timestamp
+  bed integer
+  dni varchar 
+  name varchar
+  age integer
+  weight integer
+  height integer 
+  phoneNumber varchar
+  preconditions varchar
+  allergies varchar
+  medications varchar
+  entry_date timestamp
+  consultation_reasons text
+  departure_date timestamp
+  leaving_reasons text
+}
+
+Ref: Patient_Preconditions.preconditions_id > Preconditions.id
+Ref: Patient_Preconditions.patient_id > Patient.id
+
+Ref: Patient_Allergies.allergies_id > Allergies.id
+Ref: Patient_Allergies.patient_id > Patient.id
+
+Ref: Patient_Current_Medications.current_medications_id > Current_Medications.id
+Ref: Patient_Current_Medications.patient_id > Patient.id
+
+Ref: Patient_Entry_Dates.entry_dates_id > Entry_Dates.id
+Ref: Patient_Entry_Dates.patient_id > Patient.id
+
+Ref: Entry_Dates_Consultation_Reasons.entry_dates_id > Entry_Dates.id
+Ref: Entry_Dates_Consultation_Reasons.consultation_reasons_id > Consultation_Reasons.id
+
