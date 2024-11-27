@@ -1,0 +1,20 @@
+{
+  "name": "backend_express",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Backend using express for Web projects",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "author": "Calana2",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "mysql": "^2.18.1",
+    "nodemon": "^3.1.7"
+  }
+}
