@@ -2,38 +2,31 @@ body{
     margin: 0;
     font-family: sans-serif;
 }
-.nav-cont{
-    background: #2196f3;
-    padding: 0 5px;
-    color: white;
-    position: fixed;
-    width: 100%;
-    z-index: 10;
-    top:0;
-}
 
 
-.header{
-    background: #2196f3;
-    padding: 5px;
+header{
+    background: #1977cc;
     color: white;
-    width: 100%;
-    position: fixed;
+    position: sticky;
     top: 0;
+    position: fixed;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 
 .header-Titulo{
-    text-shadow: 0px 0px 45px #fff;
-    font-size: 25px;
-    margin-left: 10px;
+   font-size: 30px;
+   margin-left: 10px;
+
 
 }
 
 
 .material-icons{
+    color: white;
     float: right;
-    margin-right: 45px;
+    margin-right: 65px;
     margin-top: 6px;
     cursor: pointer;
 }
@@ -41,13 +34,13 @@ body{
 
 .fa-calendar-alt{
     float: right;
-    margin-right: 12px;
+    margin-right: 25px;
     margin-top: 9px;
     cursor: pointer;
 }
 
 .close{
-    margin-right: 10px;
+    margin-right: 15px;
     margin-top: 5px;
     background-color: transparent;
     color: white;
@@ -66,7 +59,7 @@ body{
     margin-top: 120px;
 }
 
-.campo_busqueda{
+.campo_busqueda,.resultados_busqueda{
     margin: 20px 5px;
     margin-top: 20px;
     display: flex;
@@ -77,10 +70,10 @@ body{
 
 
 fieldset{
-    border: 1px solid #2196f3;
+    border: 1px solid #1977cc;
     border-radius: 5px;
     width: 80%;
-    box-shadow:0px 0px 5px #2196f3;
+    box-shadow:0px 0px 5px #1977cc;
 }
 
 
@@ -104,19 +97,72 @@ legend{
 }
 
 
-input{
-    background-color: #2196f3;
+input, button{
+    background-color: #1967cc;
     border-radius: 5PX;
     border: none;
     margin: auto;
-    padding: 4px 5px;
-    width: 110px;
+    font-size: 17px;
+    padding: 8px 5px;
+    width: 100px;
     float: right;
     margin: auto;
     margin-top: 20px;
     cursor: pointer;
+    color: #eee;
+}
+
+button:hover{
+   background-color: #1957cc; 
 }
 
 select{
     cursor: pointer;
+    padding: 3px 0;
+    border: 1px solid #1977cc;
+    border-radius: 2px;
+
 }
+
+
+.notification-icon {
+    position: relative;
+    display: inline-block;
+}
+
+.number_notification {
+    position: absolute;
+    top: 20px;
+    right: 62px;
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    padding: 1px 6px;
+    font-size: 14px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.number {
+    position: relative;
+    top: 1px;
+}
+
+.footer { 
+    height: 70px;  
+    background-color: #f8f9fa; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    text-align: center;
+    position: relative;
+    bottom: 0; 
+    width: 100%; 
+	}
+
+
+
+
+
