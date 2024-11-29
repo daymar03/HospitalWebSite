@@ -1,6 +1,7 @@
 body{
     margin: 0;
     font-family: sans-serif;
+    height: 100%;
 }
 
 
@@ -57,6 +58,7 @@ header{
 .container{
     margin: auto;
     margin-top: 120px;
+    margin-bottom: 120px;
 }
 
 .campo_busqueda,.resultados_busqueda{
@@ -157,7 +159,7 @@ select{
     justify-content: center; 
     align-items: center; 
     text-align: center;
-    position: relative;
+    position: fixed;
     bottom: 0; 
     width: 100%; 
 	}

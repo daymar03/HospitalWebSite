@@ -10,14 +10,15 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
-    
     <header>
         <nav>
            <button class="close" title="Salir"><i class="fas  fa-sign-out-alt" style="font-size: 18px"></i></button>
-           <a href="./notificaciones/index.html" target="_blank"><i class="material-icons" title="Notificaciones">notifications</i></a>
+           <div class="notif">
+           <a href="./notificaciones/index.html"><i class="material-icons" title="Notificaciones">notifications</i></a>
              <div class="number_notification">
                <span class="number">4</span>
              </div>
+           </div>
             <i class='fas fa-calendar-alt' title="Calendario"></i>
             <h1 class="header-Titulo"><i class='fas fa-hospital' style="font-size: 36px;" ></i> Doctor</h1>
          </nav>
@@ -27,74 +28,52 @@
         <div class="campo_busqueda">
             <fieldset>
                 <legend>
-                    BUSCAR PACIENTES 
+                    BUSCAR PACIENTES
                 </legend>
-                    <form>
+                    <form onsubmit="get(event)">
                         <label for="sala">Sala</label>
                         <select name="sala" id="sala">
-                            <option value="sala1">Sala 1</option>
-                            <option value="sala2">Sala 2</option>
-                            <option value="sala3">Sala 3</option>
-                            <option value="sala4">Sala 4</option>
+                            <option value="1">Sala 1</option>
+                            <option value="2">Sala 2</option>
+                            <option value="3">Sala 3</option>
+                            <option value="4">Sala 4</option>
                         </select>
                         <label for="cama">Cama</label>
                         <select name="cama" id="cama">
-                            <option value="cama1">Cama 1</option>
-                            <option value="cama2">Cama 2</option>
-                            <option value="cama3">Cama 3</option>
-                            <option value="cama4">Cama 4</option>
-                            <option value="cama5">Cama 5</option>
-                            <option value="cama6">Cama 6</option>
-                            <option value="cama7">Cama 7</option>
-                            <option value="cama8">Cama 8</option>
-                            <option value="cama9">Cama 9</option>
-                            <option value="cama10">Cama 10</option>
+                            <option value="01">Cama 1</option>
+                            <option value="02">Cama 2</option>
+                            <option value="03">Cama 3</option>
+                            <option value="04">Cama 4</option>
+                            <option value="05">Cama 5</option>
+                            <option value="06">Cama 6</option>
+                            <option value="07">Cama 7</option>
+                            <option value="08">Cama 8</option>
+                            <option value="09">Cama 9</option>
+                            <option value="10">Cama 10</option>
                         </select>
-                        
+
                     <button type="submit"><i class="fas fa-search"></i> Buscar</button>
-                            
+                    <script>
+                      function get(e) {
+                        e.preventDefault()
+                        const cama = document.querySelector('#sala').value + document.querySelector('#cama').value
+                        get_by_bed(cama)
+                      }
+                    </script>
                     </form>
             </fieldset>
         </div>
 
-            <div class="resultados_busqueda informacion_paciente">
-                <fieldset>
-                    <legend>INFORMACIÓN DEL PACIENTE</legend>
-                    <p><span>Nombre: </span>Yasury Yamile</p>
-                    <p><span>Edad: </span>25</p>
-                    <p><span>Sexo: </span>Masculino</p>
-                    <p><span>Identificador: </span>5</p>
-                    <p><span>Peso:</span>100 kg</p>
-                    <p><span>Altura:</span>185 cm</p>
-                </fieldset>
+            <div class="paciente">
             </div>
-
-            <div class="resultados_busqueda historia_clinica">
-                <fieldset>
-                    <legend>HISTORIA CLÍNICA</legend>
-                    <p><span>Condiciones previas: </span>Cancer de Pulmon, Hipertencion Alterial </p>
-                    <p><span>Alergias </span>Maní-Molido, Mariscos, Pasar Hambre</p>
-                    <p><span>Medicamentos Actuales: </span>Captopril, Interferon</p>
-                </fieldset>
-            </div>
-            
-            <div class="resultados_busqueda motivos_consulta">
-                <fieldset>
-                    <legend>MOTIVO DE CONSULTA</legend>
-                    <p>
-                    Evaluar y manejar los síntomas relacionados con cáncer de pulmón y obesidad. La persona podría experimentar dificultad para respirar, fatiga, pérdida de peso inexplicada, o dolor torácico. Además, el médico podría querer discutir estrategias para mejorar la calidad de vida, como ajustes en la dieta, ejercicio adecuado, y manejo del dolor.
-                     
-                        
-                </fieldset>
-            </div>
-
-            <footer class="footer"> 
-                <div>
+</div>
+            <div class="footer">
+              <footer>
                    <p>© Copyright <Strong>2024</Strong> Hospital Ernesto Guevara</p> 
-                </div> 
-            </footer>
+              </footer>
+            </div> 
 
-        
   <script src="script.js"></script>
+  <script src="./get_by_bed.js"></script>
 </body>
 </html>
