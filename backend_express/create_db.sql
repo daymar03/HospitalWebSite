@@ -17,7 +17,8 @@ CREATE TABLE IF NOT EXISTS `Patient` (
   `age` integer,
   `weight` integer,
   `height` integer,
-  `phoneNumber` varchar(255)
+  `phoneNumber` varchar(255),
+  `sex` varchar(255)
 );
 
 CREATE TABLE IF NOT EXISTS `Patient_Preconditions` (
@@ -91,7 +92,8 @@ CREATE TABLE IF NOT EXISTS `History` (
   `entry_date` timestamp,
   `consultation_reasons` text,
   `departure_date` timestamp,
-  `leaving_reasons` text
+  `leaving_reasons` text,
+  `sex` varchar(255)
 );
 
 ALTER TABLE `Patient_Preconditions` ADD FOREIGN KEY (`preconditions_id`) REFERENCES `Preconditions` (`id`);

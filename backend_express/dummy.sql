@@ -1,17 +1,17 @@
 USE Hospital;
 
 -- Inserción de datos en la tabla Patient
-INSERT INTO Patient (id, createdAt, bed, dni, name, age, weight, height, phoneNumber) VALUES
-(1, NOW(), 101, '12345678A', 'Juan Pérez', 30, 70, 175, '555-1234'),
-(2, NOW(), 102, '23456789B', 'María López', 25, 60, 160, '555-2345'),
-(3, NOW(), 103, '34567890C', 'Carlos García', 40, 80, 180, '555-3456'),
-(4, NOW(), 104, '45678901D', 'Ana Martínez', 35, 55, 165, '555-4567'),
-(5, NOW(), 105, '56789012E', 'Pedro Sánchez', 50, 90, 185, '555-5678'),
-(6, NOW(), 106, '67890123F', 'Laura Fernández', 28, 65, 170, '555-6789'),
-(7, NOW(), 107, '78901234G', 'Jorge Ramírez', 45, 75, 178, '555-7890'),
-(8, NOW(), 108, '89012345H', 'Lucía Torres', 32, 68, 172, '555-8901'),
-(9, NOW(), 109, '90123456I', 'Diego Ruiz', 29, 72, 177, '555-9012'),
-(10, NOW(), 110, '01234567J', 'Sofía Jiménez', 38, 58, 162, '555-0123');
+INSERT INTO Patient (id, createdAt, bed, dni, name, age, weight, height, phoneNumber, sex) VALUES
+(1, NOW(), 101, '12345678A', 'Juan Pérez', 30, 70, 175, '555-1234', 'M'),
+(2, NOW(), 102, '23456789B', 'María López', 25, 60, 160, '555-2345', 'F'),
+(3, NOW(), 103, '34567890C', 'Carlos García', 40, 80, 180, '555-3456', 'M'),
+(4, NOW(), 104, '45678901D', 'Ana Martínez', 35, 55, 165, '555-4567', 'F'),
+(5, NOW(), 105, '56789012E', 'Pedro Sánchez', 50, 90, 185, '555-5678', 'M'),
+(6, NOW(), 106, '67890123F', 'Laura Fernández', 28, 65, 170, '555-6789', 'F'),
+(7, NOW(), 107, '78901234G', 'Jorge Ramírez', 45, 75, 178, '555-7890', 'M'),
+(8, NOW(), 108, '89012345H', 'Lucía Torres', 32, 68, 172, '555-8901', 'F'),
+(9, NOW(), 109, '90123456I', 'Diego Ruiz', 29, 72, 177, '555-9012', 'M'),
+(10, NOW(), 110, '01234567J', 'Sofía Jiménez', 38, 58, 162, '555-0123', 'F');
 
 -- Inserción de datos en la tabla Preconditions
 INSERT INTO Preconditions (id, name) VALUES
