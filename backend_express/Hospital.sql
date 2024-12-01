@@ -10,7 +10,7 @@ FLUSH PRIVILEGES;
 
 CREATE TABLE IF NOT EXISTS `Patient` (
   `id` integer AUTO_INCREMENT PRIMARY KEY,
-  `createdAt` timestamp,
+  `createdAt` timestamp DEFAULT CURRENT_TIMESTAMP,
   `bed` integer UNIQUE,
   `dni` varchar(255) UNIQUE,
   `name` varchar(255),
@@ -78,7 +78,7 @@ CREATE TABLE IF NOT EXISTS `Consultation_Reasons` (
 
 CREATE TABLE IF NOT EXISTS `History` (
   `id` integer AUTO_INCREMENT PRIMARY KEY,
-  `createdAt` timestamp,
+  `createdAt` timestamp DEFAULT CURRENT_TIMESTAMP,
   `bed` integer,
   `dni` varchar(255),
   `name` varchar(255),
