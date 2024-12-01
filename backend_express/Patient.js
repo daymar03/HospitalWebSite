@@ -315,7 +315,7 @@ async CreatePatient(patient) {
         const insertPreconditionResult = await this.pool.query(
           `INSERT INTO Preconditions (name) VALUES (?)`, [precondition]
         )
-        preconditionId = insertMedicationResult.insertId
+        preconditionId = insertMedicationResult[0].insertId
       } else {
         preconditionId = preconditionResult[0].id
       }
