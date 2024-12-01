@@ -1,11 +1,19 @@
 import express from 'express'
-
+import cors from 'cors'
+import z from 'zod'
 import Patient from './Patient.js'
+
+const patientSchema = z.object({
+  name: z.string(),
+  age: z.number().int().positive().max(150),
+
+})
 
 const Patient_Endpoints = new Patient()
 const app = express()
-const port = 80
+const port = 8001
 
+app.use(cors())
 app.use(express.json())
 app.get('/patients',async (req,res)=>{
   const options= req.query;
@@ -45,6 +53,34 @@ app.get('/patients/all',async (_,res)=>{
   }
 })
 
+/*
+curl -X POST http://localhost:8001/patients/create \
+     -H "Content-Type: application/json" \
+     -d '{
+           "patient": {
+             "bed": 204,
+             "dni": "23445678A",
+             "name": "john Doe",
+             "age": 30,
+             "weight": 70,
+             "height": 175,
+             "phoneNumber": "123-456-7890",
+             "sex": "M",
+             "consultationReasons": 1
+           }
+         }'
+*/
+
+app.post('/patients/create', async (req,res)=>{
+  const { patient } = req.body
+  try {
+    const insertResult = await Patient_Endpoints.CreatePatient(patient)
+    res.json(insertResult)
+  } catch(err){
+    res.json(err)
+  }
+
+})
 
 app.listen(port, ()=> {
  console.log(`Server listening on port ${port}`)
