@@ -6,15 +6,34 @@ import Patient from './Patient.js'
 const patientSchema = z.object({
   name: z.string(),
   age: z.number().int().positive().max(150),
-
 })
 
 const Patient_Endpoints = new Patient()
 const app = express()
-const port = 8001
+const port = 3000
 
 app.use(cors())
 app.use(express.json())
+
+
+/*  
+   -----------------
+  |  PATIENTS CRUD  |
+  __________________
+
+  ** Endpoints:
+   $ READ
+    --> /patients
+    --> /patients:id
+    --> /patient:bed
+    --> /patients/all
+   $ CREATE
+    --> /patients/create
+   $ UPDATE
+   $ DELETE
+    --> /patients/delete
+*/
+
 app.get('/patients',async (req,res)=>{
   const options= req.query;
   // by id
@@ -77,10 +96,30 @@ app.post('/patients/create', async (req,res)=>{
     const insertResult = await Patient_Endpoints.CreatePatient(patient)
     res.json(insertResult)
   } catch(err){
-    res.json(err)
+    res.status(500).json(err)
   }
-
 })
+
+app.delete('/patients/delete', async(req,res)=>{
+  const options = req.query
+  try {
+    const results = await Patient_Endpoints.DELETE_Patient(options) 
+    res.json(results)
+  } catch(err) {
+    console.log(err)
+    if(err.message === "Patient does not exists") {
+     res.status(404).json({success:false, message:err.message})
+     return
+    } else if(err.message === "Patient successfully deleted") { 
+     res.status(400).json({success:false,message:err.message})
+     return
+    }
+    res.status(500).json({success:false,message:err.message})
+  }
+})
+
+
+
 
 app.listen(port, ()=> {
  console.log(`Server listening on port ${port}`)

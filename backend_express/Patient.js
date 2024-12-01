@@ -1,4 +1,5 @@
 import { getPool } from './db.js'
+import { isValidBase64 } from './utils.js' 
 
 class Patient {
  constructor(){
@@ -350,7 +351,76 @@ async CreatePatient(patient) {
       console.error('Error inserting patient:', error);
       reject({success: false, message: "Something went wrong", error })
     }})
+  } // CreatePatient
+
+
+
+ async DELETE_Patient(options={}) { 
+  const {id=null, bed=null, reasons=null} = options
+  let decodedReasons = null
+
+  // either id or bed, not both 
+  if ((id !== null && bed !== null) || (id === null && bed === null)) { throw new Error("Bad request"); }
+
+  if (reasons && !isValidBase64(reasons)) {
+   // reasons must come in base64
+   throw new Error("'reasons' param is not valid base64")
   }
+   decodedReasons = Buffer.from(reasons,'base64').toString('utf-8')
+
+  try {
+
+   await this.pool.query('START TRANSACTION');
+   let patient = null
+
+   if(id) {
+    patient = await this.GET_Patients_By_Id(id)
+
+   } else {
+    patient = await this.GET_Patients_By_Bed_Number(bed)
+   }
+    if(patient.length===0) {
+     throw new Error("Patient does not exists")
+    }
+
+    // Add to history
+    console.log(decodedReasons)
+    await this.pool.query(`
+      INSERT INTO History (
+        createdAt, bed, dni, name, age, weight, height, phoneNumber, preconditions, 
+        allergies, medications, entry_date, consultation_reasons, departure_date, leaving_reasons
+      ) VALUES (
+        CURRENT_TIMESTAMP, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 
+        CURRENT_TIMESTAMP, ?
+    )
+    `, [
+    patient[0].bed, patient[0].dni, patient[0].name, patient[0].age, patient[0].weight, patient[0].height, 
+    patient[0].phoneNumber, patient[0].preconditions, patient[0].allergies, patient[0].medications, 
+    patient[0].entry_date, patient[0].consultation_reasons, decodedReasons 
+   ]);
+
+
+    // Delete references from intermediate tables
+    await this.pool.query('DELETE FROM Entry_Dates_Consultation_Reasons WHERE entry_dates_id IN (SELECT entry_dates_id FROM Patient_Entry_Dates WHERE patient_id = ?)', [id]);
+    await this.pool.query('DELETE FROM Patient_Preconditions WHERE patient_id = ?', [id]); 
+    await this.pool.query('DELETE FROM Patient_Entry_Dates WHERE patient_id = ?', [id]); 
+    await this.pool.query('DELETE FROM Patient_Allergies WHERE patient_id = ?', [id]);
+    await this.pool.query('DELETE FROM Patient_Current_Medications WHERE patient_id = ?', [id]); 
+    await this.pool.query('DELETE FROM Patient_Operation WHERE patient_id = ?', [id]); 
+    await this.pool.query('DELETE FROM Patient_Operation_Request WHERE patient_id = ?', [id]);
+    // Delete from secondary tables
+    await this.pool.query(`DELETE FROM Preconditions WHERE id NOT IN (SELECT preconditions_id FROM Patient_Preconditions)`)
+    await this.pool.query(`DELETE FROM Entry_Dates WHERE id NOT IN (SELECT entry_dates_id FROM Patient_Entry_Dates)`)
+    // Delete from Patient
+    await this.pool.query(`DELETE FROM Patient WHERE id = ?`,[id])
+
+    await this.pool.query('COMMIT');
+    return { success: true, message: "Patient successfully deleted" };
+  } catch (err) {
+     await this.pool.query('ROLLBACK');
+     throw err
+  }
+ } // DELETE_Patient
 }
 
 export default Patient;
