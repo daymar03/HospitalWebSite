@@ -1,1 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salas</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="icon" href="favicon-16x16.png" type="image/png">
+    <script src="./script.js"></script>
+</head>
+<body>
+    <header>
+        <nav class="header">
+            <div>
+                <button class="close" title="Salir"><i class="fas  fa-sign-out-alt" style="font-size: 24px"></i></button>
+                <h1 class="header-Titulo"><i class='fas fa-bed' style='font-size:36px'></i> Salas </h1>
+            </div>
+        </nav>
+    </header>
+<main>
+    <div class="recepcion__subtitle">
+        <h2 class="recepcion__subtitle_font"><i class="fas fa-users-cog"></i> Gestión y Coordinación de Pacientes</h2>
+    </div>
+    <div class="mostrar__pacientes">
+        <div class="mostrar__buscar--ubicacion">
+            <label for="salas">Buscar Pacientes</label>
+            <select name="salas" id="salas">
+              <option value="1">Sala 1</option>
+              <option value="2">Sala 2</option>
+              <option value="3">Sala 3</option>
+              <option value="4">Sala 4</option>
+            </select>
+            <button class="button button-search-room" onclick="get_by_room(document.querySelector('#salas').value)">Buscar</button>
+        </div>
+        <!--NO TOCAR AQUI ABAJO-->
+        <div class="mostrar__ubicacion">
+          <div class="mostrar__ubicacion1">
+          </div>
+          <div class="mostrar__ubicacion2">
+          </div>
+        </div>
+    </div>
+</main>
 
+<footer class="footer"> 
+    <div class="footer__container">
+      <p>© Copyright <Strong>2024</Strong> Hospital Ernesto Guevara</p>
+    </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,163 @@
+body{
+    margin: 0;
+    font-family: sans-serif;
+    margin-top: 120px;
+    background-color: #edf4f5;
+}
+
+
+.header{
+    background: #1977cc;
+    padding: 5px;
+    color: white;
+    top: 0;
+    position: fixed;
+    width: 100%;
+    border-bottom-left-radius:20px ;
+
+}
+
+
+.header-Titulo{
+    font-size: 25px;
+    margin-left: 10px;
+
+}
+
+
+.material-icons{
+    float: right;
+    margin-right: 55px;
+    margin-top: 6px;
+    cursor: pointer;
+}
+
+.close{
+    margin-right: 15px;
+    margin-top: 5px;
+    background-color: transparent;
+    color: white;
+    border: none;
+    position: fixed;
+    right: 0;
+    width: 30px;
+    cursor: pointer;
+}
+
+
+.recepcion__subtitle,.mostrar__pacientes {
+    width: 85%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    margin:auto;
+    border-radius: 10px;;
+    font-size: 0.8rem;
+    color:#1977cc;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    padding: 5px;
+    background-color: #fff;
+}
+
+.mostrar__pacientes {
+    width: 85%;
+    margin-top: 20px;
+    color:#444;
+
+}
+
+.mostrar__pacientes label {
+    font-weight: 800;
+}
+
+.mostrar__pacientes select {
+    padding: 4px 3px ;
+    background-color: #fff;
+    border-radius: 5px;
+    font-style: italic;
+    margin-left: 5px;
+}
+
+
+.mostrar__ubicacion {
+    width: 85%;
+    padding: 10px 2px ;
+}
+
+.mostrar__ubicacion--camas {
+    display: flex;
+    margin-top: 30px;
+    margin-bottom: 100px;
+    width: 90%;
+    margin-left: 5px;
+}
+.button {
+    width: 60px;
+    background-color: #28a745;
+    color: #fff ;
+    border: none;
+    border-radius: 4px;
+}
+
+.button:hover {
+  cursor:pointer;
+}
+
+.management-button:hover {
+  cursor:pointera;
+}
+
+.button--remove {
+    background-color: #e00;
+}
+
+.button-search-room {
+  background-color: #1977cc;
+  color: white;
+  height: 28px;
+  margin-left: 10px;
+}
+
+.button-search {
+  background-color: #1977cc;
+  color: white;
+  margin-left: 15px;
+  border: none;
+  width: 100%;
+  height: 100%;
+}
+
+a {
+  width: 70px;
+}
+
+span {
+  margin: 3px 8px;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+span + span {
+  width: 250px;
+  text-align: left;
+}
+
+.mostrar__ubicacion1,
+.mostrar__ubicacion2{
+    display:inline-block;
+    width: 49%;
+}
+
+.footer{
+    width: 100%;
+    background-color: #ededed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height: 10vh;
+    position: fixed;
+    bottom: 0;
+}
