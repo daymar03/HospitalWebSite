@@ -1,1 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Información</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="icon" href="favicon-16x16.png" type="image/png">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+    
+    <header>
+        <nav>
+            <button class="close" title="Salir"><i class="fas  fa-sign-out-alt" style="font-size: 18px"></i></button>
+            <a href="./notificaciones/index.html" target="_blank"><i class="material-icons" title="Notificaciones">notifications</i></a>
+            <div class="number_notification">
+            <span class="number">4</span>
+            </div>
+            <i class='fas fa-calendar-alt' title="Calendario"></i>
+            <h1 class="header-Titulo"><i class="fas fa-user"></i> Información</h1>
+        </nav>
+    </header>
 
+    <div class="container">
+        <div class="campo_busqueda">
+                    <form onsubmit="get(event)">
+                      <div class="campo_busqueda-cama">
+                      <div class="campo_busqueda-sala">  
+                        <label for="sala">Sala</label>
+                          <select name="sala" id="sala">
+                            <option value="1"> Sala 1</option>
+                            <option value="2"> Sala 2</option>
+                            <option value="3"> Sala 3</option>
+                            <option value="4"> Sala 4</option>
+                          </select>
+                      </div>
+                      <div class="campo_busqueda-sala">  
+                        <label for="cama">Cama</label>
+                        <select name="cama" id="cama">
+                            <option value="01"> Cama 1</option>
+                            <option value="02"> Cama 2</option>
+                            <option value="03"> Cama 3</option>
+                            <option value="04"> Cama 4</option>
+                            <option value="05"> Cama 5</option>
+                            <option value="06"> Cama 6</option>
+                            <option value="07"> Cama 7</option>
+                            <option value="08"> Cama 8</option>
+                            <option value="09"> Cama 9</option>
+                            <option value="10"> Cama 10</option>
+                        </select>
+                      </div>
+                      <button type="submit" class="buscar__button"><i class="fas fa-search"></i> Buscar</button>
+                      </div>
+
+                    </form>
+                    <script charset="utf-8">
+                    function get(e){
+                        e.preventDefault()
+                        const cama = document.querySelector('#sala').value + document.querySelector('#cama').value
+                        get_by_bed(cama)
+                    }
+                    </script>
+        </div>
+        <div class="paciente"></div>
+
+    </div>
+            <div class="modal__solicitud">
+                <div class="modal__solicitud-close">
+                    X
+                </div>
+
+                <div class="modal__solicitud-title">
+                    <h3>Solicitud de Operciones</h3>
+                </div>
+
+                <div class="modal__solicitud-description">
+                    <label for="descripcion">Descripción<label>
+                <textarea name="descripcion" id="descripcion" placeholder="Su mensaje aquí" rows="3"></textarea>
+                </div>
+
+                <div class="modal__solicitud-prioridad">
+                    <p>Prioridad</p>
+                <input type="checkbox" id="prioritaria" name="prioritaria">
+                <label for="prioritaria">Prioritaria</label>
+                <input type="checkbox" id="regular" name="regular">
+                <label for="regular">Regular</label>
+                </div>
+
+                <div class="modal__solicitud-duracion">
+                    <label for="duracion">Duración</label>
+                <input id="time" type="time">
+                </div>
+
+                <div class="modal__solicitud-responsable">
+                    <label for="responsable">Responsable:</label>
+                    <input type="text" id="responsable" placeholder="  Alejandro Mateo Ochoa" name="responsable">
+                </div>
+                <div class="button__solicitud-operaciones">
+                    <button class="modal-button__solicitud"><i class="fas fa-hospital-user"></i> Solicitar</button>
+                </div>
+            </div>
+
+
+            <footer class="footer"> 
+                <div class="footer__container">
+                <p>© Copyright <Strong>2024</Strong> Hospital Ernesto Guevara</p> 
+                </div> 
+            </footer>
+
+        
+<script src="script.js"></script>
+<script src="get_by_bed.js"></script>
+</body>
+</html>
