@@ -18,7 +18,8 @@ CREATE TABLE IF NOT EXISTS `Patient` (
   `weight` integer,
   `height` integer,
   `phoneNumber` varchar(255),
-  `sex` varchar(255)
+  `sex` varchar(255),
+  `consultationReasons` text
 );
 
 CREATE TABLE IF NOT EXISTS `Patient_Preconditions` (
@@ -63,17 +64,6 @@ CREATE TABLE IF NOT EXISTS `Patient_Entry_Dates` (
 CREATE TABLE IF NOT EXISTS `Entry_Dates` (
   `id` integer AUTO_INCREMENT PRIMARY KEY,
   `date` timestamp
-);
-
-CREATE TABLE IF NOT EXISTS `Entry_Dates_Consultation_Reasons` (
-  `id` integer AUTO_INCREMENT PRIMARY KEY,
-  `entry_dates_id` integer,
-  `consultation_reasons_id` integer
-);
-
-CREATE TABLE IF NOT EXISTS `Consultation_Reasons` (
-  `id` integer AUTO_INCREMENT PRIMARY KEY,
-  `reason` text
 );
 
 CREATE TABLE IF NOT EXISTS `History` (
@@ -152,7 +142,3 @@ ALTER TABLE `Patient_Current_Medications` ADD FOREIGN KEY (`patient_id`) REFEREN
 ALTER TABLE `Patient_Entry_Dates` ADD FOREIGN KEY (`entry_dates_id`) REFERENCES `Entry_Dates` (`id`);
 
 ALTER TABLE `Patient_Entry_Dates` ADD FOREIGN KEY (`patient_id`) REFERENCES `Patient` (`id`);
-
-ALTER TABLE `Entry_Dates_Consultation_Reasons` ADD FOREIGN KEY (`entry_dates_id`) REFERENCES `Entry_Dates` (`id`);
-
-ALTER TABLE `Entry_Dates_Consultation_Reasons` ADD FOREIGN KEY (`consultation_reasons_id`) REFERENCES `Consultation_Reasons` (`id`);
