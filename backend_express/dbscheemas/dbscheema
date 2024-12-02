@@ -2,7 +2,7 @@
 // Docs: https://dbml.dbdiagram.io/docs
 
 Table Patient {
-  id integer [primary key]
+  id integer [primary key, increment]
   createdAt timestamp
   bed integer [unique]
   dni varchar [unique]
@@ -16,51 +16,51 @@ Table Patient {
 }
 
 table Patient_Preconditions {
- id integer [primary key]
+ id integer [primary key, increment]
  patient_id integer
  preconditions_id integer
 }
 
 table Preconditions {
-   id integer [primary key]
+   id integer [primary key, increment]
    name varchar [unique]
 }
 
 table Patient_Allergies {
- id integer [primary key]
+ id integer [primary key, increment]
  patient_id integer
  allergies_id integer 
 }
 
 table Allergies {
-   id integer [primary key]
+   id integer [primary key, increment]
    name varchar [unique]
 }
 
 table Patient_Current_Medications {
- id integer [primary key]
+ id integer [primary key, increment]
  patient_id integer
  current_medications_id integer
 }
 
 table Current_Medications {
-  id integer [primary key]
+  id integer [primary key, increment]
   name varchar [unique]
 }
 
 table Patient_Entry_Dates {
- id integer [primary key]
+ id integer [primary key, increment]
  patient_id integer
  entry_dates_id integer
 }
 
 table Entry_Dates {
-  id integer [primary key]
+  id integer [primary key, increment]
   date timestamp
 }
 
 Table History {
-  id integer [primary key]
+  id integer [primary key, increment]
   createdAt timestamp
   bed integer
   dni varchar 
@@ -79,7 +79,7 @@ Table History {
 }
 
 Table Operation {
-  id integer [primary key]
+  id integer [primary key, increment]
   priority integer // 1-> high 2-> low
   estimated_duration int // minutes
   description text
@@ -91,13 +91,13 @@ Table Operation {
 }
 
 Table Patient_Operation {
-  id integer [primary key]
+  id integer [primary key, increment]
   patient_id integer
   operation_id integer
 }
 
 Table Operation_Request {
-  id integer [primary key]
+  id integer [primary key, increment]
   priority integer // 1-> high 2-> low
   estimated_duration int //minutes
   description text
@@ -107,7 +107,7 @@ Table Operation_Request {
 }
 
 Table Patient_Operation_Request {
-  id integer [primary key]
+  id integer [primary key, increment]
   patient_id int
   operation_request_id int
 }
