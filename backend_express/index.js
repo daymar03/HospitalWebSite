@@ -109,6 +109,36 @@ app.post('/patients/create', async (req,res)=>{
 
 })
 
+app.patch('/patients/update', async (req, res) => { 
+  const { id, bed } = req.query; 
+  // search by id or bed 
+  const { age, weight, height, phoneNumber, name,
+          currentMedications } = req.body;
+  if (!id && !bed) { 
+    return res.status(400).json({ success: false, message: "Bad request: id or bed is required" })    
+  }  
+  const fieldsToUpdate = {}; 
+  if (age !== undefined) fieldsToUpdate.age = age; 
+  if (weight !== undefined) fieldsToUpdate.weight = weight; 
+  if (height !== undefined) fieldsToUpdate.height = height; 
+  if (phoneNumber !== undefined) fieldsToUpdate.phoneNumber = phoneNumber; 
+  if (name !== undefined) fieldsToUpdate.name = name;
+  try {
+    const results = await Patient_Endpoints.PATCH_Patient(fieldsToUpdate,id,bed, currentMedications)
+    res.json(results)
+  } catch(err) {
+    console.error('Error updating patient:', err); 
+    if(err.message === "Neither the fields nor the medicines were given" ||
+       err.message === "Patient does not exists") {
+     res.status(400).json({ success: false, message: err.message})
+     return
+        }
+    res.status(500).json({ success: false, message: 'Error updating patient' }); 
+  }
+})
+
+
+
 app.delete('/patients/delete', async(req,res)=>{
   const options = req.query
   try {

@@ -428,6 +428,69 @@ async CreatePatient(patient) {
      throw err
   }
  }
+
+
+
+async PATCH_Patient(fields, id, bed, currentMedications) {
+  const setString = Object.keys(fields).map(key => `${key} = '${fields[key]}'`).join(', ');
+  const whereClause = id ? 'id = ?' : 'bed = ?';
+  
+  try {
+    // No update
+    if (Object.keys(fields).length === 0 && !currentMedications) {
+      throw new Error("Neither the fields nor the medicines were given");
+    }
+
+    // Patient table update
+    if (Object.keys(fields).length > 0) {
+      await this.pool.query(`UPDATE Patient SET ${setString} WHERE ${whereClause}`, [id ? id : bed]);
+    }
+
+    // Current_Medications update
+    if (currentMedications) {
+      // Check if currentMedications exist in Current_Medications table
+      const existingMedications = await this.pool.query(`SELECT id, name FROM Current_Medications WHERE name IN (?)`, [currentMedications]);
+      const existingMedNames = new Set(existingMedications[0].map(row => row.name));
+      const newMedNames = currentMedications.filter(name => !existingMedNames.has(name));
+
+      // Insert new medications that don't exist in the Current_Medications table
+      if (newMedNames.length > 0) {
+        for (const name of newMedNames) {
+          await this.pool.query(`INSERT INTO Current_Medications (name) VALUES (?)`, [name]);
+        }
+      }
+
+      // Get updated medication IDs
+      const medIds = await this.pool.query(`SELECT id FROM Current_Medications WHERE name IN (?)`, [currentMedications]);
+      const medIdArray = medIds[0].map(row => row["id"]);
+
+      // Get patient ID
+      let patientId = null;
+      if (!id) {
+        const patient = await this.pool.query(`SELECT id FROM Patient WHERE bed = ?`, [bed]);
+        patientId = patient[0][0].id;
+      } else {
+        const patient = await this.pool.query(`SELECT id FROM Patient WHERE id = ?`, [id]);
+        patientId = patient[0][0].id;
+      }
+
+      if (!patientId) {
+        throw new Error("Patient does not exist");
+      }
+
+      // Update Patient_Current_Medications table
+      await this.pool.query(`DELETE FROM Patient_Current_Medications WHERE patient_id = ?`, [patientId]);
+      for (const medId of medIdArray) {
+        await this.pool.query(`INSERT INTO Patient_Current_Medications (patient_id, current_medications_id) VALUES (?, ?)`, [patientId, medId]);
+      }
+    }
+
+    return { success: true, message: "Patient successfully updated" };
+  } catch (err) {
+    throw err;
+  }
+}
+
 }
 
 export default Patient;
