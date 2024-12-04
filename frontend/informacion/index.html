@@ -67,6 +67,7 @@
 
     </div>
             <div class="modal__solicitud">
+              <form>
                 <div class="modal__solicitud-close">
                     X
                 </div>
@@ -77,29 +78,30 @@
 
                 <div class="modal__solicitud-description">
                     <label for="descripcion">Descripción<label>
-                <textarea name="descripcion" id="descripcion" placeholder="Su mensaje aquí" rows="3"></textarea>
+                <textarea required name="descripcion" id="descripcion" placeholder="Su mensaje aquí" rows="3"></textarea>
                 </div>
 
                 <div class="modal__solicitud-prioridad">
                     <p>Prioridad</p>
-                <input type="checkbox" id="prioritaria" name="prioritaria">
+                <input type="checkbox" id="prioritaria" name="prioritaria" onclick="checkedP()">
                 <label for="prioritaria">Prioritaria</label>
-                <input type="checkbox" id="regular" name="regular">
+                <input type="checkbox" id="regular" name="regular" onclick="checkedR()">
                 <label for="regular">Regular</label>
                 </div>
 
                 <div class="modal__solicitud-duracion">
                     <label for="duracion">Duración</label>
-                <input id="time" type="time">
+                <input required id="time" type="time">
                 </div>
 
                 <div class="modal__solicitud-responsable">
                     <label for="responsable">Responsable:</label>
-                    <input type="text" id="responsable" placeholder="  Alejandro Mateo Ochoa" name="responsable">
+                    <input required type="text" id="responsable" placeholder="  Alejandro Mateo Ochoa" name="responsable">
                 </div>
                 <div class="button__solicitud-operaciones">
-                    <button class="modal-button__solicitud"><i class="fas fa-hospital-user"></i> Solicitar</button>
+                    <button type="submit" class="modal-button__solicitud"><i class="fas fa-hospital-user"></i> Solicitar</button>
                 </div>
+              </form>
             </div>
 
 
@@ -109,8 +111,15 @@
                 </div> 
             </footer>
 
-        
+
+            <div id="contextMenu">
+              <ul>
+                <li class="editable-li">Editar</li>
+              </ul>
+            </div>
+
 <script src="script.js"></script>
 <script src="get_by_bed.js"></script>
+<script src="./update.js"></script>
 </body>
 </html>
