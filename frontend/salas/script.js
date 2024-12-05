@@ -41,8 +41,8 @@ function get_by_room(room){
       let add = `
       <div class="mostrar__ubicacion--camas">
         <i class="fas fa-bed" style='font-size:18px; color:#1977cc'></i>
-        <span id="patient-number">${camas[i]}</span>
-        <span id="patient-name"> ${name}</span>
+        <span class="sp" id="patient-number">${camas[i]}</span>
+        <span class="sp" id="patient-name"> ${name}</span>
         <button title="${Title}" type="button" class="button management-button ${Class}" ${Onclick}> <i class="fas ${button}"></i></button>
         <a title="Ver información del paciente" href="../informacion/index.html?bed=${camas[i]}"><button type="button" class="button button-search"> <i class="fas fa-search"></i></button></a>
       </div>
