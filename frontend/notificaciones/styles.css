@@ -169,7 +169,9 @@ span{
     display: none;
 }
 
+
 .footer{
+    opacity: 0;
     width: 100%;
     background-color: #ededed;
     display: flex;
@@ -179,6 +181,8 @@ span{
     height: 8vh;
     position: fixed;
     bottom: 0;
+    transition: opacity 0.3s ease;
+    z-index: 100;
 }
 
 .footer-nav {
@@ -196,6 +200,11 @@ span{
   display: block;
   margin-bottom: 2px;
   color: #1977cc;
+  transition: font-size 0.3s ease; 
+}
+
+.footer-nav i:hover {
+  font-size: 24px;
 }
 
  main { flex: 1; }
