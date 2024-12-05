@@ -4,8 +4,18 @@ import z from 'zod'
 import Patient from './Patient.js'
 
 const patientSchema = z.object({
-  name: z.string(),
-  age: z.number().int().positive().max(150)
+  bed: z.string(),
+  name: z.string().min(1, "el nombre no debe estar vacío."),
+  age: z.number().int().positive().max(150),
+  height: z.number().int().positive().max(250),
+  weight: z.number().int().positive().max(500),
+  dni: z.string().regex(/^\d{11}$/, "El número de identidad debe tener 11 dígitos"),
+  phoneNumber: z.string().regex(/^\d{8}$/, "El número de teléfono debe tener 8 dígitos"),
+  sex: z.enum(["M", "F"], "El sexo debe ser 'M' o 'F'"),
+  consultationReasons: z.string(),
+  allergies: z.array(z.string()),
+  medications: z.array(z.string()),
+  preconditions: z.array(z.string())
 })
 
 const Patient_Endpoints = new Patient()
@@ -15,7 +25,7 @@ const port = 3000
 app.use(cors())
 app.use(express.json())
 
-/*  
+/*
    -----------------
   |  PATIENTS CRUD  |
   __________________
@@ -100,28 +110,32 @@ app.get('/patients/all',async (_,res)=>{
 
 app.post('/patients/create', async (req,res)=>{
   const { patient } = req.body
+  console.log(patient)
+  const result = patientSchema.safeParse(patient)
+  if (result.success) {
   try {
     const insertResult = await Patient_Endpoints.CreatePatient(patient)
     res.json(insertResult)
   } catch(err){
     res.status(500).json(err)
   }
+  } else {res.status(400).json({error:"Bad Request", message: result.error.errors[0].message})}
 
 })
 
-app.patch('/patients/update', async (req, res) => { 
-  const { id, bed } = req.query; 
-  // search by id or bed 
+app.patch('/patients/update', async (req, res) => {
+  const { id, bed } = req.query;
+  // search by id or bed
   const { age, weight, height, phoneNumber, name,
           currentMedications } = req.body;
-  if (!id && !bed) { 
-    return res.status(400).json({ success: false, message: "Bad request: id or bed is required" })    
-  }  
-  const fieldsToUpdate = {}; 
-  if (age !== undefined) fieldsToUpdate.age = age; 
-  if (weight !== undefined) fieldsToUpdate.weight = weight; 
-  if (height !== undefined) fieldsToUpdate.height = height; 
-  if (phoneNumber !== undefined) fieldsToUpdate.phoneNumber = phoneNumber; 
+  if (!id && !bed) {
+    return res.status(400).json({ success: false, message: "Bad request: id or bed is required" })
+  }
+  const fieldsToUpdate = {};
+  if (age !== undefined) fieldsToUpdate.age = age;
+  if (weight !== undefined) fieldsToUpdate.weight = weight;
+  if (height !== undefined) fieldsToUpdate.height = height;
+  if (phoneNumber !== undefined) fieldsToUpdate.phoneNumber = phoneNumber;
   if (name !== undefined) fieldsToUpdate.name = name;
   try {
     const results = await Patient_Endpoints.PATCH_Patient(fieldsToUpdate,id,bed, currentMedications)
@@ -160,5 +174,3 @@ app.delete('/patients/delete', async(req,res)=>{
 app.listen(port, ()=> {
  console.log(`Server listening on port ${port}`)
 })
-
-
