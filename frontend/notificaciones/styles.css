@@ -144,14 +144,12 @@ h3{
     border-radius: 10px;
     top: 250px;
     z-index: 100;
-    
+
 }
 
 
 span{
     font-weight: bold;
-    margin: auto;
-    
 }
 
 .cerrar{
@@ -171,7 +169,6 @@ span{
     display: none;
 }
 
-
 .footer{
     width: 100%;
     background-color: #ededed;
@@ -179,9 +176,27 @@ span{
     justify-content: center;
     align-items: center;
     text-align: center;
-    height: 10vh;
+    height: 8vh;
     position: fixed;
     bottom: 0;
 }
 
+.footer-nav {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+}
+.footer-nav a {
+  text-decoration: none;
+  color: #343a40;
+  font-size: 14px;
+}
+.footer-nav i {
+  font-size: 20px;
+  display: block;
+  margin-bottom: 2px;
+  color: #1977cc;
+}
+
+ main { flex: 1; }
 
