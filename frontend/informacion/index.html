@@ -10,19 +10,13 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
-    
     <header>
         <nav>
-            <button class="close" title="Salir"><i class="fas  fa-sign-out-alt" style="font-size: 18px"></i></button>
-            <a href="./notificaciones/index.html" target="_blank"><i class="material-icons" title="Notificaciones">notifications</i></a>
-            <div class="number_notification">
-            <span class="number">4</span>
-            </div>
-            <i class='fas fa-calendar-alt' title="Calendario"></i>
+            <button class="close" title="Cerrar sesión"><i class="fas  fa-sign-out-alt" style="font-size: 18px"></i></button>
             <h1 class="header-Titulo"><i class="fas fa-user"></i> Información</h1>
         </nav>
     </header>
-
+    <main>
     <div class="container">
         <div class="campo_busqueda">
                     <form onsubmit="get(event)">
@@ -59,7 +53,7 @@
                     function get(e){
                         e.preventDefault()
                         const cama = document.querySelector('#sala').value + document.querySelector('#cama').value
-                        get_by_bed(cama)
+                        window.open(window.location.origin+window.location.pathname+`?bed=${cama}`, "_self")
                     }
                     </script>
         </div>
@@ -103,12 +97,26 @@
                 </div>
               </form>
             </div>
-
-
+            </main>
             <footer class="footer"> 
-                <div class="footer__container">
-                <p>© Copyright <Strong>2024</Strong> Hospital Ernesto Guevara</p> 
-                </div> 
+              <div class="footer-nav"> 
+                <a href="/salas/index.html">
+                  <i class="fas fa-procedures"></i>
+                  <span>Información de Salas</span>
+                </a> 
+                <a href="/informacion/index.html"> 
+                  <i class="fas fa-notes-medical"></i>
+                  <span>Información del Paciente</span>
+                </a> 
+                <a href="/ingresarPaciente/index.html">
+                  <i class="fas fa-user-plus"></i> 
+                  <span>Ingresar Paciente</span> 
+                </a> 
+                <a href="/notificaciones/index.html">
+                  <i class="fas fa-bell"></i> 
+                  <span>Notificaciones</span> 
+                </a> 
+              </div>
             </footer>
 
 

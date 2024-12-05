@@ -43,14 +43,13 @@ function c(){
     }
   })
 
-  document.addEventListener('keydown', async function(event) {
+  document.addEventListener('keydown', async function handleKeydown(event) {
     if (event.key === 'Escape'){
       if(editable.innerHTML.includes('input')){
         editable.innerHTML = spanContent
       }
       contextMenu.style.display = 'none';
     } else if (event.key == 'Enter') {
-      
       if (editable.innerHTML.includes('input')){
         let value = document.querySelector('.editing').value
         if (value != spanContent) {
@@ -63,6 +62,7 @@ function c(){
               patient.weight = value
               let resUpadte = await update(patient)
               let resRefresh = await get_by_bed(firstBed)
+              location.reload()
               } else {editable.innerHTML = spanContent}
           } else if ( variable == "medications") {
               const conf = confirm("Está seguro que desea actualizar los medicamentos del paciente??")
@@ -71,6 +71,7 @@ function c(){
                 patient.medications = value.split(',')
                 let resUpadte = await update(patient)
                 let resRefresh = await get_by_bed(firstBed)
+                location.reload()
               } else { editable.innerHTML = spanContent}
           }
         } else {
