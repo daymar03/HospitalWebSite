@@ -42,26 +42,43 @@
         </div>
     </div>
 </main>
-            <footer class="footer"> 
+            <footer class="footer" onmouseover="showFooter()" onmouseleave="hideFooter()"> 
               <div class="footer-nav"> 
+                <div class="footer-item">
                 <a href="/salas/index.html">
                   <i class="fas fa-procedures"></i>
                   <span>Información de Salas</span>
-                </a> 
+                </a>
+                </div>
+                <div class="footer-item">
                 <a href="/informacion/index.html"> 
                   <i class="fas fa-notes-medical"></i>
                   <span>Información del Paciente</span>
-                </a> 
+                </a>
+                </div>
+                <div class="footer-item">
                 <a href="/ingresarPaciente/index.html">
                   <i class="fas fa-user-plus"></i> 
                   <span>Ingresar Paciente</span> 
-                </a> 
+                </a>
+                </div>
+                <div class="footer-item">
                 <a href="/notificaciones/index.html">
-                  <i class="fas fa-bell"></i> 
+                  <i class="fas fa-bell footer-icon"></i> 
                   <span>Notificaciones</span> 
-                </a> 
+                </a>
+                </div>
               </div>
             </footer>
 
+            <script charset="utf-8">
+              function showFooter(){
+              document.querySelector('.footer').style.opacity = 1
+              }
+
+              function hideFooter(){
+              document.querySelector('.footer').style.opacity = 0
+              }
+            </script>
 </body>
 </html>

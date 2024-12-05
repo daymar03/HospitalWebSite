@@ -149,16 +149,36 @@ span + span {
     display:inline-block;
     width: 49%;
 }
+
+.footer-space {
+    display: block;
+    z-index: 10;
+    width: 100%;
+    background-color: transparent;
+    height: 8vh;
+    position: fixed;
+    bottom: 0;
+    padding: 5px;
+}
+
 .footer{
+    opacity: 0;
     width: 100%;
     background-color: #ededed;
-    display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
     height: 8vh;
     position: fixed;
     bottom: 0;
+    padding: 5px;
+    transition: opacity 0.3s ease;
+    z-index: 100;
+  }
+
+
+.footer-nav i:hover {
+  font-size: 25px;
 }
 
 .footer-nav {
@@ -171,11 +191,12 @@ span + span {
   color: #343a40;
   font-size: 14px;
 }
-.footer-nav i {
+.footer-nav i{
   font-size: 20px;
   display: block;
   margin-bottom: 2px;
   color: #1977cc;
+  transition: font-size 0.3s ease;
 }
 
  main { flex: 1; }
