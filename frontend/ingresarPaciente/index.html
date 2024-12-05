@@ -87,7 +87,7 @@
 
     </div>
 
-            <footer class="footer"> 
+            <footer class="footer" onmouseover="showFooter()" onmouseleave="hideFooter()"> 
               <div class="footer-nav"> 
                 <a href="/salas/index.html">
                   <i class="fas fa-procedures"></i>
@@ -107,6 +107,16 @@
                 </a> 
               </div>
             </footer>
+            <script charset="utf-8">
+              function showFooter(){
+              document.querySelector('.footer').style.opacity = 1
+              }
+
+              function hideFooter(){
+              document.querySelector('.footer').style.opacity = 0
+              }
+            </script>
+
 
 <script src="script.js"></script>
 </body>
