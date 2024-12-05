@@ -338,6 +338,7 @@ select{
 /*Footer section*/
 
 .footer{
+    opacity: 0;
     width: 100%;
     background-color: #ededed;
     display: flex;
@@ -347,6 +348,8 @@ select{
     height: 8vh;
     position: fixed;
     bottom: 0;
+    transition: opacity 0.3s ease;
+    padding: 5px;
 }
 
 .footer-nav {
@@ -364,6 +367,11 @@ select{
   display: block;
   margin-bottom: 2px;
   color: #1977cc;
+  transition: font-size 0.3s ease;
+}
+
+.footer-nav i:hover {
+  font-size: 24px;
 }
 
  main { flex: 1; }
