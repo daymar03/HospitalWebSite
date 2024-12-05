@@ -3,18 +3,24 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="script.js"></script>
 
 </head>
 <body>
   <header>
-    <nav>
-      <a class="salir" href="#"><i class="fas fa-sign-out-alt"></i></a>
-      <h1 class=".header__titulo"> <i class="fas fa-laptop-code"></i> Administración</h1>     
+    <nav class="header2">
+      <div >
+        <button class="salir" title="Cerrar sesión">
+        <a class="salir" href="#"><i class="fas fa-sign-out-alt" style="font-size: 24px"></i></a>
+        </button>
+        <h1 class="header__titulo"> <i class="fas fa-laptop-code" style="font-size:36px"></i> Administración</h1>
+      </div>
     </nav>
   </header>
 <div class="container container--search">
 
-
+  <main>
   <!-- Search Box -->
   <div class="search-box">
     <div class="row">
@@ -168,18 +174,32 @@
     </div>
   </div>
 </div>
-
+</main>
 <!-- Añadiendo el footer -->
-<footer class="footer1"> 
-    <div> 
-        <p>© Copyright <Strong>2024</Strong> Hospital Ernesto Guevara</p> 
-    </div> 
-</footer>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
-<script src="script.js"></script>
 
 
 </body>
+            <footer class="footer"> 
+              <div class="footer-nav"> 
+                <a href="/salas/index.html">
+                  <i class="fas fa-procedures"></i>
+                  <span>Información de Salas</span>
+                </a> 
+                <a href="/informacion/index.html"> 
+                  <i class="fas fa-notes-medical"></i>
+                  <span>Información del Paciente</span>
+                </a> 
+                <a href="/ingresarPaciente/index.html">
+                  <i class="fas fa-user-plus"></i> 
+                  <span>Ingresar Paciente</span> 
+                </a> 
+                <a href="/notificaciones/index.html">
+                  <i class="fas fa-bell"></i> 
+                  <span>Notificaciones</span> 
+                </a> 
+              </div>
+            </footer>
+
+
 </html>

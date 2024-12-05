@@ -4,26 +4,26 @@ body {
     background-color: #edf4f5;
 }
 
+span {
+  font-weight: bold;
+}
 
-header{
+.header2{
     background: #1977cc;
     color: white;
-    position: sticky;
-    top: 0;
     position: fixed;
+    top: 0;
     width: 100%;
-    padding: 10px ;
+    padding: 19px ;
     border-bottom-left-radius:20px ;
 
 }
 
 
 .header__titulo{
-    font-size: 30px;
-    margin-left: 40px;
-    margin-top: 15px;
-
-
+    font-size: 25px;
+    font-weight: bold;
+    margin-top: 5px;
 }
 
 .container--search{
@@ -32,12 +32,15 @@ header{
 }
 
 .salir{
-    float:right;
-    margin-top: 15px;
-    color: #eee;
-    margin-right: 10px;
-    font-size: 24px;
-
+    margin-right: 15px;
+    margin-top: 3px;
+    background-color: transparent;
+    color: white;
+    border: none;
+    position: fixed;
+    right: 0;
+    width: 30px;
+    cursor: pointer;
 }
 
 .modal-backdrop {
@@ -68,14 +71,33 @@ header{
 }
 
 
-.footer1{
-    display: flex;
-    position: relative;
-    bottom: 0;
-    background-color: #ededed;
+.footer{
     width: 100%;
-    height: 10vh;
-    align-items: center;
+    background-color: #ededed;
+    display: flex;
     justify-content: center;
+    align-items: center;
     text-align: center;
+    height: 8vh;
+    position: fixed;
+    bottom: 0;
 }
+
+.footer-nav {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+}
+.footer-nav a {
+  text-decoration: none;
+  color: #343a40;
+  font-size: 14px;
+}
+.footer-nav i {
+  font-size: 20px;
+  display: block;
+  margin-bottom: 2px;
+  color: #1977cc;
+}
+
+ main { flex: 1; }
