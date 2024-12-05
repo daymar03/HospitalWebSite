@@ -230,6 +230,24 @@ select{
     bottom: 0;
 }
 
+.footer-nav {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+}
+.footer-nav a {
+  text-decoration: none;
+  color: #343a40;
+  font-size: 14px;
+}
+.footer-nav i {
+  font-size: 20px;
+  display: block;
+  margin-bottom: 2px;
+  color: #1977cc;
+}
+
+ main { flex: 1; }
 
 
 

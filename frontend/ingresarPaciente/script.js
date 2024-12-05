@@ -61,9 +61,9 @@ async function ingresar(e){
   let name = document.querySelector('#name').value
   let dni = document.querySelector('#dni').value
   let phoneNumber = document.querySelector('#phoneNumber').value
-  let age = document.querySelector('#age').value
-  let weight = document.querySelector('#weight').value
-  let height = document.querySelector('#height').value
+  let age =parseInt(document.querySelector('#age').value)
+  let weight = parseInt(document.querySelector('#weight').value)
+  let height = parseInt(document.querySelector('#height').value)
   let consultationReasons = document.querySelector('#motiv').value
   let allergies = document.querySelector('#alerg').value.split(',')
   let medications = document.querySelector('#medac').value.split(',')
@@ -94,11 +94,14 @@ async function ingresar(e){
         'Content-Type':'application/json'
       },
       body: JSON.stringify(data)})
-    console.log(res)
     const resJson = await res.json()
+    console.log(resJson)
       if(resJson.error){
         if(resJson.error == "The bed is already bussy")
         alert("error: "+resJson.error)
+        else if(resJson.error == "Bad Request"){
+          alert(resJson.message)
+        }
         else {
           alert("error: "+resJson.error.code)
         }

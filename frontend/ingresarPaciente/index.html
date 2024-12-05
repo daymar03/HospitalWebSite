@@ -13,12 +13,7 @@
     
     <header>
         <nav>
-            <button class="close" title="Salir"><i class="fas  fa-sign-out-alt" style="font-size: 18px"></i></button>
-            <a href="./notificaciones/index.html" target="_blank"><i class="material-icons" title="Notificaciones">notifications</i></a>
-            <div class="number_notification">
-            <span class="number">4</span>
-            </div>
-            <i class='fas fa-calendar-alt' title="Calendario"></i>
+            <button class="close" title="Cerrar sesión"><i class="fas  fa-sign-out-alt" style="font-size: 18px"></i></button>
             <h1 class="header-Titulo"><i class="fas fa-user"></i> Ingreso</h1>
         </nav>
     </header>
@@ -66,9 +61,9 @@
                     <label for="name"><span>Nombre: </span><input placeholder="John Doe"  id="name" required type="text"></input></label>
                     <label for="dni"><span>Número de identidad: </span><input placeholder="01010190009" required id="dni" type="text"></input></label>
                     <label for="phoneNumber"><span>Número de teléfono: </span><input placeholder="88888888"  id="phoneNumber" type="text"></input></label>
-                    <label for="age"><span>Edad: </span> <input type="number" required id="age"/> </label>
-                    <label for="weight"><span>Peso: </span> <input type="number" required id="weight"/> </label>
-                    <label for="height"><span>Altura: </span> <input type="number" required id="height"/> </label>
+                    <label for="age"><span>Edad: </span> <input type="number" required id="age"/> <span> años </span> </label>
+                    <label for="weight"><span>Peso: </span> <input type="number" required id="weight"/> <span> kg</span></label>
+                    <label for="height"><span>Altura: </span> <input type="number" required id="height"/> <span> cm</span></label>
                     <div class="checkbox-container">
                     <label>Sexo:</label>
                     <label for="sexM"><input type="checkbox"value="M" name="sex" id="sexM" onclick="checkedM()"/> M </label>
@@ -92,14 +87,27 @@
 
     </div>
 
-
             <footer class="footer"> 
-                <div class="footer__container">
-                <p>© Copyright <Strong>2024</Strong> Hospital Ernesto Guevara</p> 
-                </div> 
+              <div class="footer-nav"> 
+                <a href="/salas/index.html">
+                  <i class="fas fa-procedures"></i>
+                  <span>Información de Salas</span>
+                </a> 
+                <a href="/informacion/index.html"> 
+                  <i class="fas fa-notes-medical"></i>
+                  <span>Información del Paciente</span>
+                </a> 
+                <a href="/ingresarPaciente/index.html">
+                  <i class="fas fa-user-plus"></i> 
+                  <span>Ingresar Paciente</span> 
+                </a> 
+                <a href="/notificaciones/index.html">
+                  <i class="fas fa-bell"></i> 
+                  <span>Notificaciones</span> 
+                </a> 
+              </div>
             </footer>
 
-        
 <script src="script.js"></script>
 </body>
 </html>
