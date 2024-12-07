@@ -14,7 +14,7 @@
         <button class="salir" title="Cerrar sesión">
         <a class="salir" href="#"><i class="fas fa-sign-out-alt" style="font-size: 24px"></i></a>
         </button>
-        <h1 class="header__titulo"> <i class="fas fa-laptop-code" style="font-size:36px"></i> Administración</h1>
+        <h1 class="header-titulo"> <i class="fas fa-laptop-code" style="font-size:24px"></i> Administración</h1>
       </div>
     </nav>
   </header>
@@ -35,9 +35,10 @@
           <label for="roleFilter">Rol:</label>
           <select class="form-control" id="roleFilter">
             <option value="">Todos</option>
-            <option value="doctor">Doctor</option>
-            <option value="nurse">Enfermero/a</option>
-            <option value="admin">Administrativo</option>
+            <option value="1">Director</option>
+            <option value="2">Doctor</option>
+            <option value="3">Recepcionista</option>
+            <option value="4">Enfermero/a</option>
           </select>
         </div>
       </div>
@@ -46,9 +47,9 @@
           <label for="deptFilter">Departamento:</label>
           <select class="form-control" id="deptFilter">
             <option value="">Todos</option>
-            <option value="cardiology">Cardiología</option>
-            <option value="pediatrics">Pediatría</option>
-            <option value="emergency">Emergencias</option>
+            <option value="1">Cardiología</option>
+            <option value="2">Pediatría</option>
+            <option value="3">Emergencias</option>
           </select>
         </div>
       </div>
@@ -117,10 +118,6 @@
               <option value="emergency">Emergencias</option>
             </select>
           </div>
-          <div class="mb-3">
-            <label for="editEmail" class="form-label">Email:</label>
-            <input type="email" class="form-control" id="editEmail" required>
-          </div>
         </form>
       </div>
       <div class="modal-footer">
@@ -148,22 +145,19 @@
           <div class="mb-3">
             <label for="addRole" class="form-label">Rol:</label>
             <select class="form-control" id="addRole" required>
-              <option value="doctor">Doctor</option>
-              <option value="nurse">Enfermero/a</option>
-              <option value="admin">Administrativo</option>
+              <option value="1">Director</option>
+              <option value="2">Doctor</option>
+              <option value="3">Enfermero/a</option>
+              <option value="4">Recepcionista</option>
             </select>
           </div>
           <div class="mb-3">
             <label for="addDept" class="form-label">Departamento:</label>
             <select class="form-control" id="addDept" required>
-              <option value="cardiology">Cardiología</option>
-              <option value="pediatrics">Pediatría</option>
-              <option value="emergency">Emergencias</option>
+              <option value="1">Cardiología</option>
+              <option value="2">Pediatría</option>
+              <option value="3">Emergencias</option>
             </select>
-          </div>
-          <div class="mb-3">
-            <label for="addEmail" class="form-label">Email:</label>
-            <input type="email" class="form-control" id="addEmail" required>
           </div>
         </form>
       </div>
@@ -179,34 +173,42 @@
 
 
 
-</body>
-            <footer class="footer" onmouseover="showFooter()" onmouseleave="hideFooter()"> 
+            <footer class="footer"> 
               <div class="footer-nav"> 
+                <div class="footer-item">
                 <a href="/salas/index.html">
-                  <i class="fas fa-procedures"></i>
-                  <span>Información de Salas</span>
-                </a> 
+                  <i class="fas fa-procedures first" onmouseover="showInfo(1)" onmouseleave="hideInfo(1)"></i>
+                  <span class="info1"> Información de Salas</span>
+                </a>
+                </div>
+                <div class="footer-item">
                 <a href="/informacion/index.html"> 
-                  <i class="fas fa-notes-medical"></i>
-                  <span>Información del Paciente</span>
-                </a> 
+                  <i class="fas fa-notes-medical" onmouseover="showInfo(2)" onmouseleave="hideInfo(2)"></i>
+                  <span class="info2"> Información del Paciente</span>
+                </a>
+                </div>
+                <div class="footer-item">
                 <a href="/ingresarPaciente/index.html">
-                  <i class="fas fa-user-plus"></i> 
-                  <span>Ingresar Paciente</span> 
-                </a> 
+                  <i class="fas fa-user-plus" onmouseover="showInfo(3)" onmouseleave="hideInfo(3)"></i> 
+                  <span class="info3"> Ingresar Paciente<p></p></span> 
+                </a>
+                </div>
+                <div class="footer-item">
                 <a href="/notificaciones/index.html">
-                  <i class="fas fa-bell"></i> 
-                  <span>Notificaciones</span> 
-                </a> 
+                  <i class="fas fa-bell footer-icon" onmouseover="showInfo(4)" onmouseleave="hideInfo(4)"></i> 
+                  <span class="info4"> Notificaciones</span> 
+                </a>
+                </div>
               </div>
             </footer>
+
             <script charset="utf-8">
-              function showFooter(){
-              document.querySelector('.footer').style.opacity = 1
+              function showInfo(n){
+              document.querySelector(`.info${n}`).style.opacity = 1
               }
 
-              function hideFooter(){
-              document.querySelector('.footer').style.opacity = 0
+              function hideInfo(n){
+              document.querySelector(`.info${n}`).style.opacity = 0
               }
             </script>
 

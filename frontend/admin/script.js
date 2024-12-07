@@ -1,5 +1,3 @@
-
-// Sample data
 let users = [
     { id: 1, name: "Dr. Juan Pérez", role: "doctor", department: "cardiology", email: "juan@hospital.com" },
     { id: 2, name: "Enf. María López", role: "nurse", department: "pediatrics", email: "maria@hospital.com" },
@@ -28,7 +26,6 @@ function initTable() {
         </button>
         </td>
     `;
-    
     tbody.appendChild(tr);
 });
 }
@@ -41,19 +38,30 @@ function showAddModal() {
 }
 
 // Add user
-function addUser() {
-    const newUser = {
-        id: users.length > 0 ? Math.max(...users.map(u => u.id)) + 1 : 1,
+async function addUser() {
+    const data = { user : {
         name: document.getElementById('addName').value,
-        role: document.getElementById('addRole').value,
-        department: document.getElementById('addDept').value,
-        email: document.getElementById('addEmail').value
-};
+        roles: [document.getElementById('addRole').value],
+        departament: document.getElementById('addDept').value
+}};
 
-    users.push(newUser);
-    const modal = bootstrap.Modal.getInstance(document.getElementById('addModal'));
-    modal.hide();
-    initTable();
+
+await fetch('http://localhost:3000/user/register', {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify(data)
+}).then(res => res.json())
+  .then(respuesta =>{
+    console.log(respuesta)
+    if (respuesta.error){
+      alert(respuesta.error)
+    } else{
+    alert(`Se ha agregado el usuario: ${respuesta.username}\n con la contraseña: ${respuesta.password}`)}
+  })
+  .catch(err => console.log(err))
+  window.open(location.href, "_self")
 }
 
 // Filter users
