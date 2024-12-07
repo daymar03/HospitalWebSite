@@ -14,7 +14,7 @@
         <nav class="header">
             <div>
                 <button class="close" title="Cerrar sesión"><i class="fas  fa-sign-out-alt" style="font-size: 24px"></i></button>
-                <h1 class="header-Titulo"><i class='fas fa-bed' style='font-size:36px'></i> Salas </h1>
+                <h1 class="header-Titulo"><i class='fas fa-bed' style='font-size:24px;'></i> Salas </h1>
             </div>
         </nav>
     </header>
@@ -41,44 +41,72 @@
           </div>
         </div>
     </div>
-</main>
-            <footer class="footer" onmouseover="showFooter()" onmouseleave="hideFooter()"> 
-              <div class="footer-nav"> 
-                <div class="footer-item">
+</main>a
+            <div class="navigation"> 
+              <div class="navigation-nav"> 
+                <div class="navigation-item" onmouseover="showInfo(1)" onmouseleave="hideInfo(1)">
                 <a href="/salas/index.html">
-                  <i class="fas fa-procedures"></i>
-                  <span>Información de Salas</span>
+                  <i class="fas fa-procedures first"></i>
+                  <span class="info1"> Información de Salas</span>
                 </a>
                 </div>
-                <div class="footer-item">
+                <div class="navigation-item" onmouseover="showInfo(2)" onmouseleave="hideInfo(2)">
                 <a href="/informacion/index.html"> 
                   <i class="fas fa-notes-medical"></i>
-                  <span>Información del Paciente</span>
+                  <span class="info2"> Información del Paciente</span>
                 </a>
                 </div>
-                <div class="footer-item">
+                <div class="navigation-item" onmouseover="showInfo(3)" onmouseleave="hideInfo(3)">
                 <a href="/ingresarPaciente/index.html">
                   <i class="fas fa-user-plus"></i> 
-                  <span>Ingresar Paciente</span> 
+                  <span class="info3"> Ingresar Paciente<p></p></span> 
                 </a>
                 </div>
-                <div class="footer-item">
+                <div class="navigation-item" onmouseover="showInfo(4)" onmouseleave="hideInfo(4)">
                 <a href="/notificaciones/index.html">
-                  <i class="fas fa-bell footer-icon"></i> 
-                  <span>Notificaciones</span> 
+                  <i class="fas fa-bell navigation-icon"></i> 
+                  <span class="info4"> Notificaciones <p></p></span> 
                 </a>
+                </div>
+              </div>
+            </div>
+
+            <script charset="utf-8">
+              function showInfo(n){
+              document.querySelector(`.info${n}`).style.opacity = 1
+              }
+
+              function hideInfo(n){
+              document.querySelector(`.info${n}`).style.opacity = 0
+              }
+            </script>
+
+            <footer>
+              <div class="footer">
+                <div class="footer-content footer-logo">
+                <img src="./Untitled_logo_3_free-file.jpg" style="weight:300px; height:300px;" alt=""/>
+                </div>
+                <div class="footer-content developers">
+                  <strong>Desarrolladores:</strong>
+                  <p>Daymar David Guerrero Santiago</p>
+                  <p>Christopher Fernando Frias Ramos</p>
+                  <p>Ramón Alejandro Mateo Ochoa</p>
+                  <p>Kevin Calaña Castellón</p>
+                </div>
+                <div class="footer-content footer-content-social">
+                  <strong>Social:</strong>
+                  <p></p>
+                  <a href="https://www.instagram.com" target="_blank"><i class="fab fa-instagram"></i></a> 
+                  <a href="https://www.github.com" target="_blank"><i class="fab fa-github"></i></a> 
+                  <a href="https://www.facebook.com" target="_blank"><i class="fab fa-facebook"></i></a> 
+                  <a href="https://www.twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
+                </div>
+                <div class="footer-bottom">
+                  <p>Desarrollado por: <span>Development Team Web Milliom.</span> </p>
+                  <p>© webmilliom@gmail.com</p>
                 </div>
               </div>
             </footer>
 
-            <script charset="utf-8">
-              function showFooter(){
-              document.querySelector('.footer').style.opacity = 1
-              }
-
-              function hideFooter(){
-              document.querySelector('.footer').style.opacity = 0
-              }
-            </script>
 </body>
 </html>

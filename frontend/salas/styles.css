@@ -1,3 +1,6 @@
+*{
+  box-sizing: border-box;
+}
 body{
     margin: 0;
     font-family: sans-serif;
@@ -7,21 +10,20 @@ body{
 
 
 .header{
-    background: #1977cc;
-    padding: 5px;
     color: white;
+    background-color: #1977cc;
     top: 0;
     position: fixed;
     width: 100%;
-    border-bottom-left-radius:20px ;
-
+    border-bottom: solid 1px grey;
+    height: 10%;
+    z-index:100;
 }
 
 
 .header-Titulo{
     font-size: 25px;
     margin-left: 10px;
-
 }
 
 
@@ -93,20 +95,23 @@ body{
     width: 90%;
     margin-left: 5px;
 }
+
 .button {
     width: 60px;
     background-color: #28a745;
     color: #fff ;
     border: none;
     border-radius: 4px;
+    height: 25px;
 }
 
 .button:hover {
   cursor:pointer;
 }
 
+
 .management-button:hover {
-  cursor:pointera;
+  cursor:pointer;
 }
 
 .button--remove {
@@ -126,7 +131,6 @@ body{
   margin-left: 15px;
   border: none;
   width: 100%;
-  height: 100%;
 }
 
 span {
@@ -150,53 +154,128 @@ span + span {
     width: 49%;
 }
 
-.footer-space {
-    display: block;
-    z-index: 10;
-    width: 100%;
-    background-color: transparent;
-    height: 8vh;
-    position: fixed;
-    bottom: 0;
-    padding: 5px;
-}
-
-.footer{
-    opacity: 0;
-    width: 100%;
-    background-color: #ededed;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    height: 8vh;
-    position: fixed;
-    bottom: 0;
+.navigation{
+    opacity: 1;
     padding: 5px;
     transition: opacity 0.3s ease;
-    z-index: 100;
   }
 
+.navigation-item {
+  margin-left: 0;
+}
 
-.footer-nav i:hover {
+.navigation-item:hover{
+  background-color: #1977cc33;
+}
+
+
+.info1, .info2, .info3, .info4{
+  opacity: 0;
+  transition: opacity 1s ease;
+  display: block;
+}
+
+.navigation-nav i:hover {
   font-size: 25px;
 }
 
-.footer-nav {
-  display: flex;
-  justify-content: center;
-  gap: 40px;
+.navigation-item span{
+  margin-left: 20px;
 }
-.footer-nav a {
+
+.first {
+  margin-top: 40px;
+}
+
+.navigation-nav {
+  left: 0;
+  top: 10%;
+  width: 13%;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  height: 90%;
+  justify-content: flex-start;
+  margin-bottom: 0px;
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  border-right: solid 1px #2224;
+}
+
+.navigation-nav a {
   text-decoration: none;
   color: #343a40;
   font-size: 14px;
 }
-.footer-nav i{
+.navigation-nav i{
   font-size: 20px;
-  display: block;
   margin-bottom: 2px;
   color: #1977cc;
   transition: font-size 0.3s ease;
+  margin-left: 20px;
+  margin-top: 10px;
 }
 
- main { flex: 1; }
+.footer {
+  width: 87%;
+  margin-left: 13%;
+  height: 350px;
+  bottom: 0;
+  border-top: solid 1px #2224;
+  background-color: #1977cc;
+  color: white;
+  position: relative;
+  display: flex;
+  text-align: center;
+  margin-top: 200px;
+}
+
+.footer-bottom {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  border-top: solid 1px #2224;
+  font-size: 0.9rem;
+  line-height: 8px;
+}
+
+.footer-bottom span {
+  font-weight: bold;
+}
+
+
+.footer-content{
+  display: inline-block;
+  margin-left: 100px;
+  margin-top: 50px;
+  width: 30%;
+}
+
+.footer-logo{
+  margin-top: 0;
+}
+
+.footer-logo img{
+  max-width: 100%;
+  height: auto;
+}
+
+.developers{
+  position: relative;
+  text-align: left;
+}
+
+.footer-content-social {
+  top: 0px;
+}
+
+.footer-content a {
+  color: white;
+  font-size: 24px;
+  margin-left: 10px;
+}
+ main {
+    flex: 1;
+    width: 87%;
+    margin-left: 13%;
+ }
