@@ -15,27 +15,27 @@ INSERT INTO Patient (createdAt, bed, dni, name, age, weight, height, phoneNumber
 
 -- Inserción de datos en la tabla Preconditions
 INSERT INTO Preconditions (name) VALUES
-('Diabetes'),
-('Hipertensión'),
-('Asma'),
-('Alergias'),
-('Enfermedad cardíaca');
+('diabetes'),
+('hipertensión'),
+('asma'),
+('alergias'),
+('enfermedad cardíaca');
 
 -- Inserción de datos en la tabla Allergies
 INSERT INTO Allergies (name) VALUES
-( 'Polen'),
-( 'Alimentos'),
-( 'Medicamentos'),
-( 'Ácaros'),
-( 'Picaduras de insectos');
+( 'polen'),
+( 'alimentos'),
+( 'medicamentos'),
+( 'ácaros'),
+( 'picaduras de insectos');
 
 -- Inserción de datos en la tabla Current_Medications
 INSERT INTO Current_Medications ( name) VALUES
-( 'Metformina'),
-( 'Lisinopril'),
-( 'Salbutamol'),
-( 'Ibuprofeno'),
-( 'Aspirina');
+( 'metformina'),
+( 'lisinopril'),
+( 'salbutamol'),
+( 'ibuprofeno'),
+( 'aspirina');
 
 -- Inserción de datos en la tabla Entry_Dates
 INSERT INTO Entry_Dates ( date) VALUES

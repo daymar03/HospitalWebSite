@@ -9,7 +9,6 @@ import cookieParser from 'cookie-parser'
 
 const userSchema = z.object({
   name: z.string(),
-  departament: z.number().int().positive().min(1).max(4),
   roles: z.number().int().positive().min(1).max(3)
 })
 

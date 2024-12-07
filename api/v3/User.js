@@ -12,18 +12,12 @@ class User {
     try{
       const {
         name,
-        departament,
         roles
       } = user;
 
 //Comprobando si hay campos en blanco
-      if ( !name || !departament || typeof(roles) == 'undefined'){
+      if ( !name || typeof(roles) == 'undefined'){
         reject({error: "Must cover all fields"})
-        return
-      }
-
-      if ( departament < 1 || departament > 4){
-        reject({error: `Departament ${departament} does not exist`})
         return
       }
 
@@ -59,8 +53,8 @@ class User {
       const hasedPassword = await bcrypt.hash(password, 10)
 
 //Insersion en la tabla User:
-      const result = await this.pool.query('INSERT INTO User (name, departament, username, password) VALUES (?, ?, ?, ?)',
-        [name, departament, username, hasedPassword])
+      const result = await this.pool.query('INSERT INTO User (name, username, password) VALUES (?, ?, ?)',
+        [name, username, hasedPassword])
       const userResult = result[0]
       if(userResult.affectedRows === 0){
         reject({error: "User Insertion Failed"})
