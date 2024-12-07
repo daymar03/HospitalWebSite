@@ -96,3 +96,8 @@ INSERT INTO Patient_Entry_Dates (patient_id , entry_dates_id) VALUES
 (9 ,4),
 (10 ,5);
 
+INSERT INTO Rol (id, name) VALUES
+(0, 'Admin'),
+(1, 'Doctor'),
+(2, 'Nurse'),
+(3, 'Director');

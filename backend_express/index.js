@@ -2,6 +2,16 @@ import express from 'express'
 import cors from 'cors'
 import z from 'zod'
 import Patient from './Patient.js'
+import User from './User.js'
+import jwt from 'jsonwebtoken'
+import path from 'path'
+import cookieParser from 'cookie-parser'
+
+const userSchema = z.object({
+  name: z.string(),
+  departament: z.number().int().positive().min(1).max(4),
+  roles: z.number().int().positive().min(1).max(3)
+})
 
 const patientSchema = z.object({
   bed: z.string(),
@@ -19,11 +29,14 @@ const patientSchema = z.object({
 })
 
 const Patient_Endpoints = new Patient()
+const User_Endpoints = new User()
 const app = express()
 const port = 3000
+const adminRegex = /^\/admin(\/.*)?$/;
 
 app.use(cors())
 app.use(express.json())
+app.use(cookieParser())
 
 /*
    -----------------
@@ -42,6 +55,46 @@ app.use(express.json())
     --> /patients/delete
 */
 
+/*function logger(req, res, next) {
+  console.log(`${req.method} ${req.url}`);
+  if (req.cookies.session){console.log(req.cookies.session)}
+  if (adminRegex.test(req.path)) {
+    console.log('Solicitud a /admin o subruta de /admin');
+    res.status(403).send('<h1>You dont have permission to have this resourde</h1>')
+  } else {
+  next();}
+}
+
+app.use(logger);
+*/
+app.use('/admin', express.static(path.join('./../../', 'admin')));
+app.use('/api', express.static(path.join('./../../', 'api')));
+/*app.use('/assets', express.static(path.join('./../../', 'assets')));*/
+app.use('/director', express.static(path.join('./../../', 'director')));
+app.use('/informacion', express.static(path.join('./../../', 'informacion')));
+app.use('/ingresarPaciente', express.static(path.join('./../../', 'ingresarPaciente')));
+app.use('/login', express.static(path.join('./../../', 'login')));
+app.use('/notificaciones', express.static(path.join('./../../', 'notificaciones')));
+app.use('/salas', express.static(path.join('./../../', 'salas')));
+
+app.post('/user/register', async (req, res)=>{
+  const { user } = req.body
+
+  const validUser = userSchema.safeParse(user)
+
+  if(validUser){
+  try {
+  const resp = await User_Endpoints.registerUser(user)
+  res.json(resp)
+  }
+  catch (err){
+    console.log(err)
+    res.status(500).json(err)
+  }
+} else{
+  res.status(404).json({error: "Bad Request"})
+}
+})
 
 app.get('/patients',async (req,res)=>{
   const options= req.query;
