@@ -7,6 +7,71 @@ class User {
     this.pool = getPool();
   }
 
+  async getUserById(id){
+    return new Promise(async (resolve, reject)=>{
+      try{
+      const selectQuery = `SELECT
+          u.id AS id,
+          u.name AS name,
+          u.username AS username,
+          r.name AS rol
+        FROM
+          User u
+        JOIN
+          User_Rol ur
+        ON
+          u.id = ur.user_id
+        JOIN
+          Rol r
+        ON ur.rol_id = r.id
+        WHERE u.id = ?`
+
+        const user = await this.pool.query(selectQuery, [id])
+
+        if(user[0].length == 0){
+          reject({error: "User Not Found"})
+          return
+      }
+        resolve(user[0])
+      } catch (err) {
+        console.log("error:", err)
+        reject(err)
+      }
+    })
+  }
+
+  async getUsers(){
+    return new Promise(async (reject, resolve)=>{
+      try{
+    const selectQuery = `SELECT
+        u.id AS id,
+        u.name AS name,
+        u.username AS username,
+        r.name AS rol
+      FROM
+        User u
+      JOIN
+        User_Rol ur
+      ON
+        u.id = ur.user_id
+      JOIN
+        Rol r
+      ON ur.rol_id = r.id`
+
+      const users = await this.pool.query(selectQuery)
+      if (users[0].length == 0){
+        reject({error: "Database Query Failed"})
+        return
+      }
+      resolve(users[0])
+      } catch(err){
+        console.log("error:", err)
+        reject(err)
+      }
+    })
+
+  }
+
   async registerUser(user){
     return new Promise(async (resolve, reject)=>{
     try{
@@ -44,7 +109,7 @@ class User {
 
 //Comprobando si ya existe el username:
       results = await this.pool.query('SELECT * FROM User WHERE username = ?', [username])
-      while (results.lenght == 0) {
+      while (results.length == 0) {
         let { username, password } = generarUsuarioContrasena(name)
         results = await this.pool.query('SELECT * FROM User WHERE username = ?', [username])
       }

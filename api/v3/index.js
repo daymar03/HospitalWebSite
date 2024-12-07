@@ -75,7 +75,27 @@ app.use('/login', express.static(path.join('./../../static/', 'login')));
 app.use('/notificaciones', express.static(path.join('./../../static/', 'notificaciones')));
 app.use('/salas', express.static(path.join('./../../static/', 'salas')));
 
-app.post('/user/register', async (req, res)=>{
+app.get('/api/users', async (req, res)=>{
+  const id = req.query.id
+  if(!id){
+  try{
+    const users = await User_Endpoints.getUsers()
+    res.json(users)
+  } catch(err){
+    console.log(err)
+    res.status(500).json(err)
+  }} else {
+    try{
+      const user = await User_Endpoints.getUserById(id)
+      res.json(user)
+    } catch(err){
+      console.log(err)
+      res.status(500).json(err)
+    }
+  }
+})
+
+app.post('/api/users/register', async (req, res)=>{
   const { user } = req.body
 
   const validUser = userSchema.safeParse(user)
