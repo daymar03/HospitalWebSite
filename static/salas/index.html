@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salas</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="icon" href="favicon-16x16.png" type="image/png">
+    <script src="./script.js"></script>
+</head>
+<body>
+    <header>
+        <nav class="header">
+            <div>
+                <button class="close" title="Cerrar sesión"><i class="fas  fa-sign-out-alt" style="font-size: 24px"></i></button>
+                <h1 class="header-Titulo"><i class='fas fa-bed' style='font-size:24px;'></i> Salas </h1>
+            </div>
+        </nav>
+    </header>
+<main>
+    <div class="recepcion__subtitle">
+        <h2 class="recepcion__subtitle_font"><i class="fas fa-users-cog"></i> Gestión y Coordinación de Pacientes</h2>
+    </div>
+    <div class="mostrar__pacientes">
+        <div class="mostrar__buscar--ubicacion">
+            <label for="salas">Buscar Pacientes</label>
+            <select name="salas" id="salas">
+              <option value="1">Sala 1</option>
+              <option value="2">Sala 2</option>
+              <option value="3">Sala 3</option>
+              <option value="4">Sala 4</option>
+            </select>
+            <button class="button button-search-room" onclick="get_by_room(document.querySelector('#salas').value)">Buscar</button>
+        </div>
+        <!--NO TOCAR AQUI ABAJO-->
+        <div class="mostrar__ubicacion">
+          <div class="mostrar__ubicacion1">
+          </div>
+          <div class="mostrar__ubicacion2">
+          </div>
+        </div>
+    </div>
+</main>a
+            <div class="navigation"> 
+              <div class="navigation-nav"> 
+                <div class="navigation-item" onmouseover="showInfo(1)" onmouseleave="hideInfo(1)">
+                <a href="/salas/index.html">
+                  <i class="fas fa-procedures first"></i>
+                  <span class="info1"> Información de Salas</span>
+                </a>
+                </div>
+                <div class="navigation-item" onmouseover="showInfo(2)" onmouseleave="hideInfo(2)">
+                <a href="/informacion/index.html"> 
+                  <i class="fas fa-notes-medical"></i>
+                  <span class="info2"> Información del Paciente</span>
+                </a>
+                </div>
+                <div class="navigation-item" onmouseover="showInfo(3)" onmouseleave="hideInfo(3)">
+                <a href="/ingresarPaciente/index.html">
+                  <i class="fas fa-user-plus"></i> 
+                  <span class="info3"> Ingresar Paciente<p></p></span> 
+                </a>
+                </div>
+                <div class="navigation-item" onmouseover="showInfo(4)" onmouseleave="hideInfo(4)">
+                <a href="/notificaciones/index.html">
+                  <i class="fas fa-bell navigation-icon"></i> 
+                  <span class="info4"> Notificaciones <p></p></span> 
+                </a>
+                </div>
+              </div>
+            </div>
+
+            <script charset="utf-8">
+              function showInfo(n){
+              document.querySelector(`.info${n}`).style.opacity = 1
+              }
+
+              function hideInfo(n){
+              document.querySelector(`.info${n}`).style.opacity = 0
+              }
+            </script>
+
+            <footer>
+              <div class="footer">
+                <div class="footer-content footer-logo">
+                <img src="./Untitled_logo_3_free-file.jpg" style="weight:300px; height:300px;" alt=""/>
+                </div>
+                <div class="footer-content developers">
+                  <strong>Desarrolladores:</strong>
+                  <p>Daymar David Guerrero Santiago</p>
+                  <p>Christopher Fernando Frias Ramos</p>
+                  <p>Ramón Alejandro Mateo Ochoa</p>
+                  <p>Kevin Calaña Castellón</p>
+                </div>
+                <div class="footer-content footer-content-social">
+                  <strong>Social:</strong>
+                  <p></p>
+                  <a href="https://www.instagram.com" target="_blank"><i class="fab fa-instagram"></i></a> 
+                  <a href="https://www.github.com" target="_blank"><i class="fab fa-github"></i></a> 
+                  <a href="https://www.facebook.com" target="_blank"><i class="fab fa-facebook"></i></a> 
+                  <a href="https://www.twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
+                </div>
+                <div class="footer-bottom">
+                  <p>Desarrollado por: <span>Development Team Web Milliom.</span> </p>
+                  <p>© webmilliom@gmail.com</p>
+                </div>
+              </div>
+            </footer>
+
+</body>
+</html>

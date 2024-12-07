@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital-Login</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./style/styles.css">
+    <link rel="icon" href="./img/favicon-16x16.png" type="image/png">
+</head>
+
+<body>
+    <div class="container">
+
+
+    <div class="login-container">
+        <div class="login-header">
+            <i class="fas fa-hospital hospital-icon"></i>
+            <h2>Autenticación</h2>
+        </div>
+        <form>
+            <div class="input-group">
+                <i class="fas fa-user"></i>
+                <input type="text" placeholder="Usuario" required id="username">
+            </div>
+            <div class="input-group">
+                <i class="fas fa-lock"></i>
+                <input type="password" placeholder="Contraseña" required id="myPassword">
+                <span class="icon-eye">
+                    <i class="fas fa-eye" id="eye" onclick="changeEye()"></i> 
+                </span>
+            </div>
+            <div class="remenber">
+                <input type="checkbox" id="remenber">
+                <label for="remenber">Recuerdame</label>
+            </div>
+            <button type="submit" class="login-btn" onclick="login(event)">ACCEDER</button>
+        </form>
+    </div>
+</div>
+<script src="./scripts/funcionalidades.js"></script>
+<script src="./scripts/script.js"></script>
+</body>
+
+</html>

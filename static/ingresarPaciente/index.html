@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ingreso</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="icon" href="favicon-16x16.png" type="image/png">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+    
+    <header>
+        <nav class="header">
+            <button class="close" title="Cerrar sesión"><i class="fas  fa-sign-out-alt" style="font-size: 18px"></i></button>
+            <h1 class="header-Titulo"><i class="fas fa-user"></i> Ingreso</h1>
+        </nav>
+    </header>
+    <main>
+    <div class="container">
+        <div class="campo_busqueda">
+            <form class="myForm" onsubmit="ingresar(event)">
+                      <div class="campo_busqueda-cama">
+                      <div class="campo_busqueda-sala">  
+                        <label for="sala">Sala</label>
+                          <select name="sala" id="sala">
+                            <option value="1"> Sala 1</option>
+                            <option value="2"> Sala 2</option>
+                            <option value="3"> Sala 3</option>
+                            <option value="4"> Sala 4</option>
+                          </select>
+                      </div>
+                      <div class="campo_busqueda-sala">  
+                        <label for="cama">Cama</label>
+                        <select name="cama" id="cama">
+                            <option value="01"> Cama 1</option>
+                            <option value="02"> Cama 2</option>
+                            <option value="03"> Cama 3</option>
+                            <option value="04"> Cama 4</option>
+                            <option value="05"> Cama 5</option>
+                            <option value="06"> Cama 6</option>
+                            <option value="07"> Cama 7</option>
+                            <option value="08"> Cama 8</option>
+                            <option value="09"> Cama 9</option>
+                            <option value="10"> Cama 10</option>
+                        </select>
+                      </div>
+                      <button type="submit" class="buscar__button"><i class="fas fa-user-plus"></i> Ingresar</button>
+                      </div>
+                    <script charset="utf-8">
+                    function get(e){
+                        e.preventDefault()
+                        const cama = document.querySelector('#sala').value + document.querySelector('#cama').value
+                    }
+                    </script>
+        </div>
+        <div class="paciente">
+                      <div class="resultados_busqueda informacion_paciente">
+                    <h3><i class="fas fa-info-circle"></i> INFORMACIÓN DEL PACIENTE</h3>
+                    <label for="name"><span>Nombre: </span><input placeholder="John Doe"  id="name" required type="text"></input></label>
+                    <label for="dni"><span>Número de identidad: </span><input placeholder="01010190009" required id="dni" type="text"></input></label>
+                    <label for="phoneNumber"><span>Número de teléfono: </span><input placeholder="88888888"  id="phoneNumber" type="text"></input></label>
+                    <label for="age"><span>Edad: </span> <input type="number" required id="age"/> <span> años </span> </label>
+                    <label for="weight"><span>Peso: </span> <input type="number" required id="weight"/> <span> kg</span></label>
+                    <label for="height"><span>Altura: </span> <input type="number" required id="height"/> <span> cm</span></label>
+                    <div class="checkbox-container">
+                    <label>Sexo:</label>
+                    <label for="sexM"><input type="checkbox"value="M" name="sex" id="sexM" onclick="checkedM()"/> M </label>
+                    <label for="sexF"><input type="checkbox"value="F" name="sex" id="sexF" onclick="checkedF()"/> F</label>
+                    </div>
+            </div>
+
+            <div class="resultados_busqueda historia_clinica">
+                    <h3><i class="fas fa-notes-medical"></i> HISTORIA CLÍNICA</h3>
+                    <label for="cprev"><span>Condiciones Previas: </span><input placeholder="Anemia, Diarrea, Vómitos"  id="cprev" type="text"></input></label>
+                    <label for="alerg"><span>Alergias: </span><input placeholder="Cacahuates"  id="alerg" type="text"></input></label>
+                    <label for="medac"><span>Medicamentos actuales: </span><input placeholder="Aspirina"  id="medac" type="text"></input></label>
+            </div>
+
+            <div class="resultados_busqueda motivos_consulta">
+                    <h3><i class="fas fa-stethoscope"></i> MOTIVO DE CONSULTA</h3>
+                    <textarea required rows="8" name="motivoConsulta" id="motiv"></textarea>
+            </div>
+          </form>
+        </div>
+
+    </div>
+    </main>
+            <footer class="footer"> 
+              <div class="footer-nav"> 
+                <div class="footer-item">
+                <a href="/salas/index.html">
+                  <i class="fas fa-procedures first" onmouseover="showInfo(1)" onmouseleave="hideInfo(1)"></i>
+                  <span class="info1"> Información de Salas</span>
+                </a>
+                </div>
+                <div class="footer-item">
+                <a href="/informacion/index.html"> 
+                  <i class="fas fa-notes-medical" onmouseover="showInfo(2)" onmouseleave="hideInfo(2)"></i>
+                  <span class="info2"> Información del Paciente</span>
+                </a>
+                </div>
+                <div class="footer-item">
+                <a href="/ingresarPaciente/index.html">
+                  <i class="fas fa-user-plus" onmouseover="showInfo(3)" onmouseleave="hideInfo(3)"></i> 
+                  <span class="info3"> Ingresar Paciente <p></p></span> 
+                </a>
+                </div>
+                <div class="footer-item">
+                <a href="/notificaciones/index.html">
+                  <i class="fas fa-bell footer-icon" onmouseover="showInfo(4)" onmouseleave="hideInfo(4)"></i> 
+                  <span class="info4"> Notificaciones</span> 
+                </a>
+                </div>
+              </div>
+            </footer>
+
+            <script charset="utf-8">
+              function showInfo(n){
+              document.querySelector(`.info${n}`).style.opacity = 1
+              }
+
+              function hideInfo(n){
+              document.querySelector(`.info${n}`).style.opacity = 0
+              }
+            </script>
+
+
+<script src="script.js"></script>
+</body>
+</html>

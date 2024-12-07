@@ -1,0 +1,30 @@
+{
+  "name": "backend_express",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Backend using express for Web projects",
+  "flag": "{710_CH111_D3_C0J0N35}",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "DB_HOST=127.0.0.1 DB_USER=admin DB_PASSWORD=admin DB_NAME=Hospital PORT=3306 nodemon index.js",
+    "dev": "nodemon app.js"
+  },
+  "author": "Calana2 AND daymar03",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "jsonwebtoken": "^9.0.2",
+    "lodash": "^4.17.21",
+    "mysql": "^2.18.1",
+    "mysql2": "^3.11.5",
+    "nodemon": "^3.1.7",
+    "unique-username-generator": "^1.4.0",
+    "yargs": "^17.7.2",
+    "zod": "^3.23.8"
+  }
+}
