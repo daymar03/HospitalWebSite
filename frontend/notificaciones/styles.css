@@ -7,21 +7,21 @@ body{
 
 .header{
     background: #1977cc;
-    padding: 5px;
     color: white;
     top: 0;
     position: fixed;
     width: 100%;
-    border-bottom-left-radius:20px ;
-
+    border-bottom: solid 1px grey;
+    height: 10%;
+    z-index: 100;
 }
 
 
 .header-Titulo{
     font-size: 25px;
     margin-left: 10px;
-
 }
+
 
 
 .material-icons{
@@ -168,44 +168,59 @@ span{
 .modal1,.modal2,.modal3,.modal4{
     display: none;
 }
-
-
 .footer{
-    opacity: 0;
-    width: 100%;
-    background-color: #ededed;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    height: 8vh;
-    position: fixed;
-    bottom: 0;
+    opacity: 1;
+    padding: 5px;
     transition: opacity 0.3s ease;
-    z-index: 100;
+  }
+
+.footer-item {
+  margin-left: 20px;
+}
+
+.info1, .info2, .info3, .info4{
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  display: block;
+}
+
+.footer-nav i:hover {
+  font-size: 25px;
+}
+
+.first {
+  margin-top: 20px;
 }
 
 .footer-nav {
+  left: 0;
+  top: 10%;
+  width: 13%;
   display: flex;
-  justify-content: center;
-  gap: 40px;
+  flex-direction: column;
+  position: fixed;
+  height: 90%;
+  justify-content: flex-start;
+  margin-bottom: 0px;
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  border-right: solid 1px #2224;
 }
+
 .footer-nav a {
   text-decoration: none;
   color: #343a40;
   font-size: 14px;
 }
-.footer-nav i {
+.footer-nav i{
   font-size: 20px;
-  display: block;
   margin-bottom: 2px;
   color: #1977cc;
-  transition: font-size 0.3s ease; 
+  transition: font-size 0.3s ease;
 }
 
-.footer-nav i:hover {
-  font-size: 24px;
-}
-
- main { flex: 1; }
-
+ main {
+    flex: 1;
+    width: 87%;
+    margin-left: 13%;
+ }
