@@ -12,12 +12,12 @@
 <body>
     
     <header>
-        <nav>
+        <nav class="header">
             <button class="close" title="Cerrar sesión"><i class="fas  fa-sign-out-alt" style="font-size: 18px"></i></button>
             <h1 class="header-Titulo"><i class="fas fa-user"></i> Ingreso</h1>
         </nav>
     </header>
-
+    <main>
     <div class="container">
         <div class="campo_busqueda">
             <form class="myForm" onsubmit="ingresar(event)">
@@ -86,34 +86,43 @@
         </div>
 
     </div>
-
-            <footer class="footer" onmouseover="showFooter()" onmouseleave="hideFooter()"> 
+    </main>
+            <footer class="footer"> 
               <div class="footer-nav"> 
+                <div class="footer-item">
                 <a href="/salas/index.html">
-                  <i class="fas fa-procedures"></i>
-                  <span>Información de Salas</span>
-                </a> 
+                  <i class="fas fa-procedures first" onmouseover="showInfo(1)" onmouseleave="hideInfo(1)"></i>
+                  <span class="info1"> Información de Salas</span>
+                </a>
+                </div>
+                <div class="footer-item">
                 <a href="/informacion/index.html"> 
-                  <i class="fas fa-notes-medical"></i>
-                  <span>Información del Paciente</span>
-                </a> 
+                  <i class="fas fa-notes-medical" onmouseover="showInfo(2)" onmouseleave="hideInfo(2)"></i>
+                  <span class="info2"> Información del Paciente</span>
+                </a>
+                </div>
+                <div class="footer-item">
                 <a href="/ingresarPaciente/index.html">
-                  <i class="fas fa-user-plus"></i> 
-                  <span>Ingresar Paciente</span> 
-                </a> 
+                  <i class="fas fa-user-plus" onmouseover="showInfo(3)" onmouseleave="hideInfo(3)"></i> 
+                  <span class="info3"> Ingresar Paciente <p></p></span> 
+                </a>
+                </div>
+                <div class="footer-item">
                 <a href="/notificaciones/index.html">
-                  <i class="fas fa-bell"></i> 
-                  <span>Notificaciones</span> 
-                </a> 
+                  <i class="fas fa-bell footer-icon" onmouseover="showInfo(4)" onmouseleave="hideInfo(4)"></i> 
+                  <span class="info4"> Notificaciones</span> 
+                </a>
+                </div>
               </div>
             </footer>
+
             <script charset="utf-8">
-              function showFooter(){
-              document.querySelector('.footer').style.opacity = 1
+              function showInfo(n){
+              document.querySelector(`.info${n}`).style.opacity = 1
               }
 
-              function hideFooter(){
-              document.querySelector('.footer').style.opacity = 0
+              function hideInfo(n){
+              document.querySelector(`.info${n}`).style.opacity = 0
               }
             </script>
 
