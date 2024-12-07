@@ -1,9 +1,0 @@
-  curl -X PATCH "http://localhost:3000/patients/update?bed=104"      -H "Content-Type: application/json"      -d '{
-             "age": 30,
-             "weight": 70,
-             "height": 180,
-             "phoneNumber": "HACKED",
-             "name": "HACKED",
-             "currentMedications": ["Metformina"]
-           }'
-
