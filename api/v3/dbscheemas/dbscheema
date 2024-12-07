@@ -1,155 +1,189 @@
-// Use DBML to define your database structure
-// Docs: https://dbml.dbdiagram.io/docs
 
-Table Patient {
-  id integer [primary key, increment]
-  createdAt timestamp
-  bed integer [unique]
-  dni varchar [unique]
-  name varchar
-  age integer
-  weight integer
-  height integer 
-  phoneNumber varchar
-  sex varchar
-  consultationReasons text
+Table "Patient" {
+  "id" integer [pk, increment]
+  "createdAt" timestamp
+  "bed" integer [unique]
+  "dni" varchar(255) [unique]
+  "name" varchar(255)
+  "age" integer
+  "weight" integer
+  "height" integer
+  "phoneNumber" varchar(255)
+  "sex" varchar(255)
+  "consultationReasons" text
 }
 
-table Patient_Preconditions {
- id integer [primary key, increment]
- patient_id integer
- preconditions_id integer
+Table "Patient_Preconditions" {
+  "id" integer [pk, increment]
+  "patient_id" integer
+  "preconditions_id" integer
 }
 
-table Preconditions {
-   id integer [primary key, increment]
-   name varchar [unique]
+Table "Preconditions" {
+  "id" integer [pk, increment]
+  "name" varchar(255) [unique]
 }
 
-table Patient_Allergies {
- id integer [primary key, increment]
- patient_id integer
- allergies_id integer 
+Table "Patient_Allergies" {
+  "id" integer [pk, increment]
+  "patient_id" integer
+  "allergies_id" integer
 }
 
-table Allergies {
-   id integer [primary key, increment]
-   name varchar [unique]
+Table "Allergies" {
+  "id" integer [pk, increment]
+  "name" varchar(255) [unique]
 }
 
-table Patient_Current_Medications {
- id integer [primary key, increment]
- patient_id integer
- current_medications_id integer
+Table "Patient_Current_Medications" {
+  "id" integer [pk, increment]
+  "patient_id" integer
+  "current_medications_id" integer
 }
 
-table Current_Medications {
-  id integer [primary key, increment]
-  name varchar [unique]
+Table "Current_Medications" {
+  "id" integer [pk, increment]
+  "name" varchar(255) [unique]
 }
 
-table Patient_Entry_Dates {
- id integer [primary key, increment]
- patient_id integer
- entry_dates_id integer
+Table "Patient_Entry_Dates" {
+  "id" integer [pk, increment]
+  "patient_id" integer
+  "entry_dates_id" integer
 }
 
-table Entry_Dates {
-  id integer [primary key, increment]
-  date timestamp
+Table "Entry_Dates" {
+  "id" integer [pk, increment]
+  "date" timestamp
 }
 
-Table History {
-  id integer [primary key, increment]
-  createdAt timestamp
-  bed integer
-  dni varchar 
-  name varchar
-  age integer
-  weight integer
-  height integer 
-  phoneNumber varchar
-  preconditions varchar
-  allergies varchar
-  medications varchar
-  entry_date timestamp
-  consultation_reasons text
-  departure_date timestamp
-  leaving_reasons text
+Table "History" {
+  "id" integer [pk, increment]
+  "createdAt" timestamp
+  "bed" integer
+  "dni" varchar(255)
+  "name" varchar(255)
+  "age" integer
+  "weight" integer
+  "height" integer
+  "phoneNumber" varchar(255)
+  "preconditions" varchar(255)
+  "allergies" varchar(255)
+  "medications" varchar(255)
+  "entry_date" timestamp
+  "consultation_reasons" text
+  "departure_date" timestamp
+  "leaving_reasons" text
 }
 
-Table Operation {
-  id integer [primary key, increment]
-  priority integer // 1-> high 2-> low
-  estimated_duration int // minutes
-  description text
-  real_duration int // minutes
-  made bool
-  date timestamp // date for the operation
-  results text
-  responsable varchar // Doctor that made request
+Table "Operation" {
+  "id" integer [pk, increment]
+  "priority" integer
+  "estimated_duration" int
+  "description" text
+  "real_duration" int
+  "made" bool
+  "date" timestamp
+  "results" text
+  "responsable" varchar(255)
 }
 
-Table Patient_Operation {
-  id integer [primary key, increment]
-  patient_id integer
-  operation_id integer
+Table "Patient_Operation" {
+  "id" integer [pk, increment]
+  "patient_id" integer
+  "operation_id" integer
 }
 
-Table Operation_Request {
-  id integer [primary key, increment]
-  priority integer // 1-> high 2-> low
-  estimated_duration int //minutes
-  description text
-  date timestamp // date from request
-  responsable varchar // Doctor that made request
-  approved bool
+Table "Operation_Request" {
+  "id" integer [pk, increment]
+  "priority" integer
+  "estimated_duration" int
+  "description" text
+  "date" timestamp
+  "responsable" varchar(255)
+  "approved" bool
 }
 
-Table Patient_Operation_Request {
-  id integer [primary key, increment]
-  patient_id int
-  operation_request_id int
+Table "Patient_Operation_Request" {
+  "id" integer [pk, increment]
+  "patient_id" int
+  "operation_request_id" int
 }
 
-Table User_Notification {
-  id integer [primary key, increment]
-  user_id int
-  notification_id int
+Table "User_Notification" {
+  "id" integer [pk, increment]
+  "user_id" int
+  "notification_id" int
 }
 
-Table Notification {
-  id integer [primary key, increment]
-  body text
-  titulo varchar
-  date timestamp
-  readed bool
+Table "Notification" {
+  "id" integer [pk, increment]
+  "body" text
+  "titulo" varchar(255)
+  "date" timestamp
+  "readed" bool
 }
 
-Table User {
-  id integer [primary key, increment]
-  username varchar [unique]
+Table "User" {
+  "id" integer [pk, increment]
+  "name" varchar(255)
+  "departament" int
+  "username" varchar(255) [unique, not null]
+  "password" varchar(255) [not null]
 }
 
-Ref: Patient_Operation_Request.patient_id > Patient.id
-Ref: Patient_Operation_Request.operation_request_id > Operation_Request.id
-Ref: Operation_Request.id > User.id
+Table "User_Rol" {
+  "id" integer [pk, increment]
+  "user_id" integer
+  "rol_id" integer
+}
 
-Ref: Patient_Operation.patient_id > Patient.id
-Ref: Patient_Operation.operation_id > Operation.id
-Ref: Operation.id > User.id
+Table "Rol" {
+  "id" integer [pk]
+  "name" varchar(255)
+}
 
-Ref: Patient_Preconditions.preconditions_id > Preconditions.id
-Ref: Patient_Preconditions.patient_id > Patient.id
+Table "Permission" {
+  "id" integer [pk]
+  "name" varchar(255)
+  "rol_id" int
+}
 
-Ref: Patient_Allergies.allergies_id > Allergies.id
-Ref: Patient_Allergies.patient_id > Patient.id
+Ref:"Preconditions"."id" < "Patient_Preconditions"."preconditions_id"
 
-Ref: Patient_Current_Medications.current_medications_id > Current_Medications.id
-Ref: Patient_Current_Medications.patient_id > Patient.id
+Ref:"Patient"."id" < "Patient_Preconditions"."patient_id"
 
-Ref: Patient_Entry_Dates.entry_dates_id > Entry_Dates.id
-Ref: Patient_Entry_Dates.patient_id > Patient.id
+Ref:"Allergies"."id" < "Patient_Allergies"."allergies_id"
 
-Ref: "User"."id" < "User_Notification"."id"
-Ref: "User_Notification"."id" < "Notification"."id"
+Ref:"Patient"."id" < "Patient_Allergies"."patient_id"
+
+Ref:"Current_Medications"."id" < "Patient_Current_Medications"."current_medications_id"
+
+Ref:"Patient"."id" < "Patient_Current_Medications"."patient_id"
+
+Ref:"Entry_Dates"."id" < "Patient_Entry_Dates"."entry_dates_id"
+
+Ref:"Patient"."id" < "Patient_Entry_Dates"."patient_id"
+
+Ref:"Rol"."id" < "Permission"."rol_id"
+
+Ref:"Rol"."id" < "User_Rol"."rol_id"
+
+Ref:"User"."id" < "User_Rol"."user_id"
+
+Ref:"User"."id" < "User_Notification"."user_id"
+
+Ref:"Notification"."id" < "User_Notification"."notification_id"
+
+Ref:"User"."username" < "Operation"."responsable"
+
+Ref:"Patient"."id" < "Patient_Operation"."patient_id"
+
+Ref:"Patient"."id" < "Patient_Operation_Request"."patient_id"
+
+Ref:"Operation_Request"."id" < "Patient_Operation_Request"."operation_request_id"
+
+Ref:"User"."username" < "Operation_Request"."responsable"
+
+
+Ref: "Patient_Operation"."operation_id" < "Operation"."id"
