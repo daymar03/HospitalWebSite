@@ -70,7 +70,7 @@ app.use(logger);
 app.use('/admin', express.static(path.join('./../../static/', 'admin')));
 /*app.use('/assets', express.static(path.join('./../../', 'assets')));*/
 app.use('/director', express.static(path.join('./../../static/', 'director')));
-app.use('/informacion', express.static(path.join('./../../static/informacion/', 'informacion')));
+app.use('/informacion', express.static(path.join('./../../static/', 'informacion')));
 app.use('/ingresarPaciente', express.static(path.join('./../../static/', 'ingresarPaciente')));
 app.use('/login', express.static(path.join('./../../static/', 'login')));
 app.use('/notificaciones', express.static(path.join('./../../static/', 'notificaciones')));

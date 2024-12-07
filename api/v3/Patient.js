@@ -257,7 +257,7 @@ async GET_Patients_By_Room_Number(room) {
 
 async CreatePatient(patient) {
   return new Promise(async (resolve, reject)=>{
-  const {
+  let {
      createdAt,
      bed,
      dni,
@@ -273,6 +273,10 @@ async CreatePatient(patient) {
      entryDates,
      consultationReasons
    } = patient;
+
+  allergies = allergies.map(val => val.toLowerCase())
+  medications = medications.map(val => val.toLowerCase())
+  preconditions = preconditions.map(val => val.toLowerCase());
 
   try {
     await this.pool.query('START TRANSACTION');
@@ -448,6 +452,8 @@ async PATCH_Patient(fields, id, bed, currentMedications) {
 
     // Current_Medications update
     if (currentMedications) {
+      currentMedications = [...new Set(currentMedications)]
+      currentMedications = currentMedications.map(val=>val.toLowerCase())
       // Check if currentMedications exist in Current_Medications table
       const existingMedications = await this.pool.query(`SELECT id, name FROM Current_Medications WHERE name IN (?)`, [currentMedications]);
       const existingMedNames = new Set(existingMedications[0].map(row => row.name));
