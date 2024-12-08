@@ -47,7 +47,7 @@ class User {
         u.id AS id,
         u.name AS name,
         u.username AS username,
-        r.name AS rol
+        GROUP_CONCAT(DISTINCT r.name ORDER BY r.name ASC) AS rol
       FROM
         User u
       JOIN
@@ -56,7 +56,9 @@ class User {
         u.id = ur.user_id
       JOIN
         Rol r
-      ON ur.rol_id = r.id`
+      ON ur.rol_id = r.id
+      GROUP BY
+        u.id`
 
       const users = await this.pool.query(selectQuery)
       if (users[0].length == 0){
@@ -117,6 +119,9 @@ class User {
 //Hasheando la contraseña:
       const hasedPassword = await bcrypt.hash(password, 10)
 
+//Comprobando el historial de contaseñas:
+//      const getPasswordsQuery = "SELECT passwords FROM User JOIN Password_History ON User.id = Password_History.user_id WHERE User.username = ?" 
+//      const getPasswordsQueryResult = await this.pool.query(getPasswordsQuery, [username])
 //Insersion en la tabla User:
       const result = await this.pool.query('INSERT INTO User (name, username, password) VALUES (?, ?, ?)',
         [name, username, hasedPassword])
@@ -127,6 +132,14 @@ class User {
       }
       const userId = userResult.insertId;
 
+//Insersion en la tabla Password_History:
+      const password_json = `[{"password": "${hasedPassword}", "date": "${new Date().toISOString()}"}]`
+      const insertQuery = "INSERT INTO Password_History (passwords, user_id) VALUES (?, ?)"
+      const insertQueryResult = await this.pool.query(insertQuery, [password_json, userId])
+      if (insertQueryResult.affectedRows === 0){
+        reject({error: "User Insertion Failed"})
+        return
+      }
 //Insertar Roles:
       for (let rolId of roles){
         let insertedRol = await this.pool.query('INSERT INTO User_Rol (user_id, rol_id) VALUES (?, ?)', [userId, rolId])
@@ -146,7 +159,77 @@ class User {
     })
   }
 
+  async loginUser(password, username){
+    return new Promise(async (resolve, reject)=>{
+      try {
+//Obtener el hash de la contraseña para el Usuario: username
+        const getHashQuey = "SELECT password FROM User WHERE username = ?"
+        const getHashQueyResult = await this.pool.query(getHashQuey, [username])
+        console.log(getHashQueyResult)
+        let hash
+        if (getHashQueyResult[0].length != 0){
+          hash = getHashQueyResult[0][0].password
+          let isValidPassword = await bcrypt.compare(password, hash)
+          if (isValidPassword){
+            resolve({success : true, message: "Valid User"})
+          } else{
+            resolve({success: false, message: "Invalid Username or Password"})
+          }
+        } else {
+          reject({success: false, message: "Invalid Username or Password"})
+          return
+       }
+      } catch(err){
+        reject({success: false, err})
+        return
+      }
+    })
+  }
 
+  async changePassword(username, password){
+    return new Promise(async (resolve, reject)=>{
+      try{
+//Recuperar el id y todas las contraseñas del historial para el usario username:
+        const getPasswordsQuery = "SELECT passwords, User.id FROM User JOIN Password_History ON User.id = Password_History.user_id WHERE User.username = ?" 
+        const getPasswordsQueryResult = await this.pool.query(getPasswordsQuery, [username])
+        if (getPasswordsQueryResult[0].length === 0){
+          reject({success: false, message: "Bad request"})
+        } else{
+//Crear el nuevo array del historial de contraseñas:
+          const user_id = getPasswordsQueryResult[0][0].id
+          let history_passwords = JSON.parse(getPasswordsQueryResult[0][0].passwords)
+//Comprobar si ya ha usado esta contraseña
+          history_passwords.forEach(async pass =>{
+            const match = await bcrypt.compare(password, pass.password)
+            if (match){
+              reject({success:false, message: "Password used, try another"})
+              return
+            }
+          })
+          const hasedPassword = await bcrypt.hash(password, 10)
+//Cambiar contraseña:
+          const updatePasswordQuery = `UPDATE User SET password = ? WHERE username = ?`
+          const updatePasswordQueryResult = await this.pool.query(updatePasswordQuery, [hasedPassword, username])
+          if (updatePasswordQueryResult.affectedRows === 0){
+            reject({success: false, message: "Something went wrong"})
+          }
+//Actualizar historial de contraseñas:
+          const newEntry = {password: `${hasedPassword}`, date: `${new Date().toISOString()}`}
+          history_passwords.push(newEntry)
+//Comprobar que el historial solo conserve las ultimas 24 contraseñas:
+          if (history_passwords.length > 24){
+            history_passwords.shift()
+          }
+          const updateHistoryQuery = `UPDATE Password_History SET passwords = ? WHERE user_id = ?`
+          const updateHistoryQueryResult = this.pool.query(updateHistoryQuery, [JSON.stringify(history_passwords), user_id])
+          resolve({success: true, message:"Password successfully changed"})
+        }
+      } catch(err){
+        reject({success: false, message: "Something went wrong"})
+        return
+      }
+    })
+  }
 }
 
 export default User;

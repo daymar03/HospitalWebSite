@@ -161,7 +161,10 @@ app.get('/api/users', async (req, res)=>{
 
 app.post('/api/users/register', async (req, res)=>{
   let { user } = req.body
-
+  if(!user){
+    res.status(400).json({error: "Bad request"})
+    return
+  }
   const validUser = userSchema.safeParse(user)
 
   if(validUser.success){
@@ -177,6 +180,34 @@ app.post('/api/users/register', async (req, res)=>{
     }
   } else{
     res.status(404).json({error: "Bad Request"})
+  }
+})
+
+app.post('/api/users/login', async (req, res)=>{
+  try {
+  const { username, password } = req.body
+  if(!username || !password){
+    res.status(400).json({error: "Bad request"})
+    return
+  } else{
+    const isValidUser = await User_Endpoints.loginUser(password, username)
+    if (isValidUser){
+      res.json({"status": isValidUser.success, message: isValidUser.message})
+    } else {
+      res.json({"status": isValidUser.success, message: isValidUser.message})
+    }
+  }}catch(err){
+    res.status(500).json()
+  }
+})
+
+app.post('/api/users/changepassword', async (req, res)=>{
+  try {
+  const { username, password } = req.body
+  const hist = await User_Endpoints.changePassword(username, password)
+  res.json({resp: hist})
+  } catch(err){
+    res.json({error: err})
   }
 })
 
