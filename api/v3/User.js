@@ -165,7 +165,6 @@ class User {
 //Obtener el hash de la contraseña para el Usuario: username
         const getHashQuey = "SELECT password FROM User WHERE username = ?"
         const getHashQueyResult = await this.pool.query(getHashQuey, [username])
-        console.log(getHashQueyResult)
         let hash
         if (getHashQueyResult[0].length != 0){
           hash = getHashQueyResult[0][0].password

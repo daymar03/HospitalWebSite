@@ -18,14 +18,14 @@
             <i class="fas fa-hospital hospital-icon"></i>
             <h2>Autenticación</h2>
         </div>
-        <form>
+        <form action="http://localhost:3000/api/users/login" method="POST">
             <div class="input-group">
                 <i class="fas fa-user"></i>
-                <input type="text" placeholder="Usuario" required id="username">
+                <input type="text" placeholder="Usuario" name="username" required id="username">
             </div>
             <div class="input-group">
                 <i class="fas fa-lock"></i>
-                <input type="password" placeholder="Contraseña" required id="myPassword">
+                <input type="password" placeholder="Contraseña" name="password" required id="myPassword">
                 <span class="icon-eye">
                     <i class="fas fa-eye" id="eye" onclick="changeEye()"></i> 
                 </span>
@@ -34,7 +34,7 @@
                 <input type="checkbox" id="remenber">
                 <label for="remenber">Recuerdame</label>
             </div>
-            <button type="submit" class="login-btn" onclick="login(event)">ACCEDER</button>
+            <button type="submit" class="login-btn" >ACCEDER</button>
         </form>
     </div>
 </div>

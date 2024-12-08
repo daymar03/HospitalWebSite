@@ -51,6 +51,7 @@ const adminRegex = /^\/admin(\/.*)?$/;
 app.use(cors())
 app.use(express.json())
 app.use(cookieParser())
+app.use(express.urlencoded({ extended: true }))
 
 /*
    -----------------
@@ -68,6 +69,7 @@ app.use(cookieParser())
    $ DELETE
     --> /patients/delete
 */
+
 
 /*function logger(req, res, next) {
   console.log(`${req.method} ${req.url}`);
@@ -89,6 +91,86 @@ app.use('/ingresarPaciente', express.static(path.join('./../../static/', 'ingres
 app.use('/login', express.static(path.join('./../../static/', 'login')));
 app.use('/notificaciones', express.static(path.join('./../../static/', 'notificaciones')));
 app.use('/salas', express.static(path.join('./../../static/', 'salas')));
+
+
+app.post('/api/users/register', async (req, res)=>{
+  let { user } = req.body
+  if(!user){
+    res.status(400).json({error: "Bad request"})
+    return
+  }
+  const validUser = userSchema.safeParse(user)
+
+  if(validUser.success){
+    console.log(validUser)
+    userred = validUser.data
+    try {
+      const resp = await User_Endpoints.registerUser(user)
+      res.json(resp)
+    }
+    catch (err){
+      console.log(err)
+      res.status(500).json(err)
+    }
+  } else{
+    res.status(404).json({error: "Bad Request"})
+  }
+})
+
+app.post('/api/users/login', async (req, res)=>{
+  try {
+  const { username, password } = req.body
+  if(!username || !password){
+    res.status(400).json({error: "Bad request"})
+    return
+  } else{
+    const isValidUser = await User_Endpoints.loginUser(password, username)
+    console.log(isValidUser)
+    if (isValidUser.success){
+      res.cookie('session', 'sessionCookie',{ //testing
+        expires: new Date(Date.now() + 900000),
+        httpOnly: true
+      })
+      res.redirect(301, '/salas')
+    } else {
+      res.json({"status": isValidUser.success, message: isValidUser.message})
+    }
+  }}catch(err){
+    res.status(500).json()
+  }
+})
+
+app.get('/api/users', async (req, res)=>{
+  const id = req.query.id
+  if(!id){
+  try{
+    const users = await User_Endpoints.getUsers()
+    res.json(users)
+  } catch(err){
+    console.log(err)
+    res.status(500).json(err)
+  }} else {
+    try{
+      const user = await User_Endpoints.getUserById(id)
+      res.json(user)
+    } catch(err){
+      console.log(err)
+      res.status(500).json(err)
+    }
+  }
+})
+
+
+app.post('/api/users/changepassword', async (req, res)=>{
+  try {
+  const { username, password } = req.body
+  const hist = await User_Endpoints.changePassword(username, password)
+  res.json({resp: hist})
+  } catch(err){
+    res.json({error: err})
+  }
+})
+
 
 app.get('/api/operations', async (req, res)=>{
   try{
@@ -136,78 +218,6 @@ app.patch('/api/operations/made', async (req, res)=>{
     res.json(results)
   } catch(err){
     res.json(err)
-  }
-})
-
-app.get('/api/users', async (req, res)=>{
-  const id = req.query.id
-  if(!id){
-  try{
-    const users = await User_Endpoints.getUsers()
-    res.json(users)
-  } catch(err){
-    console.log(err)
-    res.status(500).json(err)
-  }} else {
-    try{
-      const user = await User_Endpoints.getUserById(id)
-      res.json(user)
-    } catch(err){
-      console.log(err)
-      res.status(500).json(err)
-    }
-  }
-})
-
-app.post('/api/users/register', async (req, res)=>{
-  let { user } = req.body
-  if(!user){
-    res.status(400).json({error: "Bad request"})
-    return
-  }
-  const validUser = userSchema.safeParse(user)
-
-  if(validUser.success){
-    console.log(validUser)
-    user = validUser.data
-    try {
-      const resp = await User_Endpoints.registerUser(user)
-      res.json(resp)
-    }
-    catch (err){
-      console.log(err)
-      res.status(500).json(err)
-    }
-  } else{
-    res.status(404).json({error: "Bad Request"})
-  }
-})
-
-app.post('/api/users/login', async (req, res)=>{
-  try {
-  const { username, password } = req.body
-  if(!username || !password){
-    res.status(400).json({error: "Bad request"})
-    return
-  } else{
-    const isValidUser = await User_Endpoints.loginUser(password, username)
-    if (isValidUser){
-      res.json({"status": isValidUser.success, message: isValidUser.message})
-    } else {
-      res.json({"status": isValidUser.success, message: isValidUser.message})
-    }
-  }}catch(err){
-    res.status(500).json()
-  }
-})
-
-app.post('/api/users/changepassword', async (req, res)=>{
-  try {
-  const { username, password } = req.body
-  const hist = await User_Endpoints.changePassword(username, password)
-  res.json({resp: hist})
-  } catch(err){
-    res.json({error: err})
   }
 })
 

@@ -1,6 +1,5 @@
 let icon = document.querySelector("#eye");
 let input = document.getElementById("myPassword");
-let cerrar = document.querySelector(".close")
 
 //
 function changeEye() {
@@ -14,8 +13,4 @@ function changeEye() {
   }
 }
 
-
-cerrar.addEventListener("click", ()=>{
-  window.open("../welcome/index.html", "_self")
-})
 
