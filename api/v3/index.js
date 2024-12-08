@@ -3,13 +3,14 @@ import cors from 'cors'
 import z from 'zod'
 import Patient from './Patient.js'
 import User from './User.js'
+import Operation from './Operation.js'
 import jwt from 'jsonwebtoken'
 import path from 'path'
 import cookieParser from 'cookie-parser'
 
 const userSchema = z.object({
   name: z.string(),
-  roles: z.number().int().positive().min(1).max(3)
+  roles: z.array(z.union([z.literal(1), z.literal(2), z.literal(3), z.literal(4)]))
 })
 
 const patientSchema = z.object({
@@ -27,8 +28,22 @@ const patientSchema = z.object({
   preconditions: z.array(z.string())
 })
 
+const OperationSchema = z.object({
+  id: z.number().int().positive().optional(),
+  priority: z.enum([0, 1]).optional(),
+  estimated_duration: z.number().int().positive().optional(),
+  description: z.string().optional(),
+  real_duration: z.number().int().positive().optional(),
+  scheduled_date: z.string().optional(),
+  results: z.string().optional(),
+  responsable: z.string().optional(),
+  patient_id: z.number().int().positive().optional(),
+});
+
 const Patient_Endpoints = new Patient()
 const User_Endpoints = new User()
+const Operation_Endpoints = new Operation()
+
 const app = express()
 const port = 3000
 const adminRegex = /^\/admin(\/.*)?$/;
@@ -75,6 +90,55 @@ app.use('/login', express.static(path.join('./../../static/', 'login')));
 app.use('/notificaciones', express.static(path.join('./../../static/', 'notificaciones')));
 app.use('/salas', express.static(path.join('./../../static/', 'salas')));
 
+app.get('/api/operations', async (req, res)=>{
+  try{
+    const results = await Operation_Endpoints.getOperations()
+    res.json(results)
+  }catch (err){
+    res.status(500).json(err)
+  }
+})
+
+app.post('/api/operations', async (req, res)=>{
+  const { operation } = req.body
+  if (operation){
+    try {
+      let insertResults = await Operation_Endpoints.requestOperation(operation)
+      res.status(200).json(insertResults)
+    } catch (err){
+      res.status(500).json(err)
+    }
+  } else{
+    res.status(404).json({error: "Bad Request"})
+    console.log("Bad operation request")
+  }
+})
+
+app.patch('/api/operations/approve', async (req, res)=>{
+  const { operation_approval } = req.body
+  try{
+    const results = await Operation_Endpoints.approveOperation(operation_approval)
+    res.json(results)
+  } catch(err){
+    res.status(500).json({error: err})
+  }
+
+})
+
+app.patch('/api/operations/made', async (req, res)=>{
+  try{
+    const { operation_results } = req.body
+    console.log(operation_results)
+    if (!operation_results){
+      res.status(400).json({error: "Bad request"})
+    }
+    const results = await Operation_Endpoints.madeOperation(operation_results)
+    res.json(results)
+  } catch(err){
+    res.json(err)
+  }
+})
+
 app.get('/api/users', async (req, res)=>{
   const id = req.query.id
   if(!id){
@@ -96,22 +160,24 @@ app.get('/api/users', async (req, res)=>{
 })
 
 app.post('/api/users/register', async (req, res)=>{
-  const { user } = req.body
+  let { user } = req.body
 
   const validUser = userSchema.safeParse(user)
 
-  if(validUser){
-  try {
-  const resp = await User_Endpoints.registerUser(user)
-  res.json(resp)
+  if(validUser.success){
+    console.log(validUser)
+    user = validUser.data
+    try {
+      const resp = await User_Endpoints.registerUser(user)
+      res.json(resp)
+    }
+    catch (err){
+      console.log(err)
+      res.status(500).json(err)
+    }
+  } else{
+    res.status(404).json({error: "Bad Request"})
   }
-  catch (err){
-    console.log(err)
-    res.status(500).json(err)
-  }
-} else{
-  res.status(404).json({error: "Bad Request"})
-}
 })
 
 app.get('/patients',async (req,res)=>{
@@ -162,22 +228,6 @@ app.get('/patients/all',async (_,res)=>{
   }
 })
 
-/*
-     -H "Content-Type: application/json" \
-     -d '{
-           "patient": {
-             "bed": 402,
-             "dni": "rffddfdo9886",
-             "name": "Daymar Guerero",
-             "age": 21,
-             "weight": 75,
-             "height": 180,
-             "phoneNumber": "123-456-7890",
-             "sex": "M",
-             "consultationReasons": 1, "allergies": ["Guanabana", "Pera"], "preconditions": ["Ser un Tanque"], "medications":["ad", "joya"]
-           }
-         }'
-*/
 
 app.post('/patients/create', async (req,res)=>{
   const { patient } = req.body
@@ -212,13 +262,13 @@ app.patch('/patients/update', async (req, res) => {
     const results = await Patient_Endpoints.PATCH_Patient(fieldsToUpdate,id,bed, currentMedications)
     res.json(results)
   } catch(err) {
-    console.error('Error updating patient:', err); 
+    console.error('Error updating patient:', err);
     if(err.message === "Neither the fields nor the medicines were given" ||
        err.message === "Patient does not exists") {
      res.status(400).json({ success: false, message: err.message})
      return
         }
-    res.status(500).json({ success: false, message: 'Error updating patient' }); 
+    res.status(500).json({ success: false, message: 'Error updating patient' });
   }
 })
 
@@ -227,7 +277,7 @@ app.patch('/patients/update', async (req, res) => {
 app.delete('/patients/delete', async(req,res)=>{
   const options = req.query
   try {
-    const results = await Patient_Endpoints.DELETE_Patient(options) 
+    const results = await Patient_Endpoints.DELETE_Patient(options)
     res.json(results)
   } catch(err) {
     console.log(err)

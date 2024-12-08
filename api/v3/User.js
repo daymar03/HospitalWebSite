@@ -130,7 +130,7 @@ class User {
 //Insertar Roles:
       for (let rolId of roles){
         let insertedRol = await this.pool.query('INSERT INTO User_Rol (user_id, rol_id) VALUES (?, ?)', [userId, rolId])
-        if (insertedRol.affectedRows === 0){
+        if (insertedRol[0].affectedRows === 0){
           reject({error: "Error while inserting user roles"})
           return
         }
