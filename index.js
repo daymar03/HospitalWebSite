@@ -10,6 +10,7 @@ import cookieParser from 'cookie-parser'
 import dotenv from 'dotenv'
 import { createSecretKey } from 'crypto'
 import { createJWT, decryptJWT } from './utils.js'
+import { actionAccessControl, staticAccessControl } from './schemas/roles.schema.js'
 
 const userSchema = z.object({
   name: z.string(),
@@ -53,6 +54,9 @@ const app = express()
 const port = 3000
 const appPath = process.env.APP_PATH
 const secretKey = createSecretKey(process.env.JWT_SECRET, 'utf-8');
+const templates = ["admin", "informacion", "ingresar", "login", "notificaciones", "repitlogin", "salas"]
+const actions = ["GET", "POST", "PATCH", "DELETE"]
+const resources = ["patients", "users", "notifications", "operations"]
 
 if (!secretKey) {
   console.error("JWT_SECRET environment variable not set!");
@@ -95,16 +99,20 @@ app.use(logger);
 */
 
 //*********************************[MIDDLEWARES]**************************************
+//Verifing if the user have an active session
 async function haveSession(req, res, next){
+  try {
   const session = req.cookies.session
   if(session){
     const payload = await decryptJWT(session)
-    const roles = payload.payload.roles.split(',')
-    console.log(roles)
-    next()
+    if (payload){
+      const roles = payload.payload.roles.split(',')
+      req.session = true
+      req.roles = roles
+      next()
+    }
   } else {
     const path = req.path
-    console.log(path)
     if(path === "/api/users/login"){
       next()
     } else {
@@ -117,11 +125,73 @@ async function haveSession(req, res, next){
       else {
       res.redirect(301, '/login')
     }
+  }}} catch (err){
+    console.log(err)
+    res.status(500).json({error: "Internal Server Error"})
+  }
+}
+
+//Defining Resource:
+async function defResource(req, res, next){
+  let resource = req.path.split('/')[2]
+  let endpoint = req.path.split('/')[1]
+  console.log(resource, endpoint)
+  if(endpoint === "api" || endpoint === "js" || endpoint === "css" || endpoint === "img" || endpoint === "assets"){
+    if (resource){
+      req.resource = resource
+      req.endpoint = endpoint
+      next()
+    }
+  }else {
+    req.endpoint = endpoint
+    req.resource = endpoint
+    next()
+  }
+}
+
+//Defining Action:
+async function defAction(req, res, next){
+  let method = req.method
+  console.log(method)
+  next()
+}
+
+//Defining Access Control:
+async function access(req, res, next){
+  if (req.session){
+  const roles = req.roles
+  console.log(roles)
+  const method = req.method
+  const resource = req.resource
+  const endpoint = req.endpoint
+  req.permission = false
+  if (endpoint === "api"){
+  roles.forEach(rol =>{
+    console.log(resources.indexOf(resource))
+    console.log(resource)
+    if (actionAccessControl(rol, actions.indexOf(method), resources.indexOf(resource))){
+      req.permission = true
+    }
+  })} else if (templates.includes(endpoint) ){
+    roles.forEach(rol =>{
+      if (staticAccessControl(rol, resource)){
+        req.permission = true
+      }
+    })
+  } else {
+    roles.forEach(rol =>{
+    if (staticAccessControl(rol, resource, endpoint)){
+      req.permission = true
+    }})
   }}
+  next()
 }
 
 //**********************************[app.use()]***************************************
 app.use(haveSession)
+app.use(defResource)
+app.use(defAction)
+app.use(access)
 app.use('/img', express.static(path.join('./static/', 'img')));
 app.use('/assets', express.static(path.join('./static/', 'assets')));
 app.use('/css', express.static(path.join('./static/', 'css')));
@@ -140,7 +210,7 @@ app.get('/api/patients/all',async (req,res)=>{
 })
 
 app.get('/api/patients',async (req,res)=>{
-  const options= req.query;
+  const options = req.query;
   // by room
   if (options.room){
     try {
@@ -212,13 +282,10 @@ app.get('/api/operations', async (req, res)=>{
 app.get('/:name', (req, res)=>{
   let file = req.params.name
   if(!file){
-    console.log("PEEEEEEEEEPEEEEEEE")
     res.sendFile(`${appPath}/templates/login.html`)
   }else {
-//  console.log(file)
-  let query = req.query
-  console.log(query)
-  res.sendFile(`${appPath}/templates/${file}.html`)}
+    let query = req.query
+    res.sendFile(`${appPath}/templates/${file}.html`)}
 })
 
 //*************************************[app.post()]****************************************
@@ -231,7 +298,6 @@ app.post('/api/users/register', async (req, res)=>{
   const validUser = userSchema.safeParse(user)
 
   if(validUser.success){
-    console.log(validUser)
     userred = validUser.data
     try {
       const resp = await User_Endpoints.registerUser(user)
@@ -253,7 +319,6 @@ app.post('/api/users/login', async (req, res)=>{
     res.redirect(301, "/repitlogin")
     return
   } else{
-    console.log(username, password)
     const isValidUser = await User_Endpoints.loginUser(password, username)
     if (isValidUser.success){
       const jwt = await createJWT({
@@ -305,7 +370,6 @@ app.post('/api/operations', async (req, res)=>{
 
 app.post('/api/patients/create', async (req,res)=>{
   const { patient } = req.body
-  console.log(patient)
   const result = patientSchema.safeParse(patient)
   if (result.success) {
   try {
@@ -333,7 +397,6 @@ app.patch('/api/operations/approve', async (req, res)=>{
 app.patch('/api/operations/made', async (req, res)=>{
   try{
     const { operation_results } = req.body
-    console.log(operation_results)
     if (!operation_results){
       res.status(400).json({error: "Bad request"})
     }
