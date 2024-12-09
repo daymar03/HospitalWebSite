@@ -10,7 +10,7 @@ function get_by_room(room){
   let classes = {add: "button--add", remove: "button--remove"}
   let titles = {add: "Ingresar Paciente", remove: "Egresar Paciente"}
 
-  fetch(`http://localhost:3000/patients?room=${room}`)
+  fetch(`http://localhost:3000/api/patients?room=${room}`)
   .then(res => res.json())
   .then(patients => {
     let html1 = []
@@ -44,7 +44,7 @@ function get_by_room(room){
         <span class="sp" id="patient-number"> ${camas[i]}</span>
         <span class="sp" id="patient-name"> ${name}</span>
         <button title="${Title}" type="button" class="button management-button ${Class}" ${Onclick}> <i class="fas ${button}"></i></button>
-        <a title="Ver información del paciente" href="../informacion/index.html?bed=${camas[i]}"><button type="button" class="button button-search"> <i class="fas fa-search"></i></button></a>
+        <a title="Ver información del paciente" href="/informacion/?bed=${camas[i]}"><button type="button" class="button button-search"> <i class="fas fa-search"></i></button></a>
       </div>
       `
       if (i < 5){
@@ -63,7 +63,7 @@ async function deletePatient(bedToDelete, roomOfBed){
   let confirmacion = confirm(`¿Está seguro que desea EGRESAR al paciente de la cama ${bedToDelete}?`);
   if (confirmacion) {
   try {
-  await fetch(`http://localhost:3000/patients/delete?bed=${bedToDelete}`, {
+  await fetch(`http://localhost:3000/api/patients/delete?bed=${bedToDelete}`, {
     method: "DELETE"
   })
   get_by_room(roomOfBed)
@@ -73,5 +73,5 @@ async function deletePatient(bedToDelete, roomOfBed){
 }}
 
 function insertPatient(bedToInsert, roomToInsert){
-  window.open(`../ingresarPaciente/index.html?bed=${bedToInsert.toString().substring(1,3)}&room=${roomToInsert}`, "_self")
+  window.open(`/ingresar/?bed=${bedToInsert.toString().substring(1,3)}&room=${roomToInsert}`, "_self")
 }

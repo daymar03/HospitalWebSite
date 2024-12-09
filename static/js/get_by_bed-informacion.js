@@ -1,5 +1,5 @@
 function get_by_bed(bed){
-  fetch(`http://localhost:3000/patients?bed=${bed}`)
+  fetch(`http://localhost:3000/api/patients?bed=${bed}`)
   .then(res => res.json())
   .then(patient => {
     const p = patient[0]

@@ -1,0 +1,167 @@
+Table "Patient" {
+  "id" integer [pk, increment]
+  "createdAt" timestamp
+  "bed" integer [unique]
+  "dni" varchar(255) [unique]
+  "name" varchar(255)
+  "age" integer
+  "weight" integer
+  "height" integer
+  "phoneNumber" varchar(255)
+  "sex" varchar(255)
+  "consultationReasons" text
+}
+
+Table "Patient_Preconditions" {
+  "id" integer [pk, increment]
+  "patient_id" integer
+  "preconditions_id" integer
+}
+
+Table "Preconditions" {
+  "id" integer [pk, increment]
+  "name" varchar(255) [unique]
+}
+
+Table "Patient_Allergies" {
+  "id" integer [pk, increment]
+  "patient_id" integer
+  "allergies_id" integer
+}
+
+Table "Allergies" {
+  "id" integer [pk, increment]
+  "name" varchar(255) [unique]
+}
+
+Table "Patient_Current_Medications" {
+  "id" integer [pk, increment]
+  "patient_id" integer
+  "current_medications_id" integer
+}
+
+Table "Current_Medications" {
+  "id" integer [pk, increment]
+  "name" varbinar(255) [unique]
+}
+
+Table "Patient_Entry_Dates" {
+  "id" integer [pk, increment]
+  "patient_id" integer
+  "entry_dates_id" integer
+}
+
+Table "Entry_Dates" {
+  "id" integer [pk, increment]
+  "date" timestamp
+}
+
+Table "History" {
+  "id" integer [pk, increment]
+  "createdAt" timestamp
+  "bed" integer
+  "dni" varchar(255)
+  "name" varchar(255)
+  "age" integer
+  "weight" integer
+  "height" integer
+  "phoneNumber" varchar(255)
+  "preconditions" varchar(255)
+  "allergies" varchar(255)
+  "medications" varchar(255)
+  "entry_date" timestamp
+  "consultation_reasons" text
+  "departure_date" timestamp
+  "leaving_reasons" text
+}
+
+Table "Operation" {
+  "id" integer [pk, increment]
+  "priority" integer
+  "estimated_duration" int
+  "description" text
+  "real_duration" int
+  "made" bool
+  "date" timestamp
+  "results" text
+  "responsable" varchar(255)
+  "is_request" bool [default: true]
+}
+
+Table "Patient_Operation" {
+  "id" integer [pk, increment]
+  "patient_id" integer
+  "operation_id" integer
+}
+
+
+Table "User_Notification" {
+  "id" integer [pk, increment]
+  "user_id" int
+  "notification_id" int
+}
+
+Table "Notification" {
+  "id" integer [pk, increment]
+  "body" text
+  "titulo" varchar(255)
+  "date" timestamp
+  "readed" bool
+  "deleted" bool
+}
+
+Table "User" {
+  "id" integer [pk, increment]
+  "name" varchar(255)
+  "username" varchar(255) [unique, not null]
+  "password" varchar(255) [not null]
+}
+
+Table "User_Rol" {
+  "id" integer [pk, increment]
+  "user_id" integer
+  "rol_id" integer
+}
+
+Table "Rol" {
+  "id" integer [pk]
+  "name" varchar(255)
+}
+
+Table "Password_History" {
+  "id" integer [pk, increment]
+  "passwords" JSON
+  "user_id" int 
+}
+
+Ref:"Preconditions"."id" < "Patient_Preconditions"."preconditions_id"
+
+Ref:"Patient"."id" < "Patient_Preconditions"."patient_id"
+
+Ref:"Allergies"."id" < "Patient_Allergies"."allergies_id"
+
+Ref:"Patient"."id" < "Patient_Allergies"."patient_id"
+
+Ref:"Current_Medications"."id" < "Patient_Current_Medications"."current_medications_id"
+
+Ref:"Patient"."id" < "Patient_Current_Medications"."patient_id"
+
+Ref:"Entry_Dates"."id" < "Patient_Entry_Dates"."entry_dates_id"
+
+Ref:"Patient"."id" < "Patient_Entry_Dates"."patient_id"
+
+Ref:"Rol"."id" < "User_Rol"."rol_id"
+
+Ref:"User"."id" < "User_Rol"."user_id"
+
+Ref:"User"."id" < "User_Notification"."user_id"
+
+Ref:"Notification"."id" < "User_Notification"."notification_id"
+
+Ref:"User"."username" < "Operation"."responsable"
+
+Ref:"Patient"."id" < "Patient_Operation"."patient_id"
+
+Ref: "Patient_Operation"."operation_id" < "Operation"."id"
+
+Ref: "User_Rol"."id" < "Password_History"."user_id"

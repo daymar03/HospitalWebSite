@@ -88,7 +88,7 @@ async function ingresar(e){
     sex
   }}
   try {
-    const res = await fetch('http://localhost:3000/patients/create', {
+    const res = await fetch('http://localhost:3000/api/patients/create', {
       method: "POST",
       headers: {
         'Content-Type':'application/json'
@@ -97,7 +97,7 @@ async function ingresar(e){
     const resJson = await res.json()
     console.log(resJson)
       if(resJson.error){
-        if(resJson.error == "The bed is already bussy")
+        if(resJson.error == "The bed is already busy")
         alert("error: "+resJson.error)
         else if(resJson.error == "Bad Request"){
           alert(resJson.message)
