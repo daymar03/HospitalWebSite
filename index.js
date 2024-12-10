@@ -4,12 +4,13 @@ import z from 'zod'
 import Patient from './Patient.js'
 import User from './User.js'
 import Operation from './Operation.js'
+import Notification from './Notifications.js'
 import jwt from 'jsonwebtoken'
 import path from 'path'
 import cookieParser from 'cookie-parser'
 import dotenv from 'dotenv'
 import { createSecretKey } from 'crypto'
-import { createJWT, decryptJWT } from './utils.js'
+import { createJWT, decryptJWT, getResource } from './utils.js'
 import { actionAccessControl, staticAccessControl } from './schemas/roles.schema.js'
 
 const userSchema = z.object({
@@ -47,6 +48,7 @@ const OperationSchema = z.object({
 const Patient_Endpoints = new Patient()
 const User_Endpoints = new User()
 const Operation_Endpoints = new Operation()
+const Notification_Endpoints = new Notification()
 
 
 dotenv.config()
@@ -54,9 +56,13 @@ const app = express()
 const port = 3000
 const appPath = process.env.APP_PATH
 const secretKey = createSecretKey(process.env.JWT_SECRET, 'utf-8');
-const templates = ["admin", "informacion", "ingresar", "login", "notificaciones", "repitlogin", "salas"]
+const templates = ["admin", "informacion", "ingresar", "login", "notificaciones", "repitlogin", "salas", "permissionDenied"]
 const actions = ["GET", "POST", "PATCH", "DELETE"]
-const resources = ["patients", "users", "notifications", "operations"]
+const resources ={
+  "api" : ["patients", "users", "notifications", "operations"],
+  "template": templates,
+  "static": ["css", "js", "img", "assets"]
+}
 
 if (!secretKey) {
   console.error("JWT_SECRET environment variable not set!");
@@ -98,109 +104,159 @@ app.use(express.urlencoded({ extended: true }))
 app.use(logger);
 */
 
-//*********************************[MIDDLEWARES]**************************************
-//Verifing if the user have an active session
-async function haveSession(req, res, next){
+//+*********************************[MIDDLEWARES]**************************************
+
+async function haveSession(req, res, next) {
   try {
-  const session = req.cookies.session
-  if(session){
-    const payload = await decryptJWT(session)
-    if (payload){
-      const roles = payload.payload.roles.split(',')
-      req.session = true
-      req.roles = roles
-      next()
-    }
-  } else {
-    const path = req.path
-    if(path === "/api/users/login"){
-      next()
-    } else {
-    if (path === "/css/styles-login.css" || path === "/css/styles-login.css" || path === "/img/foto4.jpg" || path === "/login/" || path === "/login" || path === "/repitlogin"){
-      if (path === "/login/" || path === "/login" || path === "/repitlogin"){
-        next()
-      } else {
-      res.sendFile(`${appPath}/static/${path}`)}
-    }
-      else {
-      res.redirect(301, '/login')
-    }
-  }}} catch (err){
-    console.log(err)
-    res.status(500).json({error: "Internal Server Error"})
-  }
-}
-
-//Defining Resource:
-async function defResource(req, res, next){
-  let resource = req.path.split('/')[2]
-  let endpoint = req.path.split('/')[1]
-  console.log(resource, endpoint)
-  if(endpoint === "api" || endpoint === "js" || endpoint === "css" || endpoint === "img" || endpoint === "assets"){
-    if (resource){
-      req.resource = resource
-      req.endpoint = endpoint
-      next()
-    }
-  }else {
-    req.endpoint = endpoint
-    req.resource = endpoint
-    next()
-  }
-}
-
-//Defining Action:
-async function defAction(req, res, next){
-  let method = req.method
-  console.log(method)
-  next()
-}
-
-//Defining Access Control:
-async function access(req, res, next){
-  if (req.session){
-  const roles = req.roles
-  console.log(roles)
-  const method = req.method
-  const resource = req.resource
-  const endpoint = req.endpoint
-  req.permission = false
-  if (endpoint === "api"){
-  roles.forEach(rol =>{
-    console.log(resources.indexOf(resource))
-    console.log(resource)
-    if (actionAccessControl(rol, actions.indexOf(method), resources.indexOf(resource))){
-      req.permission = true
-    }
-  })} else if (templates.includes(endpoint) ){
-    roles.forEach(rol =>{
-      if (staticAccessControl(rol, resource)){
-        req.permission = true
+    const session = req.cookies.session;
+		console.log(session)
+    if (session) { // Tiene token de sesión
+      const payload = await decryptJWT(session);
+			console.log(payload)
+      if (payload) { // El token es válido
+        req.session = true;
+				req.username = payload.payload.username
+        req.roles = payload.payload.roles.split(',');
+        req.endpoint = req.path.split('/')[1];
+        req.resource = getResource(req.path); // Ej: de /api/patients/all -> ["api", "/patients/all"]
+        console.log("Resources:", req.resource);
+        req.action = actions.indexOf(req.method);
+        next();
+      } else { // El token no es válido
+        req.session = false;
+        next();
       }
-    })
-  } else {
-    roles.forEach(rol =>{
-    if (staticAccessControl(rol, resource, endpoint)){
-      req.permission = true
-    }})
-  }}
-  next()
+    } else { // No tiene token de sesión
+      req.session = false;
+      next();
+    }
+  } catch (err) {
+    console.log(err);
+    next(err); // Asegúrate de pasar el error al manejador de errores
+  }
 }
 
-//**********************************[app.use()]***************************************
+
+async function login(req, res, next){
+  console.log("Entrando al middleware LOGIN")
+  console.log(req.session, req.cookies)
+  if (!req.session){
+    console.log("PORBANDO, ENTRO A !SESSION")
+    res.redirect('/login')
+    return
+  }else if(!req.permission){
+    console.log("PORBANDO, ENTRO A !PERMISSION")
+    res.redirect('/permissionDenied')
+    next('route')
+    return
+  }
+  else {
+    console.log("PORBANDO, ENTRO A ELSE")
+    next()
+    return
+  }
+}
+
+export async function access(req, res, next) {
+  const { session, roles, endpoint, resource, action } = req;
+  console.log("SESSSIOOON:", session);
+  if (session) {
+    console.log("Entrando en access()");
+    req.permission = false;
+    if (req.resource[0] === "static") { // Si accede a archivos estáticos (css, js, img)
+      req.permission = true;
+      return next(); // Está permitido
+    } else if (req.resource[0] === "api") {
+      for (const rol of roles) {
+	console.log("RESOURCE BEFORE VALIDATION:", resource)
+        if (await actionAccessControl(rol, action, resources.api.indexOf(resource[1]))) { // Si alguno de sus roles
+          req.permission = true; // Le otorga permiso a acceder
+          return next();
+        }
+      }
+      return next(); // Si ninguno de los roles tiene permiso, pasar al siguiente middleware
+    } else if (req.resource[0] === "template") {
+      for (const rol of roles) {
+        if (await staticAccessControl(rol, resource[1].split('/')[1])) { // Si alguno de sus roles
+          req.permission = true; // Le otorga permiso a acceder
+          return next();
+        }
+      }
+      return next(); // Si ninguno de los roles tiene permiso, pasar al siguiente middleware
+    } else {
+      req.permission = true;
+      return next();
+    }
+  } else {
+    console.log("Saliendo de access (No autenticado)");
+    return next('route');
+  }
+}
+
+
+//+**********************************[app.use()]***************************************
 app.use(haveSession)
-app.use(defResource)
-app.use(defAction)
 app.use(access)
+//app.use(permitDenied)
 app.use('/img', express.static(path.join('./static/', 'img')));
 app.use('/assets', express.static(path.join('./static/', 'assets')));
 app.use('/css', express.static(path.join('./static/', 'css')));
 app.use('/js', express.static(path.join('./static/', 'js')));
 
+
 //**********************************[app.get()]***************************************
+app.get('/login', async (req, res)=>{
+  res.sendFile(`${appPath}/templates/login.html`)
+})
 
+app.get('/repitlogin', async (req, res)=>{
+  res.sendFile(`${appPath}/templates/repitlogin.html`)
+})
 
-app.get('/api/patients/all',async (req,res)=>{
+app.get('/salas',login, async (req, res)=>{
+  res.sendFile(`${appPath}/templates/salas.html`)
+})
+
+app.get('/informacion',login, async (req, res)=>{
+  res.sendFile(`${appPath}/templates/informacion.html`)
+})
+
+app.get('/ingresar',login, async (req, res)=>{
+  res.sendFile(`${appPath}/templates/ingresar.html`)
+})
+
+app.get('/notificaciones',login, async (req, res)=>{
+  res.sendFile(`${appPath}/templates/notificaciones.html`)
+})
+
+app.get('/admin',login, async (req, res)=>{
+  res.sendFile(`${appPath}/templates/admin.html`)
+})
+
+app.get('/permissionDenied',login, async (req, res)=>{
+  res.sendFile(`${appPath}/templates/permissionDenied.html`)
+})
+
+app.get('/api/notifications',login, async (req, res)=>{
+try{
+	const username = req.username
+	console.log(username)
+	if(!username){
+		res.status(400).json({error: "Bad Request"})
+	}
+	const notifications = await Notification_Endpoints.getNotifications(username)
+	console.log("NOTIFICAAAA",notifications)
+	if(notifications){
+		res.json(notifications)
+	}else{
+		res.status(500).json({error: "Internal Server Error"})
+	}
+}catch(err){
+	res.status(500).json(err)
+}
+})
+
+app.get('/api/patients/all',login, async (req,res)=>{
   try {
    const patients = await Patient_Endpoints.GET_Patients_All();
    res.json(patients);
@@ -209,7 +265,7 @@ app.get('/api/patients/all',async (req,res)=>{
   }
 })
 
-app.get('/api/patients',async (req,res)=>{
+app.get('/api/patients',login, async (req,res)=>{
   const options = req.query;
   // by room
   if (options.room){
@@ -249,7 +305,7 @@ app.get('/api/patients',async (req,res)=>{
 })
 
 
-app.get('/api/users', async (req, res)=>{
+app.get('/api/users', login, async (req, res)=>{
   const id = req.query.id
   if(!id){
   try{
@@ -269,7 +325,7 @@ app.get('/api/users', async (req, res)=>{
   }
 })
 
-app.get('/api/operations', async (req, res)=>{
+app.get('/api/operations', login, async (req, res)=>{
   try{
     const results = await Operation_Endpoints.getOperations()
     res.json(results)
@@ -278,18 +334,25 @@ app.get('/api/operations', async (req, res)=>{
   }
 })
 
-//**********************************[TEMPLATES]*******************************************
-app.get('/:name', (req, res)=>{
-  let file = req.params.name
-  if(!file){
-    res.sendFile(`${appPath}/templates/login.html`)
-  }else {
-    let query = req.query
-    res.sendFile(`${appPath}/templates/${file}.html`)}
-})
 
 //*************************************[app.post()]****************************************
-app.post('/api/users/register', async (req, res)=>{
+
+app.post('/api/notifications/send', async(req, res)=>{
+	try{
+		const { notification } = req.body
+		const send = await Notification_Endpoints.sendNotification(notification)
+		if(send.success){
+			res.status(201).json(send)
+		} else {
+			res.status(500).json({success: false})
+		}
+	}catch(err){
+		console.log(err)
+		res.json(err)
+	}
+})
+
+app.post('/api/users/register', login, async (req, res)=>{
   let { user } = req.body
   if(!user){
     res.status(400).json({error: "Bad request"})
@@ -298,7 +361,7 @@ app.post('/api/users/register', async (req, res)=>{
   const validUser = userSchema.safeParse(user)
 
   if(validUser.success){
-    userred = validUser.data
+    user = validUser.data
     try {
       const resp = await User_Endpoints.registerUser(user)
       res.json(resp)
@@ -316,32 +379,34 @@ app.post('/api/users/login', async (req, res)=>{
   try {
   const { username, password } = req.body
   if(!username || !password){
-    res.redirect(301, "/repitlogin")
+    res.redirect( "/repitlogin")
     return
   } else{
     const isValidUser = await User_Endpoints.loginUser(password, username)
     if (isValidUser.success){
+			const expirationTime = Math.floor(Date.now() / 1000) + (30 * 60);
       const jwt = await createJWT({
         "username": username,
-        "roles": isValidUser.roles
+        "roles": isValidUser.roles,
+				"exp": expirationTime
       })
       res.cookie('session', jwt,{ //testing
         expires: new Date(Date.now() + 900000),
         httpOnly: true
       })
-      res.redirect(301, '/salas')
+      res.redirect('/salas')
     } else {
-      res.redirect(301, '/repitlogin')
+      res.redirect('/repitlogin')
     }
   }}catch(err){
-    res.redirect(301, "/repitlogin")
+    res.redirect("/repitlogin")
     console.log(err)
   }
 })
 
 
 
-app.post('/api/users/changepassword', async (req, res)=>{
+app.post('/api/users/changepassword', login, async (req, res)=>{
   try {
   const { username, password } = req.body
   const hist = await User_Endpoints.changePassword(username, password)
@@ -353,7 +418,7 @@ app.post('/api/users/changepassword', async (req, res)=>{
 
 
 
-app.post('/api/operations', async (req, res)=>{
+app.post('/api/operations', login, async (req, res)=>{
   const { operation } = req.body
   if (operation){
     try {
@@ -368,7 +433,7 @@ app.post('/api/operations', async (req, res)=>{
   }
 })
 
-app.post('/api/patients/create', async (req,res)=>{
+app.post('/api/patients/create', login, async (req,res)=>{
   const { patient } = req.body
   const result = patientSchema.safeParse(patient)
   if (result.success) {
@@ -383,7 +448,22 @@ app.post('/api/patients/create', async (req,res)=>{
 })
 
 //***************************************[app.patch()]*************************************
-app.patch('/api/operations/approve', async (req, res)=>{
+app.patch('/api/notifications/read', async (req, res)=>{
+	try{
+		const { notification_id } = req.body
+		const read = await Notification_Endpoints.readNotification(notification_id)
+		if (read.success){
+			res.json(read)
+		} else{
+			res.json({success: false})
+		}
+	}catch(err){
+		console.log(err)
+		res.status(500).json({error: "Internal Server Error"})
+	}
+})
+
+app.patch('/api/operations/approve', login, async (req, res)=>{
   const { operation_approval } = req.body
   try{
     const results = await Operation_Endpoints.approveOperation(operation_approval)
@@ -394,7 +474,7 @@ app.patch('/api/operations/approve', async (req, res)=>{
 
 })
 
-app.patch('/api/operations/made', async (req, res)=>{
+app.patch('/api/operations/made', login, async (req, res)=>{
   try{
     const { operation_results } = req.body
     if (!operation_results){
@@ -408,7 +488,7 @@ app.patch('/api/operations/made', async (req, res)=>{
 })
 
 
-app.patch('/api/patients/update', async (req, res) => {
+app.patch('/api/patients/update', login, async (req, res) => {
   const { id, bed } = req.query;
   // search by id or bed
   const { age, weight, height, phoneNumber, name,
@@ -438,7 +518,22 @@ app.patch('/api/patients/update', async (req, res) => {
 
 
 //********************************************[app.delete()]***************************************
-app.delete('/api/patients/delete', async(req,res)=>{
+app.delete('/api/notifications/delete', async (req, res)=>{
+	try{
+		const {notification_id} = req.body
+		const deleted = await Notification_Endpoints.deleteNotification(notification_id)
+		if (deleted.success){
+			res.json(deleted)
+		}else{
+			res.json({deleted})
+		}
+	}catch(err){
+		console.log(err)
+		res.status(500).json({error: "Internal Server Error"})
+	}
+})
+
+app.delete('/api/patients/delete', login, async(req,res)=>{
   const options = req.query
   try {
     const results = await Patient_Endpoints.DELETE_Patient(options)
@@ -448,7 +543,7 @@ app.delete('/api/patients/delete', async(req,res)=>{
     if(err.message === "Patient does not exists") {
      res.status(404).json({success:false, message:err.message})
      return
-    } else if(err.message === "Patient successfully deleted") { 
+    } else if(err.message === "Patient successfully deleted") {
      res.status(400).json({success:false,message:err.message})
      return
     }

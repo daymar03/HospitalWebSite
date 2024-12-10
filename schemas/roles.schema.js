@@ -13,30 +13,31 @@ const Rol = {
           "login":true,
           "notificaciones": true,
           "repitlogin": true,
-          "salas": true
+          "salas": true,
+					"permissionDenied": true
         },
-        "patient" : function(){return true},
-        "user" : function(){return true},
-        "notification" : function(){return true},
-        "operation" : function(){return true}
+        "patient" : true,
+        "user" : true,
+        "notification" : true,
+        "operation" : true
       },
       "post": {
-        "patient" : function(){return true},
-        "user" : function(){return true},
-        "notification" : function(){return true},
-        "operation" : function(){return true}
+        "patient" : true,
+        "user" : true,
+        "notification" : true,
+        "operation" : true
       },
       "patch": {
-        "patient" : function(){return true},
-        "user" : function(){return true},
-        "notification" : function(){return true},
-        "operation" : function(){return true}
+        "patient" : true,
+        "user" : true,
+        "notification" : true,
+        "operation" : true
       },
       "delete": {
-        "patient" : function(){return true},
-        "user" : function(){return true},
-        "notification" : function(){return true},
-        "operation" : function(){return true}
+        "patient" : true,
+        "user" : true,
+        "notification" : true,
+        "operation" : true
       }
     }
   },
@@ -50,42 +51,33 @@ const Rol = {
           "login":true,
           "notificaciones": true,
           "repitlogin": true,
-          "salas": true
+          "salas": true,
+					"permissionDenied": true
         },
-        "patient" : function(){return true},
-        "user" : function(){return false},
-        "notification" : function(notification_id, username){
-          return Notification.isOwner(notification_id, username)
-        },
-        "operation" : function(username){
-          return Operation_Endpoints.isOwner(operation_id, username)
+        "patient" : true,
+        "user" : false,
+        "notification" : true,
+        "operation" : true
         }
       },
       "post": {
-        "patient" : function(){return true},
-        "user" : function(){return false},
-        "notification" : function(){return false},
-        "operation" : function(){return true}
+        "patient" : true,
+        "user" : false,
+        "notification" : false,
+        "operation" : true
       },
       "patch": {
-        "patient" : function(){return true},
-        "user" : function(){return false},
-        "notification" : function(notification_id, username){
-          return Notification.isOwner(notification_id, username)
-        },
-        "operation" : function(operation_id, username){
-          return Operation_Endpoints.isOwner(operation_id, username)
-        }
+        "patient" : true,
+        "user" : false,
+        "notification" : true,
+        "operation" : true
       },
       "delete": {
-        "patient" : function(){return true},
-        "user" : function(){return false},
-        "notification" : function(notification_id, username){
-          return Notification.isOwner(notification_id, username)
-        },
-        "operation" : function(){return false}
+        "patient" : true,
+        "user" : false,
+        "notification" : true,
+        "operation" : false
       }
-    }
   },
   "Director": {
     "permisions": {
@@ -97,36 +89,31 @@ const Rol = {
           "login":true,
           "notificaciones": true,
           "repitlogin": true,
-          "salas": true
+          "salas": true,
+					"permissionDenied": true
         },
-        "patient" : function(){return true},
-        "user" : function(){return true},
-        "notification" : function(notification_id, username){
-          return Notification.isOwner(notification_id, username)
-        },
-        "operation" : function(){return true}
+        "patient" : true,
+        "user" : true,
+        "notification" : true,
+        "operation" : true
       },
       "post": {
-        "patient" : function(){return true},
-        "user" : function(){return false},
-        "notification" : function(){return true},
-        "operation" : function(){return false}
+        "patient" : true,
+        "user" : false,
+        "notification" : true,
+        "operation" : false
       },
       "patch": {
-        "patient" : function(){return true},
-        "user" : function(){return false},
-        "notification" : function(notification_id, username){
-          return Notification.isOwner(notification_id, username)
-        },
-        "operation" : function(){return false}
+        "patient" : true,
+        "user" : false,
+        "notification" : true,
+        "operation" : false
       },
       "delete": {
-        "patient" : function(){return true},
-        "user" : function(){return false},
-        "notification" : function(notification_id, username){
-          return Notification.isOwner(notification_id, username)
-        },
-        "operation" : function(){return false}
+        "patient" : true,
+        "user" : false,
+        "notification" : true,
+        "operation" : false
       }
     }
   },
@@ -140,36 +127,31 @@ const Rol = {
           "login":true,
           "notificaciones": true,
           "repitlogin": true,
-          "salas": true
+          "salas": true,
+					"permissionDenied": true
         },
-        "patient" : function(){return true},
-        "user" : function(){return false},
-        "notification" : function(notidication_id, username){
-          return Notification.isOwner(notidication_id, username)
-        },
-        "operation" : function(){return false}
+        "patient" : true,
+        "user" : false,
+        "notification" : true,
+        "operation" : false
       },
       "post": {
-        "patient" : function(){return false},
-        "user" : function(){return false},
-        "notification" : function(){return false},
-        "operation" : function(){return false}
+        "patient" : false,
+        "user" : false,
+        "notification" : false,
+        "operation" : false
       },
       "patch": {
-        "patient" : function(){return false},
-        "user" : function(){return false},
-        "notification" : function(notidication_id, username){
-          return Notification.isOwner(notidication_id, username)
-        },
-        "operation" : function(){return false}
+        "patient" : false,
+        "user" : false,
+        "notification" : true,
+        "operation" : false
       },
       "delete": {
-        "patient" : function(){return false},
-        "user" : function(){return false},
-        "notification" : function(notidication_id, username){
-          return Notification.isOwner(notidication_id, username)
-        },
-        "operation" : function(){return false}
+        "patient" : false,
+        "user" : false,
+        "notification" : true,
+        "operation" : false
       }
     }
   },
@@ -183,36 +165,31 @@ const Rol = {
           "login":true,
           "notificaciones": true,
           "repitlogin": true,
-          "salas": true
+          "salas": true,
+					"permissionDenied": true
         },
-        "patient" : function(){return true},
-        "user" : function(){return true},
-        "notification" : function(notidication_id, username){
-          return Notification.isOwner(notidication_id, username)
-        },
-        "operation" : function(){return true}
+        "patient" : true,
+        "user" : true,
+        "notification" : true,
+        "operation" : true
       },
       "post": {
-        "patient" : function(){return true},
-        "user" : function(){return false},
-        "notification" : function(){return true},
-        "operation" : function(){return false}
+        "patient" : true,
+        "user" : false,
+        "notification" : true,
+        "operation" : false
       },
       "patch": {
-        "patient" : function(){return false},
-        "user" : function(){return false},
-        "notification" : function(notidication_id, username){
-          return Notification.isOwner(notidication_id, username)
-        },
-        "operation" : function(){return true}
+        "patient" : false,
+        "user" : false,
+        "notification" : true,
+        "operation" : true
       },
       "delete": {
-        "patient" : function(){return false},
-        "user" : function(){return false},
-        "notification" : function(notidication_id, username){
-          return Notification.isOwner(notidication_id, username)
-        },
-        "operation" : function(){return false}
+        "patient" : false,
+        "user" : false,
+        "notification" : true,
+        "operation" : false
       }
     }
   },
@@ -221,33 +198,30 @@ const Rol = {
 const roles = ["Admin", "Director", "Doctor", "Nurse", "Recepcionist"]
 const actions = ["get", "post", "patch", "delete"]
 const resources = ["patient", "user", "notification", "operation"]
-const templates = ["admin", "informacion", "ingresar", "login", "notificaciones", "repitlogin", "salas"]
+const templates = ["admin", "informacion", "ingresar", "login", "notificaciones", "repitlogin", "salas", "permissionDenied"]
 const staticEndpoints = ["js", "css", "img", "assets"]
 
 export async function actionAccessControl(a = 0/*ROL*/, b = 0/*ACTION*/, c = 0/*RESOURCE*/, notification_id = "", username = "", operation_id = ""){
+return new Promise( async (resolve, reject)=>{
   const rol = roles[a]
-  console.log(rol)
+  console.log("Rol en actionAccess:",rol)
   const action = actions[b]
   const resource = resources[c]
+  console.log("PERMISO PARA ROL", rol,"A",action,"EN EL RECURSO",resource)
+  console.log("Resource en actionAccess",resource, ":", Rol[rol]["permisions"][action][resource])
 
-  if(resource === "notification"){
-    if (!notification_id || !username){ return false}
-    if (Rol[rol]["permisions"][action][resources[resource]](notification_id, username)) {return true}
-    else return false
-  }
-  else if(resource === "operation"){
-    if (!operation_id || !username){ return false}
-  if (Rol[rol]["permisions"][action][resources[resource]](operation_id, username)){return true}
-    else return false
-  }
-
-  if (Rol[rol]["permisions"][action][resource]()){return true}
-  else return false
+  if (Rol[rol]["permisions"][action][resource]){resolve(true)}
+  else resolve(false)})
 }
 
-export async function staticAccessControl(rol, template, endpoint = ""){
-  if (endpoint !== ""){
-    return true
-  } else if (Rol[roles[rol]]["permisions"]["get"]["template"][template]){return true}
-  else {return false}
+export async function staticAccessControl(rol, template){
+return new Promise( async (resolve, reject)=>{
+  console.log("Rol en staticAccess:",roles[rol],"Template:", template)
+  console.log("Acceso estatico a",template, ":",Rol[roles[rol]]["permisions"]["get"]["template"][template])
+  if (Rol[roles[rol]]["permisions"]["get"]["template"][template]){
+    resolve(true)
+  }
+  else {
+    resolve(false)
+  }})
 }

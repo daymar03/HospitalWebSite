@@ -1,8 +1,16 @@
 import bcrypt from 'bcrypt';
 import {SignJWT, jwtVerify} from "jose"
 
+const templates = ["admin", "informacion", "ingresar", "login", "notificaciones", "repitlogin", "salas", "permissionDenied"]
+const actions = ["GET", "POST", "PATCH", "DELETE"]
+const resources ={
+  "api" : ["patients", "users", "notifications", "operations"],
+  "template": templates,
+  "static": ["css", "js", "img", "assets"]
+}
+
 export function isValidBase64(str) {
-  const base64Regex = /^(?:[A-Za-z0-9+\/]{4})*(?:[A-Za-z0-9+\/]{2}==|[A-Za-z0-9+\/]{3}=)?$/; 
+  const base64Regex = /^(?:[A-Za-z0-9+\/]{4})*(?:[A-Za-z0-9+\/]{2}==|[A-Za-z0-9+\/]{3}=)?$/;
   return base64Regex.test(str);
 }
 
@@ -75,5 +83,16 @@ export async function decryptJWT(session) {
   } catch (err) {
     console.error("Error decrypting JWT:", err); // Use console.error for better error handling
     return null;
+  }
+}
+
+export function getResource(path){
+  const base = path.split('/')[1]
+  if (base === "api"){
+    return ["api", path.split('/')[2]]
+  }else if (resources["static"].includes(base)){
+    return ["static", `/${path.split('/').slice(1).join('/')}`]
+  } else {
+    return ["template", `${path}`]
   }
 }
