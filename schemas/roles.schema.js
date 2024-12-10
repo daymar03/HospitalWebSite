@@ -1,4 +1,4 @@
-import Operation from './../Operation.js'
+import Operation from './../resources/Operation.js'
 
 const Operation_Endpoints = new Operation()
 
