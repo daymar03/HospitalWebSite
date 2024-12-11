@@ -159,6 +159,22 @@ class User {
     })
   }
 
+	async getInactiveUsers(){
+		return new Promise( async (resolve, reject)=>{
+		try{
+			const result = await this.pool.query("SELECT name, username FROM User WHERE last_login = created")
+			if (result[0].length === 0){
+				return reject({success: false, error:"There are no inactive Users or Something went wrong"})
+			} else{
+				const users = result[0]
+				return resolve({success:true, users})
+			}
+		}catch(err){
+			console.log(err)
+			return reject({success:false, error: "Something Went Wrong"})
+		}})
+	}
+
   async loginUser(password, username){
     return new Promise(async (resolve, reject)=>{
       try {
@@ -181,7 +197,7 @@ class User {
           let isValidPassword = await bcrypt.compare(password, hash)
           if (isValidPassword){
 						tries = 0
-						this.pool.query("UPDATE User SET tryes = ? WHERE username = ?", [tries, username])
+						this.pool.query("UPDATE User SET tryes = ?, last_login = NOW() WHERE username = ?", [tries, username])
             return resolve({success : true, "roles":rol, message: "Valid User", status: "logged"})
           } else{
 						tries += 1

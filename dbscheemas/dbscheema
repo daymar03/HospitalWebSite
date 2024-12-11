@@ -10,6 +10,7 @@ Table "Patient" {
   "phoneNumber" varchar(255)
   "sex" varchar(255)
   "consultationReasons" text
+  "risk_patient" bool
 }
 
 Table "Patient_Preconditions" {
@@ -42,7 +43,7 @@ Table "Patient_Current_Medications" {
 
 Table "Current_Medications" {
   "id" integer [pk, increment]
-  "name" varbinar(255) [unique]
+  "name" varchar(255) [unique]
 }
 
 Table "Patient_Entry_Dates" {
@@ -73,6 +74,7 @@ Table "History" {
   "consultation_reasons" text
   "departure_date" timestamp
   "leaving_reasons" text
+  "risk_patient" bool
 }
 
 Table "Operation" {
@@ -81,17 +83,13 @@ Table "Operation" {
   "estimated_duration" int
   "description" text
   "real_duration" int
-  "made" bool
-  "date" timestamp
+  "made" bool [default: false]
+  "request_date" timestamp
+  "scheduled_date" timestamp [default: null]
   "results" text
-  "responsable" varchar(255)
-  "is_request" bool [default: true]
-}
-
-Table "Patient_Operation" {
-  "id" integer [pk, increment]
-  "patient_id" integer
-  "operation_id" integer
+  "responsable" varchar(255) [not null]
+  "patient_id" int
+  "approved" bool [default: false]
 }
 
 
@@ -115,6 +113,9 @@ Table "User" {
   "name" varchar(255)
   "username" varchar(255) [unique, not null]
   "password" varchar(255) [not null]
+  "tryes" int [default: 0]
+  "blocked" bool [default: false]
+  "department" varchar(255)
 }
 
 Table "User_Rol" {
@@ -160,8 +161,6 @@ Ref:"Notification"."id" < "User_Notification"."notification_id"
 
 Ref:"User"."username" < "Operation"."responsable"
 
-Ref:"Patient"."id" < "Patient_Operation"."patient_id"
+Ref: "User"."id" < "Password_History"."user_id"
 
-Ref: "Patient_Operation"."operation_id" < "Operation"."id"
-
-Ref: "User_Rol"."id" < "Password_History"."user_id"
+Ref: "Patient"."id" < "Operation"."patient_id"

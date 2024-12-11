@@ -87,7 +87,7 @@ class Operation {
           return
         }
 
-//Comprobando si la operación ya está aprobada
+//Comprobando si la operación ya está aprobada:
           let selectQuery = 'SELECT approved, request_date as date FROM Operation WHERE id = ?'
           let selectQueryResults = await this.pool.query(selectQuery, [id])
           if (selectQueryResults[0][0].approved){
@@ -100,6 +100,14 @@ class Operation {
 				if(!compareDates(formattedDate, date)){
 					return reject({success:false, error: "Bad date"})
 				}
+
+//Comprobar si ya están las 5 operaciones de riesgo en el dia:
+				const riskOperatios = await this.pool.query("SELECT COUNT(*) as o FROM Operation WHERE priority = 0 and DATE(scheduled_date) = DATE(?)", [date])
+				const cant = riskOperatios[0][0].o
+				if(cant == 5){
+					return reject({success:false, error: "Today is already full of risks operations"})
+				}
+//Actualizar la Operacion si todo esta correcto:
         const updateOperationQuery = "UPDATE Operation SET scheduled_date = ?, approved = true WHERE id = ?"
         let updateResults = await this.pool.query(updateOperationQuery, [date, id])
         resolve({succes: "true"})
@@ -156,20 +164,99 @@ class Operation {
   }
 
 //*************************************************************************************************************************************
+//************************************************[GET RISK OPERATIONS POSITIVES]**********************************************************
+
+async getRiskOperations(date = ""){
+	return new Promise(async (resolve, reject)=>{
+		try{
+			let results
+			if (date !== ""){
+				const getRiskOperations = "SELECT COUNT(o.id) AS total_operaciones_riesgo, SUM(CASE WHEN o.results = 'positive' THEN 1 ELSE 0 END) AS operaciones_satisfactorias, (SUM(CASE WHEN o.results = 'positive' THEN 1 ELSE 0 END) / COUNT(o.id)) * 100 AS porcentaje_satisfactorias FROM Operation o JOIN Patient p ON o.patient_id = p.id WHERE p.risk_patient = true AND MONTH(o.request_date) = ? AND YEAR(o.request_date) = ?"
+				results = await this.pool.query(getRiskOperations,[date.month, date.year])
+			}else{
+				console.log("DATE === {}", date)
+				const getRiskOperations = "SELECT COUNT(o.id) AS total_operaciones_riesgo, SUM(CASE WHEN o.results = 'positive' THEN 1 ELSE 0 END) AS operaciones_satisfactorias, (SUM(CASE WHEN o.results = 'positive' THEN 1 ELSE 0 END) / COUNT(o.id)) * 100 AS porcentaje_satisfactorias FROM Operation o JOIN Patient p ON o.patient_id = p.id WHERE p.risk_patient = true"
+				results = await this.pool.query(getRiskOperations)
+			}
+			if(results[0].length === 0){
+				return reject({success: false, error: "There are no done Operations or Something went wrong"})
+			} else {
+				let total_operaciones_riesgo = results[0][0].total_operaciones_riesgo ?? 0
+				let operaciones_satisfactorias = results[0][0].operaciones_satisfactorias ?? 0
+				let porcentaje_satisfactorias = results[0][0].porcentaje_satisfactorias ?? 100
+				let result = {total_operaciones_riesgo, operaciones_satisfactorias, porcentaje_satisfactorias}
+				return resolve({success: true, result})
+			}
+		}catch(err){
+      console.log(err)
+			return reject(err)
+		}
+	})
+}
+
+
+//*************************************************************************************************************************************
 //************************************************[GET OPERATIONS OVERDUE]**********************************************************
 
 async getOverdueOperations(){
 	return new Promise(async (resolve, reject)=>{
 		try{
-			const getAll = "SELECT COUNT(*) as all FROM Operation WHERE made = true"
+			const getAll = await this.pool.query("SELECT COUNT(*) as 'all' FROM Operation WHERE made = true;")
 			const madeOperations = getAll[0][0].all.length
-			const getOperationsQuery = "SELECT COUNT(*) as all FROM Operation WHERE made = true and estimated_duration < real_duration"
+			const getOperationsQuery = "SELECT COUNT(*) as 'all' FROM Operation WHERE made = true and estimated_duration < real_duration"
 			const getOperationsQueryResult = await this.pool.query(getOperationsQuery)
 			const overdueOperations = getOperationsQueryResult[0][0].all.length
 			if(getOperationsQueryResult[0].length === 0){
 				return reject({success: false, error: "There are no done Operations or Something went wrong"})
 			} else {
 				let results = {total: overdueOperations, percent: (overdueOperations / madeOperations) * 100}
+				return resolve({success: true, results})
+			}
+		}catch(err){
+      console.log(err)
+			return reject(err)
+		}
+	})
+}
+
+
+//*************************************************************************************************************************************
+//************************************************[GET DAY'S OPERATIONS]**********************************************************
+async getOperationsByDate(date) { //YYYY-MM-DD
+  return new Promise(async (resolve, reject) => {
+    try {
+      const getAll = await this.pool.query(`
+        SELECT o.id, priority, description, u.name, scheduled_date
+        FROM Operation o
+        JOIN User u ON o.responsable = u.username
+        WHERE DATE(scheduled_date) = ?
+      `, [date]);
+
+      if (getAll[0].length === 0) {
+        return reject({ success: false, error: "There are no Operations for the specified date or something went wrong" });
+      } else {
+        let results = getAll[0];
+        return resolve({ success: true, results });
+      }
+    } catch (err) {
+      console.log(err);
+      return reject(err);
+    }
+  });
+}
+
+
+//*************************************************************************************************************************************
+//************************************************[GET DAY'S OPERATIONS]**********************************************************
+
+async getTodayOperations(){
+	return new Promise(async (resolve, reject)=>{
+		try{
+			const getAll = await this.pool.query("SELECT o.id, priority, description, u.name, scheduled_date FROM Operation o JOIN User u ON o.responsable = u.username  WHERE DATE(scheduled_date) = CURDATE();")
+			if(getAll[0].length === 0){
+				return reject({success: false, error: "There are no Operations for Today or Something went wrong"})
+			} else {
+				let results = getAll[0]
 				return resolve({success: true, results})
 			}
 		}catch(err){

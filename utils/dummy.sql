@@ -103,12 +103,12 @@ INSERT INTO Rol (id, name) VALUES
 (3, 'Nurse'),
 (4, 'Recepcionist');
 
-INSERT INTO User (name, username, password, department) VALUES
-( 'Daymar David Guerrero Santiago', 'daymar03', '$2b$10$0W5iVmqFI3fI8Z6Ygd0SSedjPNObb..fN6JOr6D.q861qVSdufSGq', 'Admin'), -- admin123daymar
-( 'Kevin Calaña Castellón', 'calanac', '$2b$10$swpXGMambxQNiPSEVKydhumP49qw2X7XLFkkgGVlvuSwaXeDJz04G', 'Admin'), -- admin123kevin
-( 'Ramón Alejandro Mateo Ochoa', 'amateo', '$2b$10$O4JkUDtw1xNkcCXl2CisNucJK9xpGibs0nXc1l2VzOuuO7HjuV2Em', 'Admin'), -- admin123mateo
-( 'Christopher Fernando Frias Ramos', 'ffrias', '$2b$10$ceeJCq2klpPp36CNoeeR7OaRP5syBS/9yZQCQqgxS6DLZXvmShSDe', 'Admin'), -- admin123chris
-( 'Marc Anthony Echemendía Romero', 'marca', '$2b$10$wwlmSunz5nbwfAvOx.hCjuxdiV6MrhXzntk22It7mrvHPV1JWaLoC', 'Admin'); -- admin123marc
+INSERT INTO User (name, username, password, department, last_login) VALUES
+( 'Daymar David Guerrero Santiago', 'daymar03', '$2b$10$0W5iVmqFI3fI8Z6Ygd0SSedjPNObb..fN6JOr6D.q861qVSdufSGq', 'Admin', null), -- admin123daymar
+( 'Kevin Calaña Castellón', 'calanac', '$2b$10$swpXGMambxQNiPSEVKydhumP49qw2X7XLFkkgGVlvuSwaXeDJz04G', 'Admin', null), -- admin123kevin
+( 'Ramón Alejandro Mateo Ochoa', 'amateo', '$2b$10$O4JkUDtw1xNkcCXl2CisNucJK9xpGibs0nXc1l2VzOuuO7HjuV2Em', 'Admin', null), -- admin123mateo
+( 'Christopher Fernando Frias Ramos', 'ffrias', '$2b$10$ceeJCq2klpPp36CNoeeR7OaRP5syBS/9yZQCQqgxS6DLZXvmShSDe', 'Admin', null), -- admin123chris
+( 'Marc Anthony Echemendía Romero', 'marca', '$2b$10$wwlmSunz5nbwfAvOx.hCjuxdiV6MrhXzntk22It7mrvHPV1JWaLoC', 'Admin', null); -- admin123marc
 
 INSERT INTO User_Rol (user_id, rol_id) VALUES
 (1,0),
@@ -138,12 +138,12 @@ INSERT INTO User_Notification (user_id, notification_id) VALUES
 (4 ,4),
 (5 ,5);
 
-INSERT INTO User (name, username, password, department) VALUES
-( 'Ana María López Hernández', 'anamlh', '$2b$10$3eUiWvJW1HP8p4h5xiPt3OySGyeH34MLTMQunVOcZwTq80ezqeeyy', 'Admin'), -- Contraseña test
-( 'Luis Alberto Gómez Pérez', 'lagp', '$2b$10$3eUiWvJW1HP8p4h5xiPt3OySGyeH34MLTMQunVOcZwTq80ezqeeyy', 'Director'), -- Contraseña test
-( 'Laura Martínez Rivera', 'lmr', '$2b$10$3eUiWvJW1HP8p4h5xiPt3OySGyeH34MLTMQunVOcZwTq80ezqeeyy', 'Doctor'), -- Contraseña test
-( 'Carlos Enrique Torres', 'cet', '$2b$10$3eUiWvJW1HP8p4h5xiPt3OySGyeH34MLTMQunVOcZwTq80ezqeeyy', 'Nurse'), -- Contraseña test
-( 'Carmen Julia Ruiz', 'cjr', '$2b$10$3eUiWvJW1HP8p4h5xiPt3OySGyeH34MLTMQunVOcZwTq80ezqeeyy', 'Recepcionist'); -- Contraseña test
+INSERT INTO User (name, username, password, department, last_login) VALUES
+( 'Ana María López Hernández', 'anamlh', '$2b$10$3eUiWvJW1HP8p4h5xiPt3OySGyeH34MLTMQunVOcZwTq80ezqeeyy', 'Admin', null), -- Contraseña test
+( 'Luis Alberto Gómez Pérez', 'lagp', '$2b$10$3eUiWvJW1HP8p4h5xiPt3OySGyeH34MLTMQunVOcZwTq80ezqeeyy', 'Director', null), -- Contraseña test
+( 'Laura Martínez Rivera', 'lmr', '$2b$10$3eUiWvJW1HP8p4h5xiPt3OySGyeH34MLTMQunVOcZwTq80ezqeeyy', 'Doctor', null), -- Contraseña test
+( 'Carlos Enrique Torres', 'cet', '$2b$10$3eUiWvJW1HP8p4h5xiPt3OySGyeH34MLTMQunVOcZwTq80ezqeeyy', 'Nurse', null), -- Contraseña test
+( 'Carmen Julia Ruiz', 'cjr', '$2b$10$3eUiWvJW1HP8p4h5xiPt3OySGyeH34MLTMQunVOcZwTq80ezqeeyy', 'Recepcionist', null); -- Contraseña test
 
 INSERT INTO User_Rol (user_id, rol_id) VALUES
 (6, 0), -- Ana María López Hernández: Admin

@@ -144,11 +144,3 @@ export function compareDates(request, scheduled){
   // Comparar las fechas
   return parsedDate2 > parsedDate1;
 };
-
-try {
-	const validDate = "2024-12-31 10:00:00";
-	validateDateTime(validDate);
-	console.log("Fecha válida");
-}catch(e){
-	console.error("Errores de validación:", e.message);
-}

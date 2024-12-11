@@ -34,3 +34,6 @@ curl -H "Cookie: session=eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImxhZ3AiLCJyb2xlcy
 
 URGENT OPERATIONS PER MONTH OF YEAR
 ❯ curl "http://localhost:3000/api/users/highpriority?month=12&year=2024"
+
+GET PERCENT OF RISK OPERATIOS ALL || PER YEAR'S MONTH
+curl "http://localhost:3000/api/operations/risk?month=12&year=2024"

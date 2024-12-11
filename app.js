@@ -36,7 +36,7 @@ app.use('/css', express.static(path.join('./static/', 'css')));
 app.use('/js', express.static(path.join('./static/', 'js')));
 
 
-//**********************************[TEMPLATES]***************************************
+//+**********************************[TEMPLATES]***************************************
 app.get('/',auth.login, async (req, res)=>{
   res.sendFile(`${appPath}/templates/salas.html`)
 })
@@ -95,10 +95,11 @@ app.get('/api/patients/all',auth.login, async (req,res)=>{
   }
 })
 
-//GET ROOMS OCUPATION PERCENT
+//DIRECTOR QUERY
 app.get('/api/patients/ocupation',auth.login, async (req,res)=>{
   try {
-		if (!roles.includes('1')){
+		const roles = req.roles
+		if (!roles.includes('1') && !roles.includes('0')){
 			res.status(403).json({error: "Permission Denied"})
 			return
 		}
@@ -239,10 +240,15 @@ app.get('/api/users',auth.login, async (req, res)=>{
   }
 })
 
-app.get('/api/users/highpriority',auth.login, async (req, res)=>{
+//ONLY ADMIN QUERY
+app.get('/api/users/inactive',auth.login, async (req, res)=>{
 	try{
-		const { month, year } = req.query
-		const result = await User_Endpoints.getUrgentsMonth(month, year)
+    const roles = req.roles
+    if (!roles.includes('0')){
+      res.status(403).json({error: "Permission Denied"})
+      return
+    }
+		const result = await User_Endpoints.getInactiveUsers()
 		res.json(result)
 	}catch(err){
 		console.log(err)
@@ -250,6 +256,7 @@ app.get('/api/users/highpriority',auth.login, async (req, res)=>{
 	}
 })
 
+//DIRECTOR QUERY
 app.get('/api/users/bestdoctor',auth.login, async (req, res)=>{
 	try{
 		const result = await User_Endpoints.getBestDoctor()
@@ -292,14 +299,14 @@ app.post('/api/users/login', async (req, res)=>{
   } else{
     const isValidUser = await User_Endpoints.loginUser(password, username)
     if (isValidUser.success){
-			const expirationTime = Math.floor(Date.now() / 1000) + (30 * 60);
+			const expirationTime = Math.floor(Date.now() / 1000) + (120 * 60);
       const jwt = await createJWT({
         "username": username,
         "roles": isValidUser.roles,
 				"exp": expirationTime
       })
       res.cookie('session', jwt,{ //testing
-        expires: new Date(Date.now() + 900000),
+        expires: date(expirationTime * 1000),
         httpOnly: true
       })
       res.redirect('/salas')
@@ -343,10 +350,11 @@ app.post('/api/users/changepassword',auth.login, async (req, res)=>{
 
 //+*****************************************[/api/operations/]*******************************
 
+//DIRECTOR QUERY
 app.get('/api/operations/overdue',auth.login, async (req, res)=>{
   try{
 		const roles = req.roles
-		if (!roles.includes('1')){
+		if (!roles.includes('1') && !roles.includes('0')){
 			res.status(403).json({error: "Permission Denied"})
 			return
 		}
@@ -357,12 +365,87 @@ app.get('/api/operations/overdue',auth.login, async (req, res)=>{
   }
 })
 
+//DIRECTOR QUERY
+app.get('/api/operations/day',auth.login, async (req, res)=>{
+  try{
+		const roles = req.roles
+		if (!roles.includes('1') && !roles.includes('0')){
+			res.status(403).json({error: "Permission Denied"})
+			return
+		}
+		const date = req.query.date
+		if (!date){
+    	const results = await Operation_Endpoints.getTodayOperations()
+    	res.json(results)
+		} else {
+			const dateRegex = /^\d{4}-\d{2}-\d{2}$/
+				if (!dateRegex.test(date)) {
+					res.status(400).json({ success: false, error: "Invalid date format. Please use YYYY-MM-DD." });
+				}
+    	const results = await Operation_Endpoints.getOperationsByDate(date)
+    	res.json(results)
+		}
+  }catch (err){
+    res.status(500).json(err)
+  }
+})
 
+//DIRECTOR QUERY
+app.get('/api/operations/highpriority',auth.login, async (req, res)=>{
+	try{
+		const roles = req.roles
+		if (!roles.includes('1') && !roles.includes('0')){
+			res.status(403).json({error: "Permission Denied"})
+			return
+		}
+		const { month, year } = req.query
+		const result = await User_Endpoints.getUrgentsMonth(month, year)
+		res.json(result)
+	}catch(err){
+		console.log(err)
+		res.status(500).json({error: "Internal Server Error"})
+	}
+})
+
+//DIRECTOR QUERY
+app.get('/api/operations/risk',auth.login, async (req, res)=>{
+  try{
+		const roles = req.roles
+		if (!roles.includes('1') && !roles.includes('0')){
+			res.status(403).json({error: "Permission Denied"})
+			return
+		}
+		let date = {}
+		const options = req.query
+		if(options){
+			if(!options.month && !options.year){
+			} else {
+				if (options.month < 1 || options.month > 12){
+					res.status(400).json({error: "Bad Request"})
+				} else {
+					date.month = options.month
+					date.year = options.year
+    			const results = await Operation_Endpoints.getRiskOperations(date)
+    			res.json(results)
+					return
+				}
+			}
+		}
+		console.log("DATE",date)
+    const results = await Operation_Endpoints.getRiskOperations()
+    res.json(results)
+  }catch (err){
+		console.log(err)
+    res.status(500).json({error:err})
+  }
+})
+
+//DIRECTOR QUERY
 app.get('/api/operations/range',auth.login, async (req, res)=>{
   try{
 		const { start, end } = req.query
 		const roles = req.roles
-		if (!roles.includes('1')){
+		if (!roles.includes('1') && !roles.includes('0')){
 			res.status(403).json({error: "Permission Denied"})
 			return
 		}
@@ -389,6 +472,7 @@ app.get('/api/operations',auth.login, async (req, res)=>{
 
 app.post('/api/operations',auth.login, async (req, res)=>{
   const { operation } = req.body
+	operation.responsable = req.username
   if (operation){
     try {
       let insertResults = await Operation_Endpoints.requestOperation(operation)
@@ -463,7 +547,6 @@ app.post('/api/notifications/send',auth.login, async(req, res)=>{
 app.get('/api/notifications',auth.login, async (req, res)=>{
 try{
 	const username = req.username
-	console.log(username)
 	if(!username){
 		res.status(400).json({error: "Bad Request"})
 	}
