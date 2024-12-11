@@ -258,6 +258,80 @@ class User {
       }
     })
   }
+
+	async getBestDoctor(){
+		return new Promise(async (resolve, reject)=>{
+			try{
+				const getBestDoctorQuery = `
+				WITH UserOperations AS (
+    		SELECT
+        		u.name,
+        		COUNT(o.id) AS total_operations,
+        		SUM(CASE WHEN o.results = 'positive' THEN 1 ELSE 0 END) AS positive_operations
+    		FROM
+        		User u
+    		JOIN
+        		Operation o ON u.username = o.responsable
+    		WHERE
+        		o.made = true
+    		GROUP BY
+        		u.name
+						),
+						UserAverages AS (
+    		SELECT
+        		name,
+        		positive_operations,
+        		total_operations,
+        		(positive_operations / total_operations) * 100 AS average_positive
+    		FROM
+        		UserOperations
+						)
+				SELECT
+    				name,
+    				total_operations,
+    				positive_operations,
+   				 	average_positive
+				FROM
+    				UserAverages
+				WHERE
+    				average_positive = (
+        SELECT
+            MAX(average_positive)
+        FROM
+            UserAverages
+    		);`
+				const results = await this.pool.query(getBestDoctorQuery)
+				if(results[0].length === 0){
+					return reject({success: false, error: "Something went wrong"})
+				}
+				const result = results[0]
+				return resolve({success: true,result})
+			}catch(err){
+				console.log(err)
+				reject({success: false, error: "Something went wrong"})
+			}
+		})
+	}
+
+	async getUrgentsMonth(month, year){
+		return new Promise(async (resolve, reject)=>{
+			try{
+				const query = `
+					SELECT COUNT(*) AS cantidad_operaciones_urgencia
+					FROM Operation
+					WHERE priority = 0
+  				AND MONTH(request_date) = ?
+  				AND YEAR(request_date) = ?;
+				`
+			const results = await this.pool.query(query, [month, year])
+			const result = results[0]
+			return resolve({success:true, result})
+			}catch(err){
+				console.log(err)
+				return reject({success:false})}
+		})
+	}
+
 }
 
 export default User;

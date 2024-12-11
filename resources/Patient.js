@@ -24,6 +24,7 @@ class Patient {
             p.phoneNumber,
             p.sex,
             p.consultationReasons,
+						p.risk_patient,
             GROUP_CONCAT(DISTINCT a.name) AS allergies,
             GROUP_CONCAT(DISTINCT cm.name) AS medications,
             GROUP_CONCAT(DISTINCT pr.name) AS preconditions,
@@ -71,6 +72,7 @@ class Patient {
             p.phoneNumber,
             p.sex,
             p.consultationReasons,
+						p.risk_patient,
             GROUP_CONCAT(DISTINCT a.name) AS allergies,
             GROUP_CONCAT(DISTINCT cm.name) AS medications,
             GROUP_CONCAT(DISTINCT pr.name) AS preconditions,
@@ -118,6 +120,7 @@ class Patient {
             p.phoneNumber,
             p.sex,
             p.consultationReasons,
+						p.risk_patient,
             GROUP_CONCAT(DISTINCT a.name) AS allergies,
             GROUP_CONCAT(DISTINCT cm.name) AS medications,
             GROUP_CONCAT(DISTINCT pr.name) AS preconditions,
@@ -168,6 +171,7 @@ async GET_Patients_By_Bed_Number(bed) {
           p.phoneNumber,
           p.sex,
           p.consultationReasons,
+					p.risk_patient,
           GROUP_CONCAT(DISTINCT a.name) AS allergies,
           GROUP_CONCAT(DISTINCT cm.name) AS medications,
           GROUP_CONCAT(DISTINCT pr.name) AS preconditions,
@@ -271,7 +275,8 @@ async CreatePatient(patient) {
      medications, //array
      preconditions, //array
      entryDates,
-     consultationReasons
+     consultationReasons,
+		 risk_patient
    } = patient;
 
   allergies = allergies.map(val => val.toLowerCase())
@@ -292,9 +297,9 @@ async CreatePatient(patient) {
 
     // Inserción en la tabla Patient
     const result = await this.pool.query(
-      `INSERT INTO Patient (createdAt, bed, dni, name, age, weight, height, phoneNumber, sex, consultationReasons)
+      `INSERT INTO Patient (createdAt, bed, dni, name, age, weight, height, phoneNumber, sex, consultationReasons, risk_patient)
       VALUES (NOW(), ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [bed, dni, name, age, weight, height, phoneNumber, sex, consultationReasons]
+      [bed, dni, name, age, weight, height, phoneNumber, sex, consultationReasons, risk_patient]
     );
     const patientResult = result[0]
     if (patientResult.affectedRows === 0) {

@@ -1,17 +1,17 @@
 USE Hospital;
 
 -- Inserción de datos en la tabla Patient
-INSERT INTO Patient (createdAt, bed, dni, name, age, weight, height, phoneNumber, sex, consultationReasons) VALUES
-( NOW(), 101, '12345678A', 'Juan Pérez', 30, 70, 175, '555-1234', 'M', 'Dolor en el pie'),
-( NOW(), 102, '23456789B', 'María López', 25, 60, 160, '555-2345', 'F', 'Le pica un ojo'),
-( NOW(), 103, '34567890C', 'Carlos García', 40, 80, 180, '555-3456', 'M', 'Ataque de tarros'),
-( NOW(), 104, '45678901D', 'Ana Martínez', 35, 55, 165, '555-4567', 'F', 'Jabón en el ojo'),
-( NOW(), 105, '56789012E', 'Pedro Sánchez', 50, 90, 185, '555-5678', 'M', 'Le cayó mal el huevo del comedor'),
-( NOW(), 106, '67890123F', 'Laura Fernández', 28, 65, 170, '555-6789', 'F', 'Dolor de ovarios'),
-( NOW(), 107, '78901234G', 'Jorge Ramírez', 45, 75, 178, '555-7890', 'M', 'Le creció mucho la nariz'),
-( NOW(), 108, '89012345H', 'Lucía Torres', 32, 68, 172, '555-8901', 'F', 'Dolor de muela'),
-( NOW(), 109, '90123456I', 'Diego Ruiz', 29, 72, 177, '555-9012', 'M', 'Ni el mismo sabe'),
-( NOW(), 110, '01234567J', 'Sofía Jiménez', 38, 58, 162, '555-0123', 'F', 'Ya no se que inventar');
+INSERT INTO Patient (createdAt, bed, dni, name, age, weight, height, phoneNumber, sex, consultationReasons, risk_patient) VALUES
+( NOW(), 101, '12345678A', 'Juan Pérez', 30, 70, 175, '555-1234', 'M', 'Dolor en el pie', true),
+( NOW(), 102, '23456789B', 'María López', 25, 60, 160, '555-2345', 'F', 'Le pica un ojo',true),
+( NOW(), 103, '34567890C', 'Carlos García', 40, 80, 180, '555-3456', 'M', 'Ataque de tarros',false),
+( NOW(), 204, '45678901D', 'Ana Martínez', 35, 55, 165, '555-4567', 'F', 'Jabón en el ojo',true),
+( NOW(), 105, '56789012E', 'Pedro Sánchez', 50, 90, 185, '555-5678', 'M', 'Le cayó mal el huevo del comedor',false),
+( NOW(), 206, '67890123F', 'Laura Fernández', 28, 65, 170, '555-6789', 'F', 'Dolor de ovarios',false),
+( NOW(), 107, '78901234G', 'Jorge Ramírez', 45, 75, 178, '555-7890', 'M', 'Le creció mucho la nariz', true),
+( NOW(), 308, '89012345H', 'Lucía Torres', 32, 68, 172, '555-8901', 'F', 'Dolor de muela',false),
+( NOW(), 109, '90123456I', 'Diego Ruiz', 29, 72, 177, '555-9012', 'M', 'Ni el mismo sabe', true),
+( NOW(), 410, '01234567J', 'Sofía Jiménez', 38, 58, 162, '555-0123', 'F', 'Ya no se que inventar',false);
 
 -- Inserción de datos en la tabla Preconditions
 INSERT INTO Preconditions (name) VALUES
@@ -173,3 +173,25 @@ INSERT INTO User_Notification (user_id, notification_id) VALUES
 (8, 8),
 (9, 9),
 (10, 10);
+
+INSERT INTO Operation (priority, estimated_duration, description, real_duration, made, request_date, scheduled_date, results, responsable, patient_id, approved) VALUES
+(0, 120, 'Operación de prueba 1', 130, 1, '2024-12-10 20:06:20', '2024-12-11 20:06:20', 'positive', 'daymar03', 7, 1),
+(1, 90, 'Operación de prueba 2', 95, 1, '2024-12-11 12:14:30', '2024-12-12 12:14:30', 'positive', 'marca', 5, 1),
+(0, 180, 'Operación de prueba 3', 190, 1, '2024-12-12 16:50:10', '2024-12-13 16:50:10', 'negative', 'calanac', 4, 1),
+(1, 60, 'Operación de prueba 4', 65, 1, '2024-12-13 09:30:45', '2024-12-14 09:30:45', 'positive', 'amateo', 8, 1),
+(0, 150, 'Operación de prueba 5', 160, 1, '2024-12-14 14:23:00', '2024-12-15 14:23:00', 'positive', 'ffrias', 3, 1),
+(1, 200, 'Operación de prueba 6', 210, 1, '2024-12-15 18:45:15', '2024-12-16 18:45:15', 'negative', 'anamlh', 6, 1),
+(0, 120, 'Operación de prueba 7', 125, 1, '2024-12-16 20:10:25', '2024-12-17 20:10:25', 'positive', 'lagp', 2, 1),
+(1, 100, 'Operación de prueba 8', 105, 1, '2024-12-17 08:55:40', '2024-12-18 08:55:40', 'negative', 'lmr', 9, 1),
+(0, 90, 'Operación de prueba 9', 92, 1, '2024-12-18 21:15:55', '2024-12-19 21:15:55', 'negative', 'daymar03', 7, 1),
+(1, 80, 'Operación de prueba 10', 85, 1, '2024-12-19 11:30:05', '2024-12-20 11:30:05', 'positive', 'marca', 5, 1),
+(0, 160, 'Operación de prueba 11', 170, 1, '2024-12-20 19:20:25', '2024-12-21 19:20:25', 'positive', 'calanac', 4, 1),
+(1, 130, 'Operación de prueba 12', 135, 1, '2024-12-21 13:05:35', '2024-12-22 13:05:35', 'negative', 'amateo', 8, 1),
+(0, 120, 'Operación de prueba 13', 125, 1, '2024-12-22 15:45:50', '2024-12-23 15:45:50', 'positive', 'ffrias', 3, 1),
+(1, 140, 'Operación de prueba 14', 145, 1, '2024-12-23 10:25:00', '2024-12-24 10:25:00', 'negative', 'anamlh', 6, 1),
+(0, 110, 'Operación de prueba 15', 115, 1, '2024-12-24 16:10:15', '2024-12-25 16:10:15', 'negative', 'lagp', 2, 1),
+(1, 100, 'Operación de prueba 16', 105, 1, '2024-12-25 08:45:30', '2024-12-26 08:45:30', 'positive', 'lmr', 9, 1),
+(0, 90, 'Operación de prueba 17', 95, 1, '2024-12-26 20:25:45', '2024-12-27 20:25:45', 'positive', 'daymar03', 7, 1),
+(1, 150, 'Operación de prueba 18', 155, 1, '2024-12-27 12:10:00', '2024-12-28 12:10:00', 'positive', 'marca', 5, 1),
+(0, 180, 'Operación de prueba 19', 185, 1, '2024-12-28 09:45:20', '2024-12-29 09:45:20', 'negative', 'calanac', 4, 1),
+(1, 120, 'Operación de prueba 20', 125, 1, '2024-12-29 11:55:35', '2024-12-30 11:55:35', 'negative', 'amateo', 8, 1);

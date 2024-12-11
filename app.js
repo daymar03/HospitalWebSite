@@ -80,6 +80,7 @@ app.get('/changepassword',auth.login, async (req, res)=>{
 //+**********************************[API RESOURCES]**********************************************
 //+***********************************[/api/patients/]********************************************
 
+//GET ALL
 app.get('/api/patients/all',auth.login, async (req,res)=>{
   try {
     const roles = req.roles
@@ -94,6 +95,7 @@ app.get('/api/patients/all',auth.login, async (req,res)=>{
   }
 })
 
+//GET ROOMS OCUPATION PERCENT
 app.get('/api/patients/ocupation',auth.login, async (req,res)=>{
   try {
 		if (!roles.includes('1')){
@@ -112,13 +114,13 @@ app.get('/api/patients/ocupation',auth.login, async (req,res)=>{
 	}
 })
 
+//GET BY ROOM || BED || ID
 app.get('/api/patients',auth.login, async (req,res)=>{
   const options = req.query;
   // by room
   if (options.room){
     try {
       const patients = await Patient_Endpoints.GET_Patients_By_Room_Number(options.room)
-			console.log(patients.length)
       res.json(patients)
     } catch (err){
       res.status(500).json({error: "error fetching patients"})
@@ -151,6 +153,7 @@ app.get('/api/patients',auth.login, async (req,res)=>{
   }
 })
 
+//CREATE PATIENT
 app.post('/api/patients/create',auth.login, async (req,res)=>{
   const { patient } = req.body
   const result = patientSchema.safeParse(patient)
@@ -165,6 +168,7 @@ app.post('/api/patients/create',auth.login, async (req,res)=>{
 
 })
 
+//UPDATE PATIENT
 app.patch('/api/patients/update',auth.login, async (req, res) => {
   const { id, bed } = req.query;
   // search by id or bed
@@ -193,7 +197,7 @@ app.patch('/api/patients/update',auth.login, async (req, res) => {
   }
 })
 
-
+//DELETE PATIENT
 app.delete('/api/patients/delete',auth.login, async(req,res)=>{
   const options = req.query
   try {
@@ -233,6 +237,27 @@ app.get('/api/users',auth.login, async (req, res)=>{
       res.status(500).json(err)
     }
   }
+})
+
+app.get('/api/users/highpriority',auth.login, async (req, res)=>{
+	try{
+		const { month, year } = req.query
+		const result = await User_Endpoints.getUrgentsMonth(month, year)
+		res.json(result)
+	}catch(err){
+		console.log(err)
+		res.status(500).json({error: "Internal Server Error"})
+	}
+})
+
+app.get('/api/users/bestdoctor',auth.login, async (req, res)=>{
+	try{
+		const result = await User_Endpoints.getBestDoctor()
+		res.json(result)
+	}catch(err){
+		console.log(err)
+		res.status(500).json({error: "Internal Server Error"})
+	}
 })
 
 app.post('/api/users/register',auth.login, async (req, res)=>{

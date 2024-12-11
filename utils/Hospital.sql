@@ -19,7 +19,8 @@ CREATE TABLE IF NOT EXISTS `Patient` (
   `height` integer,
   `phoneNumber` varchar(255),
   `sex` varchar(255),
-  `consultationReasons` text
+  `consultationReasons` text,
+  `risk_patient` bool
 );
 
 CREATE TABLE IF NOT EXISTS `Patient_Preconditions` (
@@ -82,7 +83,8 @@ CREATE TABLE IF NOT EXISTS `History` (
   `entry_date` timestamp,
   `consultation_reasons` text,
   `departure_date` timestamp,
-  `leaving_reasons` text
+  `leaving_reasons` text,
+  `risk_patient` bool
 );
 
 CREATE TABLE IF NOT EXISTS `Operation` (
