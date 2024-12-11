@@ -119,7 +119,10 @@ CREATE TABLE IF NOT EXISTS `User` (
   `id` integer PRIMARY KEY AUTO_INCREMENT,
   `name` varchar(255),
   `username` varchar(255) UNIQUE NOT NULL,
-  `password` varchar(255) NOT NULL
+  `password` varchar(255) NOT NULL,
+  `tryes` int DEFAULT 0,
+  `blocked` bool DEFAULT false,
+  `department` varchar(255)
 );
 
 CREATE TABLE IF NOT EXISTS `User_Rol` (

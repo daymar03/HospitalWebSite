@@ -14,7 +14,8 @@ const Rol = {
           "notificaciones": true,
           "repitlogin": true,
           "salas": true,
-					"permissionDenied": true
+					"permissionDenied": true,
+					"changepassword": true
         },
         "patient" : true,
         "user" : true,
@@ -52,7 +53,8 @@ const Rol = {
           "notificaciones": true,
           "repitlogin": true,
           "salas": true,
-					"permissionDenied": true
+					"permissionDenied": true,
+					"changepassword": true
         },
         "patient" : true,
         "user" : false,
@@ -90,7 +92,8 @@ const Rol = {
           "notificaciones": true,
           "repitlogin": true,
           "salas": true,
-					"permissionDenied": true
+					"permissionDenied": true,
+					"changepassword": true
         },
         "patient" : true,
         "user" : true,
@@ -128,7 +131,8 @@ const Rol = {
           "notificaciones": true,
           "repitlogin": true,
           "salas": true,
-					"permissionDenied": true
+					"permissionDenied": true,
+					"changepassword": true
         },
         "patient" : true,
         "user" : false,
@@ -166,7 +170,8 @@ const Rol = {
           "notificaciones": true,
           "repitlogin": true,
           "salas": true,
-					"permissionDenied": true
+					"permissionDenied": true,
+					"changepassword": true
         },
         "patient" : true,
         "user" : true,
@@ -198,7 +203,7 @@ const Rol = {
 const roles = ["Admin", "Director", "Doctor", "Nurse", "Recepcionist"]
 const actions = ["get", "post", "patch", "delete"]
 const resources = ["patient", "user", "notification", "operation"]
-const templates = ["admin", "informacion", "ingresar", "login", "notificaciones", "repitlogin", "salas", "permissionDenied"]
+const templates = ["admin", "informacion", "ingresar", "login", "notificaciones", "repitlogin", "salas", "permissionDenied", "changepassword"]
 const staticEndpoints = ["js", "css", "img", "assets"]
 
 export async function actionAccessControl(a = 0/*ROL*/, b = 0/*ACTION*/, c = 0/*RESOURCE*/, notification_id = "", username = "", operation_id = ""){

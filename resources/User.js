@@ -163,22 +163,40 @@ class User {
     return new Promise(async (resolve, reject)=>{
       try {
 //Obtener el hash de la contraseña para el Usuario: username
-        const getHashQuey = "select password, GROUP_CONCAT(DISTINCT Rol.id) as rol from User join User_Rol on User.id = User_Rol.user_id join Rol on User_Rol.rol_id = Rol.id where username = ?;"
+        const getHashQuey = "select password, GROUP_CONCAT(DISTINCT Rol.id) as rol, tryes as tries, blocked as block from User join User_Rol on User.id = User_Rol.user_id join Rol on User_Rol.rol_id = Rol.id where username = ?;"
         const getHashQueyResult = await this.pool.query(getHashQuey, [username])
+				let tries
+				let block
         let hash
         let rol
         if (getHashQueyResult[0].length != 0){
           hash = getHashQueyResult[0][0].password
           rol = getHashQueyResult[0][0].rol
+          tries = getHashQueyResult[0][0].tries
+          block = getHashQueyResult[0][0].block
+
+					if (block){
+						return reject({success: false, error: "You Have Been Blocked, Check Your Superior For Unlock"})
+					}
           let isValidPassword = await bcrypt.compare(password, hash)
-          console.log(isValidPassword)
           if (isValidPassword){
-            resolve({success : true, "roles":rol, message: "Valid User"})
+						tries = 0
+						this.pool.query("UPDATE User SET tryes = ? WHERE username = ?", [tries, username])
+            return resolve({success : true, "roles":rol, message: "Valid User", status: "logged"})
           } else{
-            resolve({success: false, message: "Invalid Username or Password"})
+						tries += 1
+						error = "Wrong Credentials"
+						status = "no logged"
+						if(tries === 6){
+							block = true
+							error = "To much wrong attempts, you have been blocked!"
+							status = "blocked"
+						}
+						this.pool.query("UPDATE User SET blocked = ?, tries = ? WHERE username = ?", [block,tries,username])
+            return resolve({success: false, error, status})
           }
         } else {
-          reject({success: false, message: "Invalid Username or Password"})
+          resolve({success: false, message: "Invalid Username or Password"})
           return
        }
       } catch(err){
@@ -188,14 +206,21 @@ class User {
     })
   }
 
-  async changePassword(username, password){
+  async changePassword(username, passwords){
     return new Promise(async (resolve, reject)=>{
       try{
+				const {password, lastPassword} = passwords
+//Comprobar si la contraseña es correcta:
+				const login = await this.loginUser(lastPassword, username)
+				console.log("LOOOGIN:",login)
+				if (!login.success){
+					return reject({success:false, error: "Invalid Password"})
+				}
 //Recuperar el id y todas las contraseñas del historial para el usario username:
         const getPasswordsQuery = "SELECT passwords, User.id FROM User JOIN Password_History ON User.id = Password_History.user_id WHERE User.username = ?" 
         const getPasswordsQueryResult = await this.pool.query(getPasswordsQuery, [username])
         if (getPasswordsQueryResult[0].length === 0){
-          reject({success: false, message: "Bad request"})
+          reject({success: false, error: "Bad request"})
         } else{
 //Crear el nuevo array del historial de contraseñas:
           const user_id = getPasswordsQueryResult[0][0].id
@@ -204,7 +229,7 @@ class User {
           history_passwords.forEach(async pass =>{
             const match = await bcrypt.compare(password, pass.password)
             if (match){
-              reject({success:false, message: "Password used, try another"})
+              reject({success:false, error: "Password used, try another"})
               return
             }
           })
@@ -213,7 +238,7 @@ class User {
           const updatePasswordQuery = `UPDATE User SET password = ? WHERE username = ?`
           const updatePasswordQueryResult = await this.pool.query(updatePasswordQuery, [hasedPassword, username])
           if (updatePasswordQueryResult.affectedRows === 0){
-            reject({success: false, message: "Something went wrong"})
+            reject({success: false, error: "Something went wrong"})
           }
 //Actualizar historial de contraseñas:
           const newEntry = {password: `${hasedPassword}`, date: `${new Date().toISOString()}`}
@@ -227,7 +252,8 @@ class User {
           resolve({success: true, message:"Password successfully changed"})
         }
       } catch(err){
-        reject({success: false, message: "Something went wrong"})
+				console.log(err)
+        reject({success: false, error: "Something went wrong"})
         return
       }
     })
