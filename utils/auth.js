@@ -1,6 +1,6 @@
 import { createSecretKey } from 'crypto'
 import { createJWT, decryptJWT, getResource } from '../utils/utils.js'
-import { actionAccessControl, staticAccessControl } from '../schemas/roles.schema.js'
+import { actionAccessControl, staticAccessControl } from './roles.schema.js'
 const secretKey = createSecretKey(process.env.JWT_SECRET, 'utf-8');
 
 if (!secretKey) {
