@@ -1,0 +1,33 @@
+******************************************************************************************************************
+*********************[OPERATIONS TESTS:]**************************************************************************
+
+curl -G \          
+  -H "Content-Type: application/json" \
+  --data-urlencode "start=2024-12-10 20:06:00" \
+  --data-urlencode "end=2024-12-10 20:07:00" \
+  --cookie "session=eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImxhZ3AiLCJyb2xlcyI6IjEiLCJleHAiOjE3MzQ0ODgzODQsImlhdCI6MTczMzg4MzU4NH0.svC0MWhsAf4J6rQVryBOVN2sivDsY-VQgAnGm8H5djA" \
+  http://localhost:3000/api/operations/range 
+
+curl -G \
+  -H "Content-Type: application/json" \
+  --data-urlencode "start=2024-12-10 20:06:00" \
+  --data-urlencode "end=2024-12-10 21:00:00" \
+  --cookie "session=eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImxhZ3AiLCJyb2xlcyI6IjEiLCJleHAiOjE3MzQ0ODgzODQsImlhdCI6MTczMzg4MzU4NH0.svC0MWhsAf4J6rQVryBOVN2sivDsY-VQgAnGm8H5djA" \
+  http://localhost:3000/api/operations/range 
+
+curl -X PATCH \
+	-H "Cookie: session=eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImxhZ3AiLCJyb2xlcyI6IjEiLCJleHAiOjE3MzQ0ODgzODQsImlhdCI6MTczMzg4MzU4NH0.svC0MWhsAf4J6rQVryBOVN2sivDsY-VQgAnGm8H5djA" \
+	-H "Content-Type: application/json" -d '{ "operation_approval" : { "id": 2, "date" : "2024-01-10 10:00:00" } }' \
+	http://localhost:3000/api/operations/approve 
+
+curl -X POST -H "Cookie: session=eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImRheW1hcjAzIiwicm9sZXMiOiIwIiwiZXhwIjoxNzM0NDgzODg1LCJpYXQiOjE3MzM4NzkwODV9.Q2bzur50XcMyGhMyxVt-Fe41FFSbZ4XY8iATtpOV49s" -H "Content-Type: application/json" -d '{ \
+  "operation": { \
+    "priority": 0, \
+    "estimated_duration": 120, \
+    "description": "cancer de mama", \
+    "responsable": "daymar03", \
+    "patient_bed": 107}}' \
+		http://localhost:3000/api/operations
+
+GET PERCENT OF ROOMS
+curl -H "Cookie: session=eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImxhZ3AiLCJyb2xlcyI6IjEiLCJleHAiOjE3MzQ0ODgzODQsImlhdCI6MTczMzg4MzU4NH0.svC0MWhsAf4J6rQVryBOVN2sivDsY-VQgAnGm8H5djA" http://localhost:3000/api/patients/ocupation

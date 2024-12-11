@@ -60,7 +60,6 @@ const Rol = {
         "user" : false,
         "notification" : true,
         "operation" : true
-        }
       },
       "post": {
         "patient" : true,
@@ -80,6 +79,7 @@ const Rol = {
         "notification" : true,
         "operation" : false
       }
+		}
   },
   "Director": {
     "permisions": {
@@ -110,7 +110,7 @@ const Rol = {
         "patient" : true,
         "user" : false,
         "notification" : true,
-        "operation" : false
+        "operation" : true
       },
       "delete": {
         "patient" : true,

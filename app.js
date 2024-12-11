@@ -8,7 +8,7 @@ import Auth from './utils/auth.js'
 import path from 'path'
 import cookieParser from 'cookie-parser'
 import dotenv from 'dotenv'
-import { createJWT, decryptJWT } from './utils/utils.js'
+import { createJWT, decryptJWT, validateDateTime } from './utils/utils.js'
 import { passwordSchema, userSchema, patientSchema, operationSchema } from './utils/zod-schemas.js'
 
 const Patient_Endpoints = new Patient()
@@ -82,11 +82,34 @@ app.get('/changepassword',auth.login, async (req, res)=>{
 
 app.get('/api/patients/all',auth.login, async (req,res)=>{
   try {
+    const roles = req.roles
+		if (!roles.includes('1')){
+			res.status(403).json({error: "Permission Denied"})
+			return
+		}
    const patients = await Patient_Endpoints.GET_Patients_All();
    res.json(patients);
   } catch(err) {
     res.status(500).json({error: 'Error fetching patients'})
   }
+})
+
+app.get('/api/patients/ocupation',auth.login, async (req,res)=>{
+  try {
+		if (!roles.includes('1')){
+			res.status(403).json({error: "Permission Denied"})
+			return
+		}
+	 	let percents = {}
+		for (let i = 1; i < 5; i++){
+      const patients = await Patient_Endpoints.GET_Patients_By_Room_Number(i)
+			percents[`room ${i}`] = (patients.length / 10) * 100
+		}
+		res.json(percents)
+  } catch (err){
+    console.log(err)
+		res.status(500).json({error: "error fetching patients"})
+	}
 })
 
 app.get('/api/patients',auth.login, async (req,res)=>{
@@ -95,12 +118,12 @@ app.get('/api/patients',auth.login, async (req,res)=>{
   if (options.room){
     try {
       const patients = await Patient_Endpoints.GET_Patients_By_Room_Number(options.room)
+			console.log(patients.length)
       res.json(patients)
     } catch (err){
       res.status(500).json({error: "error fetching patients"})
     }
   }
-
   // by id
   else if(options.id){
    try {
@@ -295,15 +318,49 @@ app.post('/api/users/changepassword',auth.login, async (req, res)=>{
 
 //+*****************************************[/api/operations/]*******************************
 
-app.get('/api/operations',auth.login, async (req, res)=>{
+app.get('/api/operations/overdue',auth.login, async (req, res)=>{
   try{
-    const results = await Operation_Endpoints.getOperations()
+		const roles = req.roles
+		if (!roles.includes('1')){
+			res.status(403).json({error: "Permission Denied"})
+			return
+		}
+    const results = await Operation_Endpoints.getOverdueOperations()
     res.json(results)
   }catch (err){
     res.status(500).json(err)
   }
 })
 
+
+app.get('/api/operations/range',auth.login, async (req, res)=>{
+  try{
+		const { start, end } = req.query
+		const roles = req.roles
+		if (!roles.includes('1')){
+			res.status(403).json({error: "Permission Denied"})
+			return
+		}
+		if (!validateDateTime(start) || !validateDateTime(end)){
+			res.status(400).json({success: false, error: "Invalid Date Format", e})
+			return
+		}
+    const results = await Operation_Endpoints.getOperationsRange(start, end)
+    res.json(results)
+  }catch (err){
+    res.status(500).json(err)
+  }
+})
+
+app.get('/api/operations',auth.login, async (req, res)=>{
+  try{
+		const responsable = req.username
+    const results = await Operation_Endpoints.getOperations(responsable)
+    res.json(results)
+  }catch (err){
+    res.status(500).json(err)
+  }
+})
 
 app.post('/api/operations',auth.login, async (req, res)=>{
   const { operation } = req.body
@@ -322,6 +379,18 @@ app.post('/api/operations',auth.login, async (req, res)=>{
 
 app.patch('/api/operations/approve',auth.login, async (req, res)=>{
   const { operation_approval } = req.body
+	const {date} = operation_approval
+
+	if (!validateDateTime(date)){
+		res.status(400).json({success: false, error: "Invalid Date Format", e})
+		return
+	}
+	const roles = req.roles
+	console.log("ROLESSS",roles)
+	if (!roles.includes('1')){
+		res.status(403).json({error: "Permission Denied"})
+		return
+	}
   try{
     const results = await Operation_Endpoints.approveOperation(operation_approval)
     res.json(results)
@@ -337,10 +406,15 @@ app.patch('/api/operations/made',auth.login, async (req, res)=>{
     if (!operation_results){
       res.status(400).json({error: "Bad request"})
     }
+		const roles = req.roles
+		if (!roles.includes(2)){
+			res.status(403).json({error: "Permission Denied"})
+		}
+
     const results = await Operation_Endpoints.madeOperation(operation_results)
-    res.json(results)
+    res.json({success: true})
   } catch(err){
-    res.json(err)
+    res.status(500).json({error: "Internal Server Error"})
   }
 })
 

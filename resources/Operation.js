@@ -1,4 +1,6 @@
 import { getPool } from '../utils/db.js'
+import { compareDates } from '../utils/utils.js'
+import moment from 'moment'
 
 class Operation {
   constructor(){
@@ -22,6 +24,16 @@ class Operation {
           console.log({error: "Bad operation request"})
           return
         }
+
+//Comprobar si el responsable es un username valido y si es doctor:
+				const getRespQuery = "SELECT r.name as rol from User u JOIN User_Rol ur ON u.id = ur.user_id JOIN Rol r ON ur.rol_id = r.id WHERE u.username = ?"
+				const getRespQueryResult = await this.pool.query(getRespQuery, [responsable])
+				if (getRespQueryResult[0].length === 0){
+					return reject({success: false, error: "Invalid Username"})
+				} else if ( getRespQueryResult[0][0].rol !== "Doctor"){
+					return reject({success: false, error: `Invalid Responsable Role`})
+				}
+
 //Recuperar id de usuario por cama
         let selectQuery = `SELECT id FROM Patient WHERE bed = ?`
         let patient_id
@@ -67,25 +79,30 @@ class Operation {
       try{
         const {
           id,
-          date
+          date //DATE FORMAT YYYY-MM-DD HH:MM:SS
         } = operation_approval
 
         if (!id || !date){
           reject({error: "Bad Request"})
           return
         }
+
 //Comprobando si la operación ya está aprobada
-          let selectQuery = 'SELECT approved FROM Operation WHERE id = ?'
+          let selectQuery = 'SELECT approved, request_date as date FROM Operation WHERE id = ?'
           let selectQueryResults = await this.pool.query(selectQuery, [id])
           if (selectQueryResults[0][0].approved){
             reject({error: "The Operation is already approved"})
             return
           }
-
+//Comprobar si la fecha planificada es mayor  que la fecha de request:
+				let dateFromDb = selectQueryResults[0][0].date;
+				let formattedDate = moment(dateFromDb).format('YYYY-MM-DD HH:mm:ss');
+				if(!compareDates(formattedDate, date)){
+					return reject({success:false, error: "Bad date"})
+				}
         const updateOperationQuery = "UPDATE Operation SET scheduled_date = ?, approved = true WHERE id = ?"
         let updateResults = await this.pool.query(updateOperationQuery, [date, id])
-        console.log(updateResults)
-        resolve({succes: "true", results: updateResults[0]})
+        resolve({succes: "true"})
       }catch(err){
         reject({error: err})
         return
@@ -108,6 +125,7 @@ class Operation {
           reject({error: "Bad request"})
           return
         } else {
+
 //Comprobando si la operación ya está aprobada
           let selectQuery = 'SELECT approved FROM Operation WHERE id = ?'
           let selectQueryResults = await this.pool.query(selectQuery, [id])
@@ -136,15 +154,66 @@ class Operation {
       }
     })
   }
+
+//*************************************************************************************************************************************
+//************************************************[GET OPERATIONS OVERDUE]**********************************************************
+
+async getOverdueOperations(){
+	return new Promise(async (resolve, reject)=>{
+		try{
+			const getAll = "SELECT COUNT(*) as all FROM Operation WHERE made = true"
+			const madeOperations = getAll[0][0].all.length
+			const getOperationsQuery = "SELECT COUNT(*) as all FROM Operation WHERE made = true and estimated_duration < real_duration"
+			const getOperationsQueryResult = await this.pool.query(getOperationsQuery)
+			const overdueOperations = getOperationsQueryResult[0][0].all.length
+			if(getOperationsQueryResult[0].length === 0){
+				return reject({success: false, error: "There are no done Operations or Something went wrong"})
+			} else {
+				let results = {total: overdueOperations, percent: (overdueOperations / madeOperations) * 100}
+				return resolve({success: true, results})
+			}
+		}catch(err){
+      console.log(err)
+			return reject(err)
+		}
+	})
+}
+
+
+//*************************************************************************************************************************************
+//************************************************[GET OPERATIONS IN A RANGE]**********************************************************
+
+async getOperationsRange(start, end){ //DATE FORMAT: YYYY-MM-DD HH:MM:SS
+	return new Promise(async (resolve, reject)=>{
+		try{
+			const getOperationsQuery = "SELECT p.name FROM Operation o JOIN Patient p ON o.patient_id = p.id WHERE request_date BETWEEN ? AND ?"
+			const getOperationsQueryResult = await this.pool.query(getOperationsQuery, [start, end])
+			if(getOperationsQueryResult[0].length === 0){
+				return reject({success: false, error: "Something went wrong"})
+			} else {
+				let results = getOperationsQueryResult[0]
+				return resolve({success: true, results})
+			}
+		}catch(err){
+      console.log(err)
+			return reject(err)
+		}
+	})
+}
+
+
 //*************************************************************************************************************************************
 //************************************************[GET OPERATIONS]*********************************************************************
 
-  async getOperations(){
+  async getOperations(responsable){
     return new Promise( async(resolve, reject)=>{
       try {
-        const selectQuery = "SELECT * FROM Operation"
-        const selectQueryResults = await this.pool.query(selectQuery)
-        resolve(selectQueryResults[0])
+        const selectQuery = "SELECT * FROM Operation WHERE responsable = ?"
+        const selectQueryResults = await this.pool.query(selectQuery, [responsable])
+				if (selectQueryResults[0].length === 0){
+					return reject({success: false, error: "No Available Operations"})
+				}
+        return resolve(selectQueryResults[0])
       } catch(err){
         reject({error: err})
         return

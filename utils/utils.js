@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt';
 import {SignJWT, jwtVerify} from "jose"
+import z from 'zod'
 
 const templates = ["admin", "informacion", "ingresar", "login", "notificaciones", "repitlogin", "salas", "permissionDenied"]
 const actions = ["GET", "POST", "PATCH", "DELETE"]
@@ -8,6 +9,13 @@ const resources ={
   "template": templates,
   "static": ["css", "js", "img", "assets"]
 }
+const dateTimeSchema = z.string().regex(
+  /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/,
+  {
+    message: "La fecha debe estar en el formato YYYY-MM-DD HH:MM:SS"
+  }
+);
+
 
 export function isValidBase64(str) {
   const base64Regex = /^(?:[A-Za-z0-9+\/]{4})*(?:[A-Za-z0-9+\/]{2}==|[A-Za-z0-9+\/]{3}=)?$/;
@@ -95,4 +103,52 @@ export function getResource(path){
   } else {
     return ["template", `${path}`]
   }
+}
+
+// Función para validar los valores de la fecha y hora
+export function validateDateTime (dateTimeString){
+// Verificar el formato base primero
+  const result = dateTimeSchema.safeParse(dateTimeString);
+  if (!result.success) {
+    return false
+  }
+
+// Extraer las partes de la fecha y hora
+  const [date, time] = dateTimeString.split(' ');
+  const [year, month, day] = date.split('-').map(Number);
+  const [hour, minute, second] = time.split(':').map(Number);
+
+// Validar las partes de la fecha y hora
+  if (month < 1 || month > 12) return false;
+  if (day < 1 || day > 31) return false
+  if (hour < 0 || hour >= 24) return false
+  if (minute < 0 || minute >= 60) return false
+  if (second < 0 || second >= 60) return false
+
+// Validación adicional para meses específicos
+  const daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+// Año bisiesto
+  if ((year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0)) {
+    daysInMonth[1] = 29;
+  }
+  if (day > daysInMonth[month - 1]) return false
+
+  return true; // Retornar la fecha y hora válida
+};
+
+export function compareDates(request, scheduled){
+  // Convertir las cadenas de fecha en objetos Date
+  const parsedDate1 = new Date(request.replace(' ', 'T'));
+  const parsedDate2 = new Date(scheduled.replace(' ', 'T'));
+
+  // Comparar las fechas
+  return parsedDate2 > parsedDate1;
+};
+
+try {
+	const validDate = "2024-12-31 10:00:00";
+	validateDateTime(validDate);
+	console.log("Fecha válida");
+}catch(e){
+	console.error("Errores de validación:", e.message);
 }
