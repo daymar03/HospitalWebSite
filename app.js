@@ -293,11 +293,13 @@ app.post('/api/users/register',auth.login, async (req, res)=>{
 app.post('/api/users/login', async (req, res)=>{
   try {
   const { username, password } = req.body
+	console.log(username, password)
   if(!username || !password){
     res.redirect( "/repitlogin")
     return
   } else{
     const isValidUser = await User_Endpoints.loginUser(password, username)
+		console.log("VAAAALID:", isValidUser)
     if (isValidUser.success){
 			const expirationTime = Math.floor(Date.now() / 1000) + (120 * 60);
       const jwt = await createJWT({
@@ -306,7 +308,7 @@ app.post('/api/users/login', async (req, res)=>{
 				"exp": expirationTime
       })
       res.cookie('session', jwt,{ //testing
-        expires: date(expirationTime * 1000),
+        expires: new Date(expirationTime * 1000),
         httpOnly: true
       })
       res.redirect('/salas')
@@ -314,8 +316,8 @@ app.post('/api/users/login', async (req, res)=>{
       res.redirect('/repitlogin')
     }
   }}catch(err){
-    res.redirect("/repitlogin")
     console.log(err)
+    res.redirect("/repitlogin")
   }
 })
 
@@ -486,7 +488,7 @@ app.post('/api/operations',auth.login, async (req, res)=>{
   }
 })
 
-app.patch('/api/operations/approve',auth.login, async (req, res)=>{
+app.patch('/api/operations/approve', async (req, res)=>{
   const { operation_approval } = req.body
 	const {date} = operation_approval
 
@@ -494,16 +496,17 @@ app.patch('/api/operations/approve',auth.login, async (req, res)=>{
 		res.status(400).json({success: false, error: "Invalid Date Format", e})
 		return
 	}
-	const roles = req.roles
+	/*const roles = req.roles
 	console.log("ROLESSS",roles)
 	if (!roles.includes('1')){
 		res.status(403).json({error: "Permission Denied"})
 		return
-	}
+	}*/
   try{
     const results = await Operation_Endpoints.approveOperation(operation_approval)
     res.json(results)
   } catch(err){
+		console.log(err)
     res.status(500).json({error: err})
   }
 

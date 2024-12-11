@@ -455,6 +455,7 @@ async getOperationsRange(start, end){ //DATE FORMAT: YYYY-MM-DD HH:MM:SS
           resolve(operations)
         }
       }catch (err){
+				console.log(err)
         reject({error: err})
         return
       }
