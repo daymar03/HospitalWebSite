@@ -57,8 +57,7 @@ class Notification {
 		try{
 			const userId = await this.pool.query("Select id FROM User WHERE username = ?", username)
 			const id = userId[0][0].id
-			console.log("USERID="+id)
-			const getNotificationsQuery = "SELECT n.body as body, n.id as id, n.titulo as title, n.readed as readed, n.date as date FROM Notification n JOIN User_Notification un ON n.id = un.notification_id JOIN User ON un.user_id = User.id"
+			const getNotificationsQuery = "SELECT n.body as body, n.id as id, n.titulo as title, n.readed as readed, n.date as date FROM Notification n JOIN User_Notification un ON n.id = un.notification_id JOIN User ON un.user_id = User.id WHERE un.user_id = ?"
 			const result = await this.pool.query(getNotificationsQuery, id)
 			console.log("RESULT:",result[0])
 			console.log("SIZE:",result[0].length)

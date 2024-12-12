@@ -140,10 +140,10 @@ async function ingresar(e){
         if(resJson.error == "The bed is already busy")
         alert("error: "+resJson.error)
         else if(resJson.error == "Bad Request"){
-          alert(resJson.message)
+          alert(resJson.error)
         }
         else {
-          alert("error: "+resJson.error.code)
+          alert("error: "+resJson.error)
         }
       } else {
         alert(`Paciente ingresado en la cama ${bed}`)
