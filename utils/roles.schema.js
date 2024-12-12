@@ -8,37 +8,37 @@ const Rol = {
       "get": {
         "template":{
           "admin": true,
-          "informacion": true,
-          "ingresar": true,
+          "informacion": false,
+          "ingresar": false,
           "login":true,
-          "notificaciones": true,
-          "repitlogin": true,
-          "salas": true,
+          "notificaciones": false,
+          "repitlogin": false,
+          "salas": false,
 					"permissionDenied": true,
 					"changepassword": true
         },
-        "patient" : true,
+        "patient" : false,
         "user" : true,
-        "notification" : true,
-        "operation" : true
+        "notification" : false,
+        "operation" : false
       },
       "post": {
-        "patient" : true,
+        "patient" : false,
         "user" : true,
-        "notification" : true,
-        "operation" : true
+        "notification" : false,
+        "operation" : false
       },
       "patch": {
-        "patient" : true,
+        "patient" : false,
         "user" : true,
-        "notification" : true,
-        "operation" : true
+        "notification" : false,
+        "operation" : false
       },
       "delete": {
-        "patient" : true,
+        "patient" : false,
         "user" : true,
-        "notification" : true,
-        "operation" : true
+        "notification" : false,
+        "operation" : false
       }
     }
   },

@@ -44,6 +44,7 @@ input {
   border: 1px solid #1977cc;
   display: inline-block;
   width: 50%;
+	outline: none;
 }
 
 input[type="number"] {

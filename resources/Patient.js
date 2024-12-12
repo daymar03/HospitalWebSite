@@ -6,13 +6,14 @@ class Patient {
   this.pool = getPool()
  }
 
- async GET_Patients(options = {}) { 
+ async GET_Patients(options = {}) {
+	return new Promise ( async (resolve, reject)=>{1
   try{
    const {limit=10, page=1} = options
    const offset = (page - 1) * limit
- 
+
    const [results] = await this.pool.query(
-       `SELECT 
+       `SELECT
             p.id AS patient_id,
             p.createdAt,
             p.bed,
@@ -29,33 +30,36 @@ class Patient {
             GROUP_CONCAT(DISTINCT cm.name) AS medications,
             GROUP_CONCAT(DISTINCT pr.name) AS preconditions,
             GROUP_CONCAT(DISTINCT ed.date) AS entry_dates
-        FROM 
+        FROM
             Patient p
-        LEFT JOIN 
+        LEFT JOIN
             Patient_Allergies pa ON p.id = pa.patient_id
-        LEFT JOIN 
+        LEFT JOIN
             Allergies a ON pa.allergies_id = a.id
-        LEFT JOIN 
+        LEFT JOIN
             Patient_Current_Medications pcm ON p.id = pcm.patient_id
-        LEFT JOIN 
+        LEFT JOIN
             Current_Medications cm ON pcm.current_medications_id = cm.id
-        LEFT JOIN 
+        LEFT JOIN
             Patient_Preconditions pp ON p.id = pp.patient_id
-        LEFT JOIN 
+        LEFT JOIN
             Preconditions pr ON pp.preconditions_id = pr.id
-        LEFT JOIN 
+        LEFT JOIN
             Patient_Entry_Dates ped ON p.id = ped.patient_id
-        LEFT JOIN 
+        LEFT JOIN
             Entry_Dates ed ON ped.entry_dates_id = ed.id
-        GROUP BY 
+        GROUP BY
             p.id
         LIMIT ? OFFSET ?;`, [limit, offset])
-    return results
+		if (results.length === 0){
+			return reject({success: false, error: "Empty"})
+		}
+    return resolve(results)
 
   } catch (error) {
     console.error('Error fetching patients:',error)
-  } 
- }
+  }
+ })}
 
  async GET_Patients_All() { 
   try{
@@ -262,7 +266,6 @@ async GET_Patients_By_Room_Number(room) {
 async CreatePatient(patient) {
   return new Promise(async (resolve, reject)=>{
   let {
-     createdAt,
      bed,
      dni,
      name,
@@ -281,7 +284,7 @@ async CreatePatient(patient) {
 
   allergies = allergies.map(val => val.toLowerCase())
   medications = medications.map(val => val.toLowerCase())
-  preconditions = preconditions.map(val => val.toLowerCase());
+  preconditions = preconditions.map(val => val.toLowerCase())
 
   try {
     await this.pool.query('START TRANSACTION');
@@ -298,7 +301,7 @@ async CreatePatient(patient) {
     // Inserción en la tabla Patient
     const result = await this.pool.query(
       `INSERT INTO Patient (createdAt, bed, dni, name, age, weight, height, phoneNumber, sex, consultationReasons, risk_patient)
-      VALUES (NOW(), ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      VALUES (NOW(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [bed, dni, name, age, weight, height, phoneNumber, sex, consultationReasons, risk_patient]
     );
     const patientResult = result[0]

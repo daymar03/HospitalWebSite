@@ -7,6 +7,20 @@ document.addEventListener('DOMContentLoaded', ()=>{
     document.querySelector('#sala').value = froom
     document.querySelector('#cama').value = fbed
   }
+
+  let name = document.querySelector('#name')
+  let dni = document.querySelector('#dni')
+  let phoneNumber = document.querySelector('#phoneNumber')
+  let age = document.querySelector('#age')
+  let weight = document.querySelector('#weight')
+  let height = document.querySelector('#height')
+  let consultationReasons = document.querySelector('#motiv')
+  let allergies = document.querySelector('#alerg')
+  let medications = document.querySelector('#medac')
+  let preconditions = document.querySelector('#cprev')
+  let risk_patient = document.querySelector('#risk_patient')
+
+	age.addEventListener
 })
 
 function resetForm(){
@@ -22,14 +36,16 @@ function resetForm(){
   document.querySelector('#cprev').value = ""
   document.querySelector('#sexF').checked = false
   document.querySelector('#sexM').checked = false
-
+  document.querySelector('#').checked = false
+  document.querySelector('#sexM').checked = false
 }
 
 function checkedF(){
 let checkF = document.querySelector('#sexF')
 let checkM = document.querySelector('#sexM')
   if (checkM.checked){
-    checkF.checked = false
+    checkF.checked = true
+    checkM.checked = false
   }
 }
 
@@ -37,7 +53,26 @@ function checkedM(){
 let checkF = document.querySelector('#sexF')
 let checkM = document.querySelector('#sexM')
   if (checkF.checked) {
-    checkM.checked = false
+    checkM.checked = true
+    checkF.checked = false
+  }
+}
+
+function checkedH(){
+let checkH = document.querySelector('#high')
+let checkL = document.querySelector('#low')
+  if (checkL.checked){
+    checkH.checked = true
+    checkL.checked = false
+  }
+}
+
+function checkedL(){
+let checkH = document.querySelector('#high')
+let checkL = document.querySelector('#low')
+  if (checkH.checked) {
+    checkL.checked = true
+    checkH.checked = false
   }
 }
 
@@ -53,10 +88,14 @@ async function ingresar(e){
 
   let checkF = document.querySelector('#sexF')
   let checkM = document.querySelector('#sexM')
+  let checkH = document.querySelector('#high')
+  let checkL = document.querySelector('#low')
 
   let sex
+	let risk_patient
 
   if(checkF.checked){sex = 'F'}else if (checkM.checked){sex = 'M'} else {alert("Debe especificar el Sexo"); return}
+  if(checkH.checked){risk_patient = true}else if (checkL.checked){risk_patient = false} else {alert("Debe especificar el riesgo"); return}
 
   let name = document.querySelector('#name').value
   let dni = document.querySelector('#dni').value
@@ -85,7 +124,8 @@ async function ingresar(e){
     allergies,
     medications,
     preconditions,
-    sex
+    sex,
+		risk_patient
   }}
   try {
     const res = await fetch('http://localhost:3000/api/patients/create', {

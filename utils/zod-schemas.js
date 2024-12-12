@@ -24,7 +24,8 @@ export const patientSchema = z.object({
   consultationReasons: z.string(),
   allergies: z.array(z.string()),
   medications: z.array(z.string()),
-  preconditions: z.array(z.string())
+  preconditions: z.array(z.string()),
+	risk_patient: z.boolean()
 });
 
 export const operationSchema = z.object({

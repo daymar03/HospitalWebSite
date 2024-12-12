@@ -61,13 +61,16 @@
                     <label for="name"><span>Nombre: </span><input placeholder="John Doe"  id="name" required type="text"></input></label>
                     <label for="dni"><span>Número de identidad: </span><input placeholder="01010190009" required id="dni" type="text"></input></label>
                     <label for="phoneNumber"><span>Número de teléfono: </span><input placeholder="88888888"  id="phoneNumber" type="text"></input></label>
-                    <label for="age"><span>Edad: </span> <input type="number" required id="age"/> <span> años </span> </label>
-                    <label for="weight"><span>Peso: </span> <input type="number" required id="weight"/> <span> kg</span></label>
-                    <label for="height"><span>Altura: </span> <input type="number" required id="height"/> <span> cm</span></label>
+                    <label for="age"><span>Edad: </span> <input type="number" required id="age" min="0"/> <span> años </span> </label>
+                    <label for="weight"><span>Peso: </span> <input type="number" required id="weight" min="0"/> <span> kg</span></label>
+                    <label for="height"><span>Altura: </span> <input type="number" required id="height" min="0"/> <span> cm</span></label>
                     <div class="checkbox-container">
                     <label>Sexo:</label>
                     <label for="sexM"><input type="checkbox"value="M" name="sex" id="sexM" onclick="checkedM()"/> M </label>
-                    <label for="sexF"><input type="checkbox"value="F" name="sex" id="sexF" onclick="checkedF()"/> F</label>
+                    <label for="sexF"><input type="checkbox"value="F" name="sex" id="sexF" onclick="checkedF()"/> F</label></br>
+                   	<label>Riesgo:</label>
+                    <label for="high"><input type="checkbox"value="true" name="risk_patient" id="high" onclick="checkedH()"/> Alto </label>
+                    <label for="low"><input type="checkbox"value="false" name="risk_patient" id="low" onclick="checkedL()"/> Bajo</label>
                     </div>
             </div>
 
