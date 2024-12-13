@@ -29,7 +29,8 @@ class Auth{
 
 	async haveSession(req, res, next) {
   	try {
-    	const session = req.cookies.session;
+    	const session = req.cookies.access_token;
+    	const refresh = req.cookies.refresh_token;
     	console.log(session)
     	if (session) { // Tiene token de sesión
       	const payload = await decryptJWT(session);
@@ -53,7 +54,37 @@ class Auth{
         	req.session = false;
         	next();
       	}
-    	} else { // No tiene token de sesión
+    	} else if (refresh) { //Tiene Token de Refresco (zuko o fruti)
+      		const payload = await decryptJWT(refresh);
+      		console.log(payload)
+      		if (payload) { // El token es válido
+						let iat = payload.payload.iat
+        		req.username = payload.payload.username
+						const isLogged = await User_Endpoints.isLogged(req.username, iat)
+						if (isLogged.success){
+							req.refresh = true;
+        			req.session = true;
+        			req.roles = payload.payload.roles.split(',');
+        			req.endpoint = req.path.split('/')[1];
+        			req.resource = getResource(req.path); // Ej: de /api/patients/all -> ["api", "/patients/all"]
+        			req.action = this.actions.indexOf(req.method);
+      				const expirationTimeRefresh = Math.floor(Date.now() / 1000) + (120 * 60 * 24 * 7); //7 days
+							const refresh_jwt = await createJWT({
+        				"refresh": true,
+        				"username": username,
+        				"roles": isValidUser.roles,
+        				"exp": expirationTimeRefresh
+      				})
+      				res.cookie('refresh_token', refresh_jwt,{ //testing
+        				expires: new Date(expirationTimeRefresh * 1000),
+       				 	httpOnly: true
+      				})
+        			next();
+						} else {
+							req.session = false; //Se cerró la sesión de ese token
+						}
+					}
+			} else { // No tiene token de sesión
       	req.session = false;
       	next();
     	}
@@ -65,7 +96,6 @@ class Auth{
 
 	async login(req, res, next){
   	console.log("Entrando al middleware LOGIN")
-  	console.log(req.session, req.cookies)
   	if (!req.session){
     	console.log("PORBANDO, ENTRO A !SESSION")
     	res.redirect(`/login`)

@@ -90,16 +90,28 @@ user.post('/login', async (req, res)=>{
     const isValidUser = await User_Endpoints.loginUser(password, username)
     console.log("VAAAALID:", isValidUser)
     if (isValidUser.success){
-      const expirationTime = Math.floor(Date.now() / 1000) + (120 * 60);
+      const expirationTimeAccess = Math.floor(Date.now() / 1000) + (120 * 60); //An hour
+      const expirationTimeRefresh = Math.floor(Date.now() / 1000) + (120 * 60 * 24 * 7); //7 days
       const jwt = await createJWT({
         "username": username,
         "roles": isValidUser.roles,
-        "exp": expirationTime
+        "exp": expirationTimeAccess
       })
-      res.cookie('session', jwt,{ //testing
-        expires: new Date(expirationTime * 1000),
+      res.cookie('access_token', jwt,{ //testing
+        expires: new Date(expirationTimeAccess * 1000),
         httpOnly: true
       })
+      const refresh_jwt = await createJWT({
+				"refresh": true,
+        "username": username,
+        "roles": isValidUser.roles,
+        "exp": expirationTimeRefresh
+      })
+      res.cookie('refresh_token', refresh_jwt,{ //testing
+        expires: new Date(expirationTimeRefresh * 1000),
+        httpOnly: true
+      })
+
 			if (isValidUser.roles === '0'){
 				res.redirect('/admin')
 			} else{
@@ -115,12 +127,14 @@ user.post('/login', async (req, res)=>{
 
 user.post('/logout',auth.login, async (req, res)=>{
   try {
+	console.log("ENTRO EN LOGOUT")
   const username = req.username
   const logoutTime = Math.floor(Date.now() / 1000);
 
 	const result = await User_Endpoints.logoutUser(username, logoutTime)
 	if(result.success){
-		res.clearCookie('session').redirect('/login')
+		res.clearCookie('access_token')
+		res.clearCookie('refresh_token').redirect('/login')
 	} else {
 		res.json({success:false, error:"Something Went Wrong"})
 	}

@@ -11,10 +11,12 @@
   <header>
     <nav class="header2">
       <div >
-        <button class="salir" title="Cerrar sesión">
-        <a class="salir" href="#"><i class="fas fa-sign-out-alt" style="font-size: 24px"></i></a>
-        </button>
-        <h1 class="header-titulo"> <i class="fas fa-laptop-code" style="font-size:24px"></i> Welcome <%= name%></h1>
+				<form action="http://localhost:3000/api/users/logout" method="POST">
+					<button class="salir" title="Cerrar sesión" type="submit">
+					<i class="fas fa-sign-out-alt" style="font-size: 24px"></i>
+					</button>
+					<h1 class="header-titulo"> <i class="fas fa-laptop-code" style="font-size:24px"></i> Welcome <%= name%></h1>
+				</form>
       </div>
     </nav>
   </header>
