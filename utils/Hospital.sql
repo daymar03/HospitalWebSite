@@ -126,7 +126,8 @@ CREATE TABLE IF NOT EXISTS `User` (
   `blocked` bool DEFAULT false,
   `department` varchar(255),
   `last_login` timestamp DEFAULT null,
-  `created` timestamp DEFAULT CURRENT_TIMESTAMP
+  `created` timestamp DEFAULT CURRENT_TIMESTAMP,
+	`last_logout` varchar(255) DEFAULT NULL
 );
 
 CREATE TABLE IF NOT EXISTS `User_Rol` (

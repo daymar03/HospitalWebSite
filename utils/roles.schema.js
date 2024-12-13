@@ -7,15 +7,16 @@ const Rol = {
     "permisions": {
       "get": {
         "template":{
-          "admin": true,
-          "informacion": false,
-          "ingresar": false,
-          "login":true,
-          "notificaciones": false,
-          "repitlogin": false,
-          "salas": false,
-					"permissionDenied": true,
-					"changepassword": true
+					"/": true,
+          "/admin": true,
+          "/informacion": false,
+          "/ingresar": false,
+          "/login":true,
+          "/notificaciones": false,
+          "/repitlogin": false,
+          "/salas": false,
+					"/permissionDenied": true,
+					"/changepassword": true
         },
         "patient" : false,
         "user" : true,
@@ -46,15 +47,16 @@ const Rol = {
     "permisions": {
       "get": {
         "template":{
-          "admin": false,
-          "informacion": true,
-          "ingresar": true,
-          "login":true,
-          "notificaciones": true,
-          "repitlogin": true,
-          "salas": true,
-					"permissionDenied": true,
-					"changepassword": true
+					"/": true,
+          "/admin": false,
+          "/informacion": true,
+          "/ingresar": true,
+          "/login":true,
+          "/notificaciones": true,
+          "/repitlogin": true,
+          "/salas": true,
+					"/permissionDenied": true,
+					"/changepassword": true
         },
         "patient" : true,
         "user" : false,
@@ -85,15 +87,16 @@ const Rol = {
     "permisions": {
       "get": {
         "template":{
-          "admin": false,
-          "informacion": true,
-          "ingresar": true,
-          "login":true,
-          "notificaciones": true,
-          "repitlogin": true,
-          "salas": true,
-					"permissionDenied": true,
-					"changepassword": true
+					"/": true,
+          "/admin": false,
+          "/informacion": true,
+          "/ingresar": true,
+          "/login":true,
+          "/notificaciones": true,
+          "/repitlogin": true,
+          "/salas": true,
+					"/permissionDenied": true,
+					"/changepassword": true
         },
         "patient" : true,
         "user" : true,
@@ -124,15 +127,16 @@ const Rol = {
     "permisions": {
       "get": {
         "template":{
-          "admin": false,
-          "informacion": true,
-          "ingresar": false,
-          "login":true,
-          "notificaciones": true,
-          "repitlogin": true,
-          "salas": true,
-					"permissionDenied": true,
-					"changepassword": true
+					"/": true,
+          "/admin": false,
+          "/informacion": true,
+          "/ingresar": false,
+          "/login":true,
+          "/notificaciones": true,
+          "/repitlogin": true,
+          "/salas": true,
+					"/permissionDenied": true,
+					"/changepassword": true
         },
         "patient" : true,
         "user" : false,
@@ -163,15 +167,16 @@ const Rol = {
     "permisions": {
       "get": {
         "template":{
-          "admin": false,
-          "informacion": true,
-          "ingresar": true,
-          "login":true,
-          "notificaciones": true,
-          "repitlogin": true,
-          "salas": true,
-					"permissionDenied": true,
-					"changepassword": true
+					"/": true,
+          "/admin": false,
+          "/informacion": true,
+          "/ingresar": true,
+          "/login":true,
+          "/notificaciones": true,
+          "/repitlogin": true,
+          "/salas": true,
+					"/permissionDenied": true,
+					"/changepassword": true
         },
         "patient" : true,
         "user" : true,
@@ -203,7 +208,7 @@ const Rol = {
 const roles = ["Admin", "Director", "Doctor", "Nurse", "Recepcionist"]
 const actions = ["get", "post", "patch", "delete"]
 const resources = ["patient", "user", "notification", "operation"]
-const templates = ["admin", "informacion", "ingresar", "login", "notificaciones", "repitlogin", "salas", "permissionDenied", "changepassword"]
+const templates = ["/", "/admin", "/informacion", "/ingresar", "/login", "/notificaciones", "/repitlogin", "/salas", "/permissionDenied", "/changepassword"]
 const staticEndpoints = ["js", "css", "img", "assets"]
 
 export async function actionAccessControl(a = 0/*ROL*/, b = 0/*ACTION*/, c = 0/*RESOURCE*/, notification_id = "", username = "", operation_id = ""){

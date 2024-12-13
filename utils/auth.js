@@ -1,7 +1,15 @@
 import { createSecretKey } from 'crypto'
 import { createJWT, decryptJWT, getResource } from '../utils/utils.js'
 import { actionAccessControl, staticAccessControl } from './roles.schema.js'
+import dotenv from 'dotenv'
 const secretKey = createSecretKey(process.env.JWT_SECRET, 'utf-8');
+import User from '../resources/User.js'
+
+const User_Endpoints = new User()
+
+dotenv.config()
+
+const appPath = process.env.APP_PATH
 
 if (!secretKey) {
   console.error("JWT_SECRET environment variable not set!");
@@ -10,7 +18,7 @@ if (!secretKey) {
 class Auth{
 	constructor(){
 		this.secretKey = createSecretKey(process.env.JWT_SECRET, 'utf-8');
-		this.templates = ["admin", "informacion", "ingresar", "login", "notificaciones", "repitlogin", "salas", "permissionDenied", "changepassword"]
+		this.templates = ["/admin", "/informacion", "/ingresar", "/login", "/notificaciones", "/repitlogin", "/salas", "/permissionDenied", "/changepassword"]
 		this.actions = ["GET", "POST", "PATCH", "DELETE"]
 		this.resources = {
   		"api" : ["patients", "users", "notifications", "operations"],
@@ -27,14 +35,20 @@ class Auth{
       	const payload = await decryptJWT(session);
       	console.log(payload)
       	if (payload) { // El token es válido
-        	req.session = true;
+					let iat = payload.payload.iat
         	req.username = payload.payload.username
-        	req.roles = payload.payload.roles.split(',');
-        	req.endpoint = req.path.split('/')[1];
-        	req.resource = getResource(req.path); // Ej: de /api/patients/all -> ["api", "/patients/all"]
-        	console.log("Resources:", req.resource);
-        	req.action = this.actions.indexOf(req.method);
-        	next();
+					const isLogged = await User_Endpoints.isLogged(req.username, iat)
+					if (isLogged.success){
+        		req.session = true;
+        		req.roles = payload.payload.roles.split(',');
+        		req.endpoint = req.path.split('/')[1];
+        		req.resource = getResource(req.path); // Ej: de /api/patients/all -> ["api", "/patients/all"]
+        		console.log("Resources:", req.resource);
+        		req.action = this.actions.indexOf(req.method);
+        		next();
+					} else {
+						req.session = false; //Se cerró la sesión de ese token
+					}
       	} else { // El token no es válido
         	req.session = false;
         	next();
@@ -45,7 +59,7 @@ class Auth{
     	}
   	} catch (err) {
     	console.log(err);
-    	next(err); // Asegúrate de pasar el error al manejador de errores
+    	next(); // Asegúrate de pasar el error al manejador de errores
   	}
 	}
 
@@ -54,16 +68,14 @@ class Auth{
   	console.log(req.session, req.cookies)
   	if (!req.session){
     	console.log("PORBANDO, ENTRO A !SESSION")
-    	res.redirect('/login')
+    	res.redirect(`/login`)
     	return
   	} else if(!req.permission){
     	console.log("PORBANDO, ENTRO A !PERMISSION")
-    	res.redirect('/permissionDenied')
-    	next('route')
+    	res.render(`${appPath}/templates/notFound.ejs`)
     	return
   	}
   	else {
-    	console.log("PORBANDO, ENTRO A ELSE")
     	next()
     	return
   	}
@@ -89,7 +101,7 @@ class Auth{
       	return next(); 												// Si ninguno de los roles tiene permiso, pasar al siguiente middleware
     	} else if (req.resource[0] === "template") {
       	for (const rol of roles) {
-        	if (await staticAccessControl(rol, resource[1].split('/')[1])) { 				// Si alguno de sus roles
+        	if (await staticAccessControl(rol, resource[1])) { 				// Si alguno de sus roles
           	req.permission = true; 						// Le otorga permiso a acceder
           	return next();
         	}
@@ -106,10 +118,6 @@ class Auth{
 	}
 
 }
-
-
-
-
 
 
 export default Auth

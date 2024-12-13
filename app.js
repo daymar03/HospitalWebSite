@@ -1,16 +1,14 @@
 import express from 'express'
 import cors from 'cors'
-import Auth from './utils/auth.js'
 import path from 'path'
 import cookieParser from 'cookie-parser'
 import dotenv from 'dotenv'
-import { createJWT, decryptJWT, validateDateTime } from './utils/utils.js'
-import { passwordSchema, userSchema, patientSchema, operationSchema } from './utils/zod-schemas.js'
 import patient from './routers/patientRouter.js'
 import user from './routers/userRouter.js'
 import operation from './routers/operationRouter.js'
 import notification from './routers/notificationRouter.js'
 import router from './routers/viewsRouter.js'
+import Auth from './utils/auth.js'
 
 const auth = new Auth()
 
@@ -49,6 +47,11 @@ app.use('/api/operations', operation)
 
 app.use('/api/notifications/', notification)
 
+app.use((req, res, next) => {
+	res.status(404).render(`${appPath}/templates/notFound.ejs`);
+});
+
+//SERVER
 app.listen(port, ()=> {
  console.log(`Server listening on port ${port}`)
 })

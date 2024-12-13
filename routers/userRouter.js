@@ -113,6 +113,25 @@ user.post('/login', async (req, res)=>{
   }
 })
 
+user.post('/logout',auth.login, async (req, res)=>{
+  try {
+  const username = req.username
+  const logoutTime = Math.floor(Date.now() / 1000);
+
+	const result = await User_Endpoints.logoutUser(username, logoutTime)
+	if(result.success){
+		res.clearCookie('session').redirect('/login')
+	} else {
+		res.json({success:false, error:"Something Went Wrong"})
+	}
+
+  }catch(err){
+    console.log(err)
+    res.status(500).json({success: false, error: "Internal Server Error"})
+  }
+})
+
+
 user.post('/changepassword',auth.login, async (req, res)=>{
   try {
   const username = req.username

@@ -175,6 +175,23 @@ class User {
 		}})
 	}
 
+	async isLogged(username, iat){
+		return new Promise(async (resolve, reject)=>{
+			try{
+				const userLastLogout = await this.pool.query("SELECT last_logout from User WHERE username = ?", [username])
+				const last_logout = userLastLogout[0][0].last_logout
+				if (last_logout != "null" && iat > last_logout){
+					return resolve({success: true})
+				} else {
+					return reject({success:false})
+				}
+			}catch(err){
+				console.log(err)
+				return reject({success:false})
+			}
+		})
+	}
+
   async loginUser(password, username){
     return new Promise(async (resolve, reject)=>{
       try {
@@ -221,6 +238,23 @@ class User {
       }
     })
   }
+
+	async logoutUser(username, iat){
+		return new Promise(async (resolve, reject)=>{
+			try{
+				const logoutQuery = "UPDATE User SET last_logout = ? WHERE username = ?"
+				const result = await this.pool.query(logoutQuery, [iat, username])
+				if(result[0].affectedRows != 0){
+					return resolve({success: true})
+				} else {
+					return reject({success:false, error: "Undefined Error"})
+				}
+			}catch(err){
+				console.log(err)
+				return reject({success:false, error: "Undefined Error"})
+			}
+		})
+	}
 
   async changePassword(username, passwords){
     return new Promise(async (resolve, reject)=>{

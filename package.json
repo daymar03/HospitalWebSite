@@ -7,7 +7,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "DB_HOST=127.0.0.1 DB_USER=admin DB_PASSWORD=admin DB_NAME=Hospital PORT=3306 nodemon app.js",
+    "start": "app.js",
     "dev": "nodemon app.js"
   },
   "author": "Calana2 AND daymar03",
