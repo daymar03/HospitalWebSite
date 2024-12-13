@@ -1,7 +1,7 @@
 import express from 'express'
 import Auth from '../utils/auth.js'
 import Patient from '../resources/Patient.js'
-
+import { patientSchema} from '../utils/zod-schemas.js'
 
 const Patient_Endpoints = new Patient()
 const patient = express.Router()

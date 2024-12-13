@@ -31,7 +31,7 @@ class Auth{
   	try {
     	const session = req.cookies.access_token;
     	const refresh = req.cookies.refresh_token;
-    	console.log(session)
+    	console.log("REEEEEEEE",refresh)
     	if (session) { // Tiene token de sesión
       	const payload = await decryptJWT(session);
       	console.log(payload)
@@ -41,6 +41,7 @@ class Auth{
 					const isLogged = await User_Endpoints.isLogged(req.username, iat)
 					if (isLogged.success){
         		req.session = true;
+						console.log("EEERRROOOR",payload.payload)
         		req.roles = payload.payload.roles.split(',');
         		req.endpoint = req.path.split('/')[1];
         		req.resource = getResource(req.path); // Ej: de /api/patients/all -> ["api", "/patients/all"]
@@ -56,8 +57,7 @@ class Auth{
       	}
     	} else if (refresh) { //Tiene Token de Refresco (zuko o fruti)
       		const payload = await decryptJWT(refresh);
-      		console.log(payload)
-      		if (payload) { // El token es válido
+      		if (payload.payload.refresh) { // El token es válido
 						let iat = payload.payload.iat
         		req.username = payload.payload.username
 						const isLogged = await User_Endpoints.isLogged(req.username, iat)
@@ -69,13 +69,12 @@ class Auth{
         			req.resource = getResource(req.path); // Ej: de /api/patients/all -> ["api", "/patients/all"]
         			req.action = this.actions.indexOf(req.method);
       				const expirationTimeRefresh = Math.floor(Date.now() / 1000) + (120 * 60 * 24 * 7); //7 days
-							const refresh_jwt = await createJWT({
-        				"refresh": true,
-        				"username": username,
-        				"roles": isValidUser.roles,
+							const access_jwt = await createJWT({
+        				"username": req.username,
+        				"roles": payload.payload.roles,
         				"exp": expirationTimeRefresh
       				})
-      				res.cookie('refresh_token', refresh_jwt,{ //testing
+      				res.cookie('access_token', access_jwt,{ //testing
         				expires: new Date(expirationTimeRefresh * 1000),
        				 	httpOnly: true
       				})
@@ -83,6 +82,10 @@ class Auth{
 						} else {
 							req.session = false; //Se cerró la sesión de ese token
 						}
+					} else {
+      			console.log("REFRESCO",payload)
+						req.session = false;
+						next()
 					}
 			} else { // No tiene token de sesión
       	req.session = false;

@@ -209,7 +209,7 @@ class User {
           block = getHashQueyResult[0][0].block
 
 					if (block){
-						return reject({success: false, error: "You Have Been Blocked, Check Your Superior For Unlock"})
+						return resolve({success: false, error: "You Have Been Blocked, Check Your Superior For Unlock", status: "blocked"})
 					}
           let isValidPassword = await bcrypt.compare(password, hash)
           if (isValidPassword){
@@ -218,18 +218,18 @@ class User {
             return resolve({success : true, "roles":rol, message: "Valid User", status: "logged"})
           } else{
 						tries += 1
-						error = "Wrong Credentials"
-						status = "no logged"
+						let error = "Wrong Credentials"
+						let status = "no logged"
 						if(tries === 6){
 							block = true
 							error = "To much wrong attempts, you have been blocked!"
 							status = "blocked"
 						}
-						this.pool.query("UPDATE User SET blocked = ?, tries = ? WHERE username = ?", [block,tries,username])
+						this.pool.query("UPDATE User SET blocked = ?, tryes = ? WHERE username = ?", [block,tries,username])
             return resolve({success: false, error, status})
           }
         } else {
-          resolve({success: false, message: "Invalid Username or Password"})
+          resolve({success: false, message: "Invalid Username or Password", status: "nologged"})
           return
        }
       } catch(err){

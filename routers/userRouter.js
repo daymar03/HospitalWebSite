@@ -3,7 +3,11 @@ import User from '../resources/User.js'
 import Auth from '../utils/auth.js'
 import { createJWT, decryptJWT, validateDateTime } from '../utils/utils.js'
 import { passwordSchema, userSchema, patientSchema, operationSchema } from '../utils/zod-schemas.js'
+import dotenv from 'dotenv'
 
+dotenv.config()
+
+const appPath = process.env.APP_PATH
 const user = express.Router()
 const User_Endpoints = new User()
 const auth = new Auth()
@@ -88,9 +92,12 @@ user.post('/login', async (req, res)=>{
     return
   } else{
     const isValidUser = await User_Endpoints.loginUser(password, username)
-    console.log("VAAAALID:", isValidUser)
+		if (isValidUser.status === "blocked"){
+			res.status(403).render(`${appPath}/templates/blocked.ejs`, {username})
+			return
+		}
     if (isValidUser.success){
-      const expirationTimeAccess = Math.floor(Date.now() / 1000) + (120 * 60); //An hour
+      const expirationTimeAccess = Math.floor(Date.now() / 1000) + (60 * 15); //An hour
       const expirationTimeRefresh = Math.floor(Date.now() / 1000) + (120 * 60 * 24 * 7); //7 days
       const jwt = await createJWT({
         "username": username,
@@ -102,7 +109,7 @@ user.post('/login', async (req, res)=>{
         httpOnly: true
       })
       const refresh_jwt = await createJWT({
-				"refresh": true,
+				"refresh":true,
         "username": username,
         "roles": isValidUser.roles,
         "exp": expirationTimeRefresh
@@ -120,13 +127,18 @@ user.post('/login', async (req, res)=>{
       res.redirect('/repitlogin')
     }
   }}catch(err){
-    console.log(err)
+    console.log("EEEEEER",err)
     res.redirect("/repitlogin")
   }
 })
 
-user.post('/logout',auth.login, async (req, res)=>{
+user.post('/logout', async (req, res)=>{
   try {
+	if(!req.session){
+		console.log("NO TIENE SECCION")
+		res.redirect('/login')
+		return
+	}
 	console.log("ENTRO EN LOGOUT")
   const username = req.username
   const logoutTime = Math.floor(Date.now() / 1000);

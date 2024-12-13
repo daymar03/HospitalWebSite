@@ -1,0 +1,24 @@
+        <div class="conten__titulo">
+          <h4 class="content-titulo"><i class="fas fa-diagnoses"></i> Gestion y Coordinacion de Pacientes</h4>
+        </div>
+        <div class="section__container">
+        <!--Mala Practica-->
+          <br>
+          <div class="form">
+            <label for="salas">Buscar Pacientes</label>
+            <select name="salas" id="salas">
+              <option value="1">Sala 1</option>
+              <option value="2">Sala 2</option>
+              <option value="3">Sala 3</option>
+              <option value="4">Sala 4</option>
+            </select>
+            <button onclick="get_by_room(document.querySelector('#salas').value)">Buscar</button>
+          </div>
+          <div class="mostrar__ubicacion">
+            <div class="ubicacion mostrar__ubicacion--seccion1">
+            </div>
+
+            <div class="ubicacion mostrar__ubicacion--seccion2">
+            </div>
+          </div>
+        </div>

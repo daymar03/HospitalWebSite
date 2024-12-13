@@ -171,5 +171,48 @@
   </div>
 </div>
 </main>
+<!-- Añadiendo el footer -->
+
+
+
+            <footer class="footer"> 
+              <div class="footer-nav"> 
+                <div class="footer-item">
+                <a href="/salas">
+                  <i class="fas fa-procedures first" onmouseover="showInfo(1)" onmouseleave="hideInfo(1)"></i>
+                  <span class="info1"> Información de Salas</span>
+                </a>
+                </div>
+                <div class="footer-item">
+                <a href="/informacion"> 
+                  <i class="fas fa-notes-medical" onmouseover="showInfo(2)" onmouseleave="hideInfo(2)"></i>
+                  <span class="info2"> Información del Paciente</span>
+                </a>
+                </div>
+                <div class="footer-item">
+                <a href="/ingresar">
+                  <i class="fas fa-user-plus" onmouseover="showInfo(3)" onmouseleave="hideInfo(3)"></i> 
+                  <span class="info3"> Ingresar Paciente<p></p></span> 
+                </a>
+                </div>
+                <div class="footer-item">
+                <a href="/notificaciones">
+                  <i class="fas fa-bell footer-icon" onmouseover="showInfo(4)" onmouseleave="hideInfo(4)"></i> 
+                  <span class="info4"> Notificaciones</span> 
+                </a>
+                </div>
+              </div>
+            </footer>
+
+            <script charset="utf-8">
+              function showInfo(n){
+              document.querySelector(`.info${n}`).style.opacity = 1
+              }
+
+              function hideInfo(n){
+              document.querySelector(`.info${n}`).style.opacity = 0
+              }
+            </script>
+
 
 </html>

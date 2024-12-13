@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salas</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/styles-<%=css%>.css">
+</head>
+<body>
+    <nav class="nav">
+ <div class="profile"> <img src="https://via.placeholder.com/50" alt="Perfil"> <div class="info"> <div class="name"><%=username%></div> <div class="role"><%=rol%></div> </div> </div>
+<ul>
+<%- link %>
+</ul>
+    </nav>
+    
+    <div class="hamburger" onclick="toggleNav()"><i class="fa fa-bars" style="font-size: 24px;"></i></div>
+
+    <nav class="topnav">
+			<form action="http://localhost:3000/api/users/logout" method="POST">
+			<div class="close"><button type="submit" class="close-button" title="Cerrar sesión"><i class="fas fa-sign-out-alt" style="font-size: 24px"></i></button></div>
+			</form>
+			<%- titulo%>
+    </nav>
+
+    <main class="content">
+        <%- contenido %>
+    </main>
+    
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section footer-logo">
+                <img src="/img/logo.jpg" alt="">
+            </div>
+            
+            <div class="footer-section developers">
+                <h3>Desarrolladores</h3>
+                <ul>
+                    <li>Daymar David Guerrero Santiago</li>
+                    <li>Christopher Fernando Frias Ramos</li>
+                    <li>Ramon Alejandro Mateo Ochoa</li>
+                    <li>Kevin Calaña Castellón</li>
+                    <li>Marc Anthony Echemendía Romero</li>                                        
+                </ul>
+            </div>
+            
+            <div class="footer-section social-media">
+                <h3>Redes Sociales</h3>
+                <ul>
+                    <li>
+                        <a href="https://facebook.com">
+                            <i class="fab fa-facebook"></i>
+                            Facebook
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://twitter.com">
+                            <i class="fab fa-twitter"></i>
+                        Twitter(X)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://instagram.com">
+                            <i class="fab fa-instagram"></i>
+                            Instagram
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>Desarrollado por: <span>Development Team Web Milliom</span> </p>
+            <p>© webmilliom@gmail.com</p>
+        </div>
+    </footer>
+    <script>
+        function toggleNav() {
+            document.querySelector('.nav').classList.toggle('active');
+        }
+    </script>
+		<%- js %>
+</body>
+</html>

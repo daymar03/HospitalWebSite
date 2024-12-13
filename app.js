@@ -47,7 +47,7 @@ app.use('/api/operations', operation)
 
 app.use('/api/notifications/', notification)
 
-app.use((req, res, next) => {
+app.use(auth.login, (req, res, next) => {
 	res.status(404).render(`${appPath}/templates/notFound.ejs`);
 });
 

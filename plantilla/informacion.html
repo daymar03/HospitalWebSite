@@ -1,22 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Información</title>
-    <link rel="stylesheet" href="/css/styles-informacion.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link rel="icon" href="/img/favicon-16x16.png" type="image/png">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-</head>
-<body>
-    <header>
-        <nav class="header">
-            <button class="close" title="Cerrar sesión"><i class="fas  fa-sign-out-alt" style="font-size: 18px"></i></button>
-            <h1 class="header-Titulo"><i class="fas fa-user"></i> Información</h1>
-        </nav>
-    </header>
-    <main>
     <div class="container">
         <div class="campo_busqueda">
                     <form onsubmit="get(event)">
@@ -97,24 +78,3 @@
                 </div>
               </form>
             </div>
-            </main>
-            <script charset="utf-8">
-              function showInfo(n){
-              document.querySelector(`.info${n}`).style.opacity = 1
-              }
-
-              function hideInfo(n){
-              document.querySelector(`.info${n}`).style.opacity = 0
-              }
-            </script>
-            <div id="contextMenu">
-              <ul>
-                <li class="editable-li">Editar</li>
-              </ul>
-            </div>
-
-<script src="/js/script-informacion.js"></script>
-<script src="/js/get_by_bed-informacion.js"></script>
-<script src="/js/update-informacion.js"></script>
-</body>
-</html>

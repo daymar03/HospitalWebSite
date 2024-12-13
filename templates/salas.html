@@ -4,109 +4,127 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Salas</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="/css/styles-salas.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link rel="icon" href="/img/favicon-16x16.png" type="image/png">
-    <script src="/js/script-salas.js"></script>
 </head>
 <body>
-    <header>
-        <nav class="header">
-            <div>
-                <button class="close" title="Cerrar sesión"><i class="fas  fa-sign-out-alt" style="font-size: 24px"></i></button>
-                <h1 class="header-Titulo"><i class='fas fa-bed' style='font-size:24px;'></i> Salas </h1>
-            </div>
-        </nav>
-    </header>
-<main>
-    <div class="recepcion__subtitle">
-        <h2 class="recepcion__subtitle_font"><i class="fas fa-users-cog"></i> Gestión y Coordinación de Pacientes</h2>
+    <nav class="nav">
+        <ul>
+            <li><a href="#">
+                <i class="fas fa-procedures"></i>
+                    Informacion de Salas
+            </a></li>
+            <li><a href="#">
+                <i class="fas fa-notes-medical"></i>
+                    Información del Paciente
+            </a></li>
+            <li><a href="#">
+                <i class="fas fa-user-plus"></i>
+                    Ingresar Pacientes
+            </a></li>
+            <li><a href="#">
+                <i class="fas fa-bell"></i>
+                Notificaciones
+            </a></li>
+        </ul>
+    </nav>
+    
+    <div class="hamburger" onclick="toggleNav()">
+            <i class="fa fa-bars" style="font-size: 24px;"></i>
     </div>
-    <div class="mostrar__pacientes">
-        <div class="mostrar__buscar--ubicacion">
-            <label for="salas">Buscar Pacientes</label>
-            <select name="salas" id="salas">
-              <option value="1">Sala 1</option>
-              <option value="2">Sala 2</option>
-              <option value="3">Sala 3</option>
-              <option value="4">Sala 4</option>
-            </select>
-            <button class="button button-search-room" onclick="get_by_room(document.querySelector('#salas').value)">Buscar</button>
+
+    <nav class="topnav">
+            <div class="close">
+								<form action="http://localhost:3000/api/users/logout" method="POST">
+                	<button type="submit" class="close-button" title="Cerrar sesión"><i class="fas  fa-sign-out-alt" style="font-size: 24px"></i></button>
+								</form>
+            </div>
+            <h1 class="topnav-titulo"><i class='fas fa-bed' style='font-size:24px;'></i> Salas </h1>
+    </nav>
+
+    <main class="content">
+        <div class="conten__titulo">
+            <h4 class="content-titulo"><i class="fas fa-diagnoses"></i> Gestion y Coordinacion de Pacientes</h4>
         </div>
-        <!--NO TOCAR AQUI ABAJO-->
-        <div class="mostrar__ubicacion">
-          <div class="mostrar__ubicacion1">
-          </div>
-          <div class="mostrar__ubicacion2">
-          </div>
-        </div>
-    </div>
-</main>a
-            <div class="navigation"> 
-              <div class="navigation-nav"> 
-                <div class="navigation-item" onmouseover="showInfo(1)" onmouseleave="hideInfo(1)">
-                <a href="/salas">
-                  <i class="fas fa-procedures first"></i>
-                  <span class="info1"> Información de Salas</span>
-                </a>
-                </div>
-                <div class="navigation-item" onmouseover="showInfo(2)" onmouseleave="hideInfo(2)">
-                <a href="/informacion"> 
-                  <i class="fas fa-notes-medical"></i>
-                  <span class="info2"> Información del Paciente</span>
-                </a>
-                </div>
-                <div class="navigation-item" onmouseover="showInfo(3)" onmouseleave="hideInfo(3)">
-                <a href="/ingresar">
-                  <i class="fas fa-user-plus"></i> 
-                  <span class="info3"> Ingresar Paciente<p></p></span> 
-                </a>
-                </div>
-                <div class="navigation-item" onmouseover="showInfo(4)" onmouseleave="hideInfo(4)">
-                <a href="/notificaciones">
-                  <i class="fas fa-bell navigation-icon"></i> 
-                  <span class="info4"> Notificaciones <p></p></span> 
-                </a>
-                </div>
-              </div>
+
+        
+            <div class="section__container">
+                <!--Mala Practica-->
+                <br>
+                    <div class="form">
+                        <label for="salas">Buscar Pacientes</label>
+                        <select name="salas" id="salas">
+                            <option value="1">Sala 1</option>
+                            <option value="2">Sala 2</option>
+                            <option value="3">Sala 3</option>
+                            <option value="4">Sala 4</option>
+                        </select>
+                        <button onclick="get_by_room(document.querySelector('#salas').value)">Buscar</button>
+                    </div>
+                    		<div class="mostrar__ubicacion">
+
+                        <div class="ubicacion mostrar__ubicacion--seccion1">
+                        </div>
+                        
+                        <div class="ubicacion mostrar__ubicacion--seccion2">
+                        </div>
+                        </div>
+                    </div>
             </div>
 
-            <script charset="utf-8">
-              function showInfo(n){
-              document.querySelector(`.info${n}`).style.opacity = 1
-              }
 
-              function hideInfo(n){
-              document.querySelector(`.info${n}`).style.opacity = 0
-              }
-            </script>
+    </main>
 
-            <footer>
-              <div class="footer">
-                <div class="footer-content footer-logo">
-                <img src="/img/Untitled_logo_3_free-file.jpg" style="weight:300px; height:300px;" alt=""/>
-                </div>
-                <div class="footer-content developers">
-                  <strong>Desarrolladores:</strong>
-                  <p>Daymar David Guerrero Santiago</p>
-                  <p>Christopher Fernando Frias Ramos</p>
-                  <p>Ramón Alejandro Mateo Ochoa</p>
-                  <p>Kevin Calaña Castellón</p>
-                </div>
-                <div class="footer-content footer-content-social">
-                  <strong>Social:</strong>
-                  <p></p>
-                  <a href="https://www.instagram.com" target="_blank"><i class="fab fa-instagram"></i></a> 
-                  <a href="https://www.github.com" target="_blank"><i class="fab fa-github"></i></a> 
-                  <a href="https://www.facebook.com" target="_blank"><i class="fab fa-facebook"></i></a> 
-                  <a href="https://www.twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
-                </div>
-                <div class="footer-bottom">
-                  <p>Desarrollado por: <span>Development Team Web Milliom.</span> </p>
-                  <p>© webmilliom@gmail.com</p>
-                </div>
-              </div>
-            </footer>
+    
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section footer-logo">
+                <img src="logo.jpg" alt="">
+            </div>
+            
+            <div class="footer-section developers">
+                <h3>Desarrolladores</h3>
+                <ul>
+                    <li>Juan Pérez</li>
+                    <li>María García</li>
+                    <li>Carlos López</li>
+                </ul>
+            </div>
+            
+            <div class="footer-section social-media">
+                <h3>Redes Sociales</h3>
+                <ul>
+                    <li>
+                        <a href="https://facebook.com">
+                            <i class="fab fa-facebook"></i>
+                            Facebook
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://twitter.com">
+                            <i class="fab fa-twitter"></i>
+                        Twitter(X)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://instagram.com">
+                            <i class="fab fa-instagram"></i>
+                            Instagram
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>Desarrollado por: <span>Development Team Web Milliom</span> </p>
+            <p>© webmilliom@gmail.com</p>
+        </div>
+    </footer>
 
+ <script> const span = document.getElementById('patient-name'); const targetLength = 100; // Longitud deseada en caracteres const currentLength = span.textContent.length; if (currentLength < targetLength) { span.textContent += ' '.repeat(targetLength - currentLength); } </script>
+
+    <script src="/js/script.js"></script>
+    <script src="/js/script-salas.js"></script>
 </body>
 </html>
