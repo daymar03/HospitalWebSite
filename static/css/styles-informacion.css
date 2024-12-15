@@ -348,6 +348,21 @@ select{
 
 /*Contenido principal*/
 
+h3 {
+  color: #1977cc;
+  font-size: 20px;
+  text-align: center;
+}
+
+span {
+  font-weight: bold;
+}
+
+p {
+  font-size: 16px;
+	margin-top: 10px;
+}
+
 .content {
     margin-left: 0;
     min-height: 100%;
@@ -403,6 +418,31 @@ select{
 
 .form select{
     padding: 4px 3px;
+    background-color: #fff;
+    border-radius: 5px;
+    font-style: italic;
+    margin-left: 5px;
+}
+
+.buscar__button{
+    background-color: #1967cc;
+    border-radius: 5PX;
+    border: none;
+    font-size: 17px;
+    padding: 5px 5px;
+    width: 100px;
+    cursor: pointer;
+    color: #eee;
+    display: inline-block;
+    margin-left: 10px;
+}
+
+.buscar__button:hover{
+    background-color: #1957cc;
+}
+
+select{
+    padding: 4px 10px ;
     background-color: #fff;
     border-radius: 5px;
     font-style: italic;
