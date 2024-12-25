@@ -86,17 +86,7 @@ router.get('/salas',auth.login, async (req, res)=>{
 })
 
 router.get('/informacion',auth.login, async (req, res)=>{
-		const content = fs.readFileSync(`${appPath}/plantilla/informacion.html`, 'utf8')
-		if (req.roles.includes('1') || req.roles.includes('2')){
-  	res.render(`${appPath}/plantilla/index.ejs`, {titulo:titulos.informacion, contenido:content, link:nav.doctor, username:req.username, rol:roles[req.roles[0]],css:"informacion", js:javs.informacion})
-		return
-	} else if (req.roles.includes('3')){
-		res.render(`${appPath}/plantilla/index.ejs`, {titulo:titulos.informacion, contenido:content, link:nav.nurse, username:req.username, rol:roles[req.roles[0]],css:"informacion", js:javs.informacion})
-	} else if (req.roles.includes('4')){
-		res.render(`${appPath}/plantilla/index.ejs`, {titulo:titulos.informacion, contenido:content, link:nav.recepcionist, username:req.username, rol:roles[req.roles[0]],css:"informacion", js:javs.informacion})
-	} else{
-		next()
-	}
+		res.sendFile(`${appPath}/plantilla/informacion.html`, 'utf8')
 })
 
 router.get('/ingresar',auth.login, async (req, res)=>{
