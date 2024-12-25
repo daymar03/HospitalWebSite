@@ -6,7 +6,7 @@ const notification = express.Router()
 const auth = new Auth()
 const Notification_Endpoints = new Notification()
 
-notification.post('/send', async(req, res)=>{
+notification.post('/send', auth.login, async(req, res)=>{
   try{
     const { notification } = req.body
     const send = await Notification_Endpoints.sendNotification(notification)
@@ -21,7 +21,7 @@ notification.post('/send', async(req, res)=>{
   }
 })
 
-notification.get('/', async (req, res)=>{
+notification.get('/', auth.login, async (req, res)=>{
 try{
   const username = req.username
   if(!username){
@@ -38,7 +38,7 @@ try{
 }
 })
 
-notification.patch('/read', async (req, res)=>{
+notification.patch('/read', auth.login, async (req, res)=>{
   try{
     const { notification_id } = req.body
     const read = await Notification_Endpoints.readNotification(notification_id)
@@ -53,10 +53,11 @@ notification.patch('/read', async (req, res)=>{
   }
 })
 
-notification.delete('/delete', async (req, res)=>{
+notification.delete('/delete', auth.login, async (req, res)=>{
   try{
     const {notification_id} = req.body
-    const deleted = await Notification_Endpoints.deleteNotification(notification_id)
+    console.log("NOOOOOTIIII", notification_id, req.body)
+    const deleted = await Notification_Endpoints.deleteNotification(notification_id, req.username)
     if (deleted.success){
       res.json(deleted)
     }else{
@@ -64,7 +65,7 @@ notification.delete('/delete', async (req, res)=>{
     }
   }catch(err){
     console.log(err)
-    res.status(500).json({error: "Internal Server Error"})
+    res.status(500).json({success: false, error: "Internal Server Error"})
   }
 })
 

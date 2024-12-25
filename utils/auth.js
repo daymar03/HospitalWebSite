@@ -18,7 +18,7 @@ if (!secretKey) {
 class Auth{
 	constructor(){
 		this.secretKey = createSecretKey(process.env.JWT_SECRET, 'utf-8');
-		this.templates = ["/admin", "/informacion", "/ingresar", "/login", "/notificaciones", "/repitlogin", "/salas", "/permissionDenied", "/changepassword"]
+		this.templates = ["/admin", "/informacion", "/ingresar", "/login", "/notificaciones", "/repitlogin", "/salas", "/permissionDenied", "/changepassword", "/profile"]
 		this.actions = ["GET", "POST", "PATCH", "DELETE"]
 		this.resources = {
   		"api" : ["patients", "users", "notifications", "operations"],
@@ -31,7 +31,6 @@ class Auth{
   	try {
     	const session = req.cookies.access_token;
     	const refresh = req.cookies.refresh_token;
-    	console.log("REEEEEEEE",refresh)
     	if (session) { // Tiene token de sesión
       	const payload = await decryptJWT(session);
       	console.log(payload)
@@ -41,7 +40,6 @@ class Auth{
 					const isLogged = await User_Endpoints.isLogged(req.username, iat)
 					if (isLogged.success){
         		req.session = true;
-						console.log("EEERRROOOR",payload.payload)
         		req.roles = payload.payload.roles.split(',');
         		req.endpoint = req.path.split('/')[1];
         		req.resource = getResource(req.path); // Ej: de /api/patients/all -> ["api", "/patients/all"]

@@ -3,6 +3,7 @@ function get_by_bed(bed){
   .then(res => res.json())
   .then(patient => {
     const p = patient[0]
+    console.log(patient)
     if (patient[0]){
       if (p.medications == ""){p.medications = "No consume."}
       if (p.preconditions == ""){p.preconditions = "Sin condiciones previas."}

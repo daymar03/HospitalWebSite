@@ -16,7 +16,8 @@ const Rol = {
           "/repitlogin": false,
           "/salas": false,
 					"/permissionDenied": true,
-					"/changepassword": true
+					"/changepassword": true,
+          "/profile": false
         },
         "patient" : false,
         "user" : true,
@@ -56,7 +57,8 @@ const Rol = {
           "/repitlogin": true,
           "/salas": true,
 					"/permissionDenied": true,
-					"/changepassword": true
+					"/changepassword": true,
+          "/profile":true
         },
         "patient" : true,
         "user" : false,
@@ -96,7 +98,8 @@ const Rol = {
           "/repitlogin": true,
           "/salas": true,
 					"/permissionDenied": true,
-					"/changepassword": true
+					"/changepassword": true,
+          "/profile": true
         },
         "patient" : true,
         "user" : true,
@@ -136,7 +139,8 @@ const Rol = {
           "/repitlogin": true,
           "/salas": true,
 					"/permissionDenied": true,
-					"/changepassword": true
+					"/changepassword": true,
+          "/profile":true
         },
         "patient" : true,
         "user" : false,
@@ -176,7 +180,8 @@ const Rol = {
           "/repitlogin": true,
           "/salas": true,
 					"/permissionDenied": true,
-					"/changepassword": true
+					"/changepassword": true,
+          "/profile": true
         },
         "patient" : true,
         "user" : true,
@@ -208,7 +213,7 @@ const Rol = {
 const roles = ["Admin", "Director", "Doctor", "Nurse", "Recepcionist"]
 const actions = ["get", "post", "patch", "delete"]
 const resources = ["patient", "user", "notification", "operation"]
-const templates = ["/", "/admin", "/informacion", "/ingresar", "/login", "/notificaciones", "/repitlogin", "/salas", "/permissionDenied", "/changepassword"]
+const templates = ["/", "/admin", "/informacion", "/ingresar", "/login", "/notificaciones", "/repitlogin", "/salas", "/permissionDenied", "/changepassword", "/profile"]
 const staticEndpoints = ["js", "css", "img", "assets"]
 
 export async function actionAccessControl(a = 0/*ROL*/, b = 0/*ACTION*/, c = 0/*RESOURCE*/, notification_id = "", username = "", operation_id = ""){

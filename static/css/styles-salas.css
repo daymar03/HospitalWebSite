@@ -218,6 +218,8 @@
 .ubicacion__mostrada {
     margin: 50px 5px;
     border-radius: 2px;
+    display: flex;
+    justify-content: space-between;
 }
 
 
@@ -248,12 +250,11 @@
 .delete, .add, .search {
 		color: #fff;
 		margin-left: 0;
-		border-radies: 5px;
+		border-radius: 5px;
 }
 
 .fixed-width {
 	display: inline-block;
-	width: 17ch; /* 100 caracteres de ancho */
 	white-space: nowrap; /* Evitar el salto de línea */
 }
 
@@ -269,9 +270,9 @@
   color: white;
   border: none;
 	margin-right:20px;
-		color: #fff;
-		margin-left: 0;
-		border-radies: 5px;
+	color: #fff;
+	margin-left: 0;
+	border-radius: 5px;
 }
 
 .search:hover, .delete:hover, .add:hover, .close-button:hover {
@@ -423,7 +424,7 @@
 
 }
 
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 700px) {
 
     .close{
 

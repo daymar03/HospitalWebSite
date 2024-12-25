@@ -14,6 +14,28 @@ const auth = new Auth()
 
 
 
+user.get('/rol', (req,res) =>{
+  if(!req.session) return res.json({success:false})
+  res.send({roles: req.roles})
+})
+
+user.get('/self', async (req,res, next)=>{
+  if (!req.query.id){
+  const username = req.username
+  try{
+    if(!req.session) return res.redirect('/login')
+    let user = await User_Endpoints.getUserByUsername(username)
+    user[0].username = username
+    res.json(user)
+  } catch(err){
+    console.log(err)
+    res.status(500).json(err)
+  }} else {
+    next()
+  }
+})
+
+
 user.get('/',auth.login, async (req,res)=>{
   const id = req.query.id
   if(!id){
@@ -122,7 +144,7 @@ user.post('/login', async (req, res)=>{
 			if (isValidUser.roles === '0'){
 				res.redirect('/admin')
 			} else{
-      res.redirect('/salas')}
+      res.redirect('/profile')}
     } else {
       res.redirect('/repitlogin')
     }
@@ -158,8 +180,9 @@ user.post('/logout', async (req, res)=>{
 })
 
 
-user.post('/changepassword',auth.login, async (req, res)=>{
+user.post('/changepassword', async (req, res)=>{
   try {
+    if(!req.session) res.redirect('/login')
   const username = req.username
   const { lastPassword, password, repitPassword } = req.body
   console.log(username, lastPassword)
