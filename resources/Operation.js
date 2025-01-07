@@ -202,14 +202,16 @@ async getOverdueOperations(){
 	return new Promise(async (resolve, reject)=>{
 		try{
 			const getAll = await this.pool.query("SELECT COUNT(*) as 'all' FROM Operation WHERE made = true;")
-			const madeOperations = getAll[0][0].all.length
+			const madeOperations = getAll[0][0].all
 			const getOperationsQuery = "SELECT COUNT(*) as 'all' FROM Operation WHERE made = true and estimated_duration < real_duration"
 			const getOperationsQueryResult = await this.pool.query(getOperationsQuery)
-			const overdueOperations = getOperationsQueryResult[0][0].all.length
+
+			const overdueOperations = getOperationsQueryResult[0][0].all
 			if(getOperationsQueryResult[0].length === 0){
 				return reject({success: false, error: "There are no done Operations or Something went wrong"})
 			} else {
-				let results = {total: overdueOperations, percent: (overdueOperations / madeOperations) * 100}
+				let results = {total: overdueOperations, percent: (overdueOperations / madeOperations) * 100, total_made_operations: madeOperations}
+        console.log("RESULTS:", getOperationsQueryResult)
 				return resolve({success: true, results})
 			}
 		}catch(err){
@@ -233,14 +235,14 @@ async getOperationsByDate(date) { //YYYY-MM-DD
       `, [date]);
 
       if (getAll[0].length === 0) {
-        return reject({ success: false, error: "There are no Operations for the specified date or something went wrong" });
+        return reject({ success: true, results: "No Operations for Today" });
       } else {
         let results = getAll[0];
         return resolve({ success: true, results });
       }
     } catch (err) {
       console.log(err);
-      return reject(err);
+      return reject({success: false, error: "Something went wrong"});
     }
   });
 }
@@ -254,17 +256,37 @@ async getTodayOperations(){
 		try{
 			const getAll = await this.pool.query("SELECT o.id, priority, description, u.name, scheduled_date FROM Operation o JOIN User u ON o.responsable = u.username  WHERE DATE(scheduled_date) = CURDATE();")
 			if(getAll[0].length === 0){
-				return reject({success: false, error: "There are no Operations for Today or Something went wrong"})
+				return reject({success: true, results: []})
 			} else {
 				let results = getAll[0]
 				return resolve({success: true, results})
 			}
 		}catch(err){
       console.log(err)
-			return reject(err)
+			return reject({succes: false, error: "Something went wrong"})
 		}
 	})
 }
+
+
+	async getUrgentsMonth(month, year){
+		return new Promise(async (resolve, reject)=>{
+			try{
+				const query = `
+					SELECT COUNT(*) AS cantidad_operaciones_urgencia
+					FROM Operation
+					WHERE priority = 0
+  				AND MONTH(request_date) = ?
+  				AND YEAR(request_date) = ?;
+				`
+			const results = await this.pool.query(query, [month, year])
+			const result = results[0]
+			return resolve({success:true, result})
+			}catch(err){
+				console.log(err)
+				return reject({success:false})}
+		})
+	}
 
 
 //*************************************************************************************************************************************
@@ -273,10 +295,10 @@ async getTodayOperations(){
 async getOperationsRange(start, end){ //DATE FORMAT: YYYY-MM-DD HH:MM:SS
 	return new Promise(async (resolve, reject)=>{
 		try{
-			const getOperationsQuery = "SELECT p.name FROM Operation o JOIN Patient p ON o.patient_id = p.id WHERE request_date BETWEEN ? AND ?"
+			const getOperationsQuery = "SELECT p.name, p.bed, o.request_date FROM Operation o JOIN Patient p ON o.patient_id = p.id WHERE request_date BETWEEN ? AND ?"
 			const getOperationsQueryResult = await this.pool.query(getOperationsQuery, [start, end])
 			if(getOperationsQueryResult[0].length === 0){
-				return reject({success: false, error: "Something went wrong"})
+				return reject({success: true, message: "Empty"})
 			} else {
 				let results = getOperationsQueryResult[0]
 				return resolve({success: true, results})

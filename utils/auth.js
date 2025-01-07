@@ -91,6 +91,7 @@ class Auth{
     	}
   	} catch (err) {
     	console.log(err);
+      req.session = false;
     	next(); // Asegúrate de pasar el error al manejador de errores
   	}
 	}

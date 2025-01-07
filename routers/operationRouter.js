@@ -1,6 +1,7 @@
 import express from 'express'
 import Operation from '../resources/Operation.js'
 import Auth from '../utils/auth.js'
+import { validateDateTime } from '../utils/utils.js'
 import { operationSchema } from '../utils/zod-schemas.js'
 
 const operation = express.Router()
@@ -57,7 +58,8 @@ operation.get('/highpriority', async (req, res)=>{
       return
     }
     const { month, year } = req.query
-    const result = await User_Endpoints.getUrgentsMonth(month, year)
+    if (!month || !year) return res.status(404).json({error: "Bad Request"})
+    const result = await Operation_Endpoints.getUrgentsMonth(month, year)
     res.json(result)
   }catch(err){
     console.log(err)
@@ -102,19 +104,22 @@ operation.get('/risk', async (req, res)=>{
 //DIRECTOR QUERY
 operation.get('/range', async (req, res)=>{
   try{
-    const { start, end } = req.query
+    let { start, end } = req.query
+    start += " 00:00:00"
+    end += " 00:00:00"
     const roles = req.roles
     if (!roles.includes('1')){
       res.status(403).json({error: "Permission Denied"})
       return
     }
     if (!validateDateTime(start) || !validateDateTime(end)){
-      res.status(400).json({success: false, error: "Invalid Date Format", e})
+      res.status(400).json({success: false, error: "Invalid Date Format"})
       return
     }
     const results = await Operation_Endpoints.getOperationsRange(start, end)
     res.json(results)
   }catch (err){
+    console.log(err)
     res.status(500).json(err)
   }
 })
