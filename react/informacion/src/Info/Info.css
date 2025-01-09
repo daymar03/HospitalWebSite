@@ -1,0 +1,113 @@
+.wm-info{
+  margin-top: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.wn-search{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.wm-search > span{
+  font-weight: bold;
+  margin: 8px;
+}
+
+.wm-button{
+  transition: background-color .3s ease;
+  background-color: #1977cc77;
+}
+
+.wm-button:hover{
+  background-color: #1977cc33;
+}
+
+.wm-info-results{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 20px;
+}
+
+.wm-info-results-display{
+  display: grid;
+  grid-template-areas:
+    "left center right"
+    "down down down";
+  grid-template-columns: 1fr 1fr 1fr;
+  min-width: 90%;
+  gap: 10px;
+}
+
+.wm-info-results-display > div{
+  display: flex;
+  justify-content: start;
+  align-items: start;
+  flex-direction: column;
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 5px;
+}
+
+.wm-info-results-display > div > div > p{
+  border-bottom: solid 1px #1977cc;
+  border-radius: 5px;
+  margin-left: 5px;
+  margin-bottom: 25px;
+}
+
+.wm-info-results-display > div > div > input{
+  border: none;
+  border-bottom: solid 1px #1977cc;
+  border-radius: 5px;
+  margin: 0;
+  margin-left: 5px;
+  margin-bottom: 25px;
+  min-width: 75%;
+}
+
+.wm-info-results-display > div > div > textarea{
+  border: none;
+  border-bottom: solid 1px #1977cc;
+  border-radius: 5px;
+  margin: 0;
+  margin-left: 5px;
+  margin-bottom: 25px;
+  min-width: 75%;
+}
+
+.wm-wrong-input{
+  border-bottom: solid 2px red;
+}
+
+.wm-info-results-display > div > div > p > span{
+  font-weight: bold;
+  color: #1977cc;
+}
+
+.wm-info-results-display > div > div > input > span{
+  font-weight: bold;
+  color: #1977cc;
+}
+
+.wm-info-results-display-left{
+  grid-area: "left";
+}
+
+.wm-info-results-display-center{
+  grid-area: "center";
+}
+
+.wm-info-results-display-right{
+  grid-area: "right";
+}
+
+.wm-info-results-display-down{
+  grid-area: down;
+}

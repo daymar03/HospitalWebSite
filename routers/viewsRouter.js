@@ -93,18 +93,9 @@ router.get('/director', async (req, res)=>{
 		res.sendFile(`${appPath}/plantilla/director.html`, 'utf8')
 })
 
-router.get('/ingresar',auth.login, async (req, res)=>{
-		const content = fs.readFileSync(`${appPath}/plantilla/ingresar.html`, 'utf8')
-		if (req.roles.includes('1') || req.roles.includes('2')){
-  	res.render(`${appPath}/plantilla/index.ejs`, {titulo:titulos.ingresar, contenido:content, link:nav.doctor, username:req.username, rol:roles[req.roles[0]],css:"ingresar", js:javs.ingresar})
-		return
-	} else if (req.roles.includes('3')){
-		res.render(`${appPath}/plantilla/index.ejs`, {titulo:titulos.ingresar, contenido:content, link:nav.nurse, username:req.username, rol:roles[req.roles[0]],css:"ingresar", js:javs.ingresar})
-	} else if (req.roles.includes('4')){
-		res.render(`${appPath}/plantilla/index.ejs`, {titulo:titulos.ingresar, contenido:content, link:nav.recepcionist, username:req.username, rol:roles[req.roles[0]],css:"ingresar", js:javs.ingresar})
-	} else{
-		next()
-	}
+
+router.get('/ingresar', async (req, res)=>{
+		res.sendFile(`${appPath}/plantilla/ingresar.html`, 'utf8')
 })
 
 router.get('/notificaciones',auth.login, async (req, res)=>{

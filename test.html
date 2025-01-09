@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comprobar Número</title>
+</head>
+<body>
+    <input type="text" id="numeroInput" placeholder="Ingresa un número">
+    <script>
+        const input = document.getElementById('numeroInput');
+        
+        input.addEventListener('input', function() {
+            const valor = input.value;
+            if (!/^\d*$/.test(valor)) {
+                input.value = valor.slice(0, -1);
+            }
+        });
+    </script>
+</body>
+</html>
+

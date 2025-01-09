@@ -1,0 +1,7 @@
+.chart-container {
+  width: 100%;
+  min-width: 600px; /* Ajusta según sea necesario */
+  height: auto;
+  margin: 0 auto;
+  padding: 10px;
+}
