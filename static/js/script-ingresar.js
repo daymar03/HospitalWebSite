@@ -112,21 +112,23 @@ async function ingresar(e){
 
   //*****************
 
-  const data = {patient: {
-    name,
-    bed,
-    dni,
-    phoneNumber,
-    age,
-    weight,
-    height,
-    consultationReasons,
-    allergies,
-    medications,
-    preconditions,
-    sex,
-		risk_patient
-  }}
+  const data = {
+    patient: {
+      name,
+      bed,
+      dni,
+      phoneNumber,
+      age,
+      weight,
+      height,
+      consultationReasons,
+      allergies,
+      medications,
+      preconditions,
+      sex,
+		  risk_patient
+    }
+  }
   try {
     const res = await fetch('http://localhost:3000/api/patients/create', {
       method: "POST",

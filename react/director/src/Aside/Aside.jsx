@@ -75,9 +75,6 @@ export function Aside({isVisible, toggleNotifAside, toggleAside, isDirector = fa
             <Button icon={icons.pacientes} title="Pacientes" href="/informacion" typeElement="a"/>
           </li>
           <li>
-            <Button icon={icons.ingreso} title="Ingreso" typeElement="a"/>
-          </li>
-          <li>
             <Button icon={icons.notif} title="Notificaciones" on={showNotif} typeElement="button"/>
           </li>
           <li>

@@ -51,7 +51,7 @@ export function App(){
       < Header downAsides={downAsides} toggleNotifAside={toggleNotifAside} toggleAside={toggleAside} isAsideVisible={isSomeAside} isNormalAsideVisible={isAsideVisible} title="Información"/>
       < Aside isDirector={roles.includes("1")} isVisible={isAsideVisible} toggleNotifAside={toggleNotifAside} toggleAside={toggleAside}/>
       < AsideNotifications toggleNotifAside={toggleNotifAside} isVisible={isAsideNotifVisible} toggleAside={toggleAside} />
-      < Info />
+      < Info canModify={(roles.includes("1") || roles.includes("2") || roles.includes("4"))} />
       < Footer />
     </>
   );

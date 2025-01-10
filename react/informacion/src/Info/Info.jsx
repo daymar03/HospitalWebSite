@@ -3,7 +3,7 @@ import { WmModal } from '../Wm-Modal/Wm-Modal.jsx'
 import './Info.css'
 const PATIENT_URL = "http://localhost:3000/api/patients?bed="
 
-export function Info() {
+export function Info({canModify = false}) {
   const r = window.location.href.toString().split("bed=")[1] ? window.location.href.toString().split("bed=")[1].split('').slice(0,1).join() : "1"
   const [roomToGet, setRoomToGet] = useState(r)
   const b = window.location.href.toString().split("bed=")[1] ? window.location.href.toString().split("bed=")[1].split('').slice(1,3).join('') : "01"
@@ -148,6 +148,7 @@ export function Info() {
       const [isOpenModal, setIsOpenModal] = useState(false)
       let P = {}
       let handleSelectRisk = null
+      let handleSubmit = null
 
 
       useEffect(()=>{
@@ -166,7 +167,7 @@ export function Info() {
           riskP : document.querySelector("#riskP")
         }
 
-
+      if (P.nameP && P.idP && P.ageP && P.wP && P.hP && P.sexP && P.phoneP && P.precP && P.allergP && P.motivP && P.medicP && P.riskP) {
         P.nameP.addEventListener("input", ()=>{
           const v = P.nameP.value
           if (!/^[a-zA-ZñÑ\s]*$/.test(v)) {
@@ -179,7 +180,7 @@ export function Info() {
            if (!/^\d*$/.test(v)) {
              P.idP.value = v.slice(0, -1);
            }
-          if (v.length > 15 || v.length < 7){
+          if (v.length !== 11){
             setIdValid(false)
             P.idP.style.borderBottom = "solid 2px red"
           }else{
@@ -242,7 +243,7 @@ export function Info() {
           if (!/^\d*$/.test(v)) {
             P.phoneP.value = v.slice(0, -1);
           }
-          if (v.length > 15 || v.length < 7){
+          if (v.length !== 8){
             setPhoneValid(false)
             P.phoneP.style.borderBottom = "solid 2px red"
           }else{
@@ -258,6 +259,7 @@ export function Info() {
             setRiskValid(true)
           }
         }
+      }
       },[])
 
       useEffect(()=>{
@@ -266,15 +268,6 @@ export function Info() {
       },[ageValid, nameValid, idValid, weightValid, heightValid, phoneValid, allergValid, medicValid, motivValid, riskValid, precValid, sexValid])
 
 
-      const handleSubmit = (event)=>{
-        event.preventDefault()
-        if(isInvalid){
-          setIsOpen(true)
-          return
-        }else {
-          //REQUEST OPERATION
-        }
-      }
 
       const toggleModal = ()=>{
         setIsOpen(!isOpen)
@@ -290,7 +283,47 @@ export function Info() {
           </div>
           <p>Por favor rectifique los campos incorrectos y/o rellene los vacíos.</p>
         </WmModal>
-        <form className="wm-info-results-display" onSubmit={handleSubmit}>
+        <form className="wm-info-results-display" onSubmit={
+        (event)=>{
+          event.preventDefault()
+          if(isInvalid){
+            setIsOpen(true)
+            return
+          }else {
+            const data = {
+              patient : {
+                bed : roomToGet + "" + bedToGet,
+                name : document.querySelector("#nameP").value,
+                dni : document.querySelector("#idP").value,
+                phoneNumber : document.getElementById("phoneP").value,
+                age : parseInt(document.getElementById("ageP").value),
+                weight : parseInt(document.getElementById("wP").value),
+                height : parseInt(document.getElementById("hP").value),
+                consultationReasons : document.getElementById("motivP").value,
+                allergies : document.getElementById("allergP").value.split(","),
+                medications : document.getElementById("medicP").value.split(","),
+                preconditions : document.getElementById("precP").value.split(","),
+                sex : document.getElementById("sexP").value.toUpperCase(),
+                risk_patient : document.getElementById("riskP").value === 0 ? true : true
+              }
+            }
+            fetch("http://localhost:3000/api/patients/create", {
+              method : "POST",
+              headers : {
+                "Content-Type" : "application/json"
+              },
+              body : JSON.stringify(data)
+            })
+            .then(res=>res.json())
+            .then(res=>{
+              if (res.success) {
+                alert("Paciente Insertado Con Exito")
+                window.location.replace(`http://localhost:3000/informacion?bed=${roomToGet+""+bedToGet}`)
+              }
+            })
+          }
+        }
+        }>
           <div className="wm-info-results-display-left">
             <h4>Información Personal</h4>
             <div>
@@ -363,13 +396,18 @@ export function Info() {
             <button onClick={toggleModal} className="wm-button" style={{padding: "8px 64px", marginTop: "20px", border: "none", borderRadius: "8px", cursor: "pointer"}}>Solicitar Operacion</button>
           </>
         }
-        {currentPtient === undefined && !modoIngreso &&
+        {currentPtient === undefined && !modoIngreso && canModify &&
           <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
             <p>Paciente no Encontrado</p>
             <a href={`http://localhost:3000/informacion?ingresar=true&bed=${roomToGet+""+bedToGet}`} className="wm-button" style={{padding: "8px 64px", marginTop: "20px", border: "none", borderRadius: "8px", cursor: "pointer", color: "black", textDecoration: "none"}}>Ingresar Paciente</a>
           </div>
         }
-        {currentPtient === undefined && modoIngreso &&
+        {currentPtient === undefined && !modoIngreso && !canModify &&
+          <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
+            <p>Paciente no Encontrado</p>
+          </div>
+        }
+        {currentPtient === undefined && modoIngreso && canModify &&
           < Form />
         }
       </section>

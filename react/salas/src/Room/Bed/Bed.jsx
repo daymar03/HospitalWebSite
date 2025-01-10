@@ -22,10 +22,15 @@ export function Bed({bed = "100", name = "Disponible", canInsertDelete = false, 
               < i width="24px" height="24px" class="fas fa-search" />
             </a>
           }
-          { canInsertDelete &&
+          { canInsertDelete && button === "fas fa-trash" &&
           <button className={insertDeleteButton} onClick={ name === "Disponible" ? ()=>{} : deletePatient}>
               <i className={insertDeleteIcon} />
-            </button>
+          </button>
+          }
+          { canInsertDelete && button === "fas fa-plus" &&
+          <a href={`/informacion?ingresar=true&bed=${bed}`} className={insertDeleteButton} onClick={ name === "Disponible" ? ()=>{} : deletePatient}>
+              <i className={insertDeleteIcon} />
+          </a>
           }
         </div>
       </div>
