@@ -40,10 +40,15 @@ user.get('/',auth.login, async (req,res)=>{
   const id = req.query.id
   if(!id){
   try{
-    const users = await User_Endpoints.getUsers()
+    const limit = req.query.limit ?? 10
+    const page = req.query.page ?? 1
+    const options = {page : parseInt(page) ?? 1, limit: parseInt(limit) ?? 10}
+    console.log("OPTIONS:", options)
+    const users = await User_Endpoints.getUsers(options)
     res.json(users)
+    return
   } catch(err){
-    console.log(err)
+    console.log("ERRORRR:",err)
     res.status(500).json(err)
   }} else {
     try{

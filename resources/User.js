@@ -40,9 +40,11 @@ class User {
     })
   }
 
-  async getUsers(){
-    return new Promise(async (reject, resolve)=>{
+  async getUsers(options = {}){
+    return new Promise(async (resolve, reject)=>{
       try{
+        const {limit=10, page=1} = options
+        const offset = (page - 1) * limit
     const selectQuery = `SELECT
         u.id AS id,
         u.name AS name,
@@ -58,11 +60,12 @@ class User {
         Rol r
       ON ur.rol_id = r.id
       GROUP BY
-        u.id`
+        u.id
+      LIMIT ? OFFSET ?;`
 
-      const users = await this.pool.query(selectQuery)
+      const users = await this.pool.query(selectQuery, [limit, offset])
       if (users[0].length == 0){
-        reject({error: "Database Query Failed"})
+        resolve([])
         return
       }
       resolve(users[0])
@@ -71,7 +74,6 @@ class User {
         reject(err)
       }
     })
-
   }
 
   async registerUser(user){

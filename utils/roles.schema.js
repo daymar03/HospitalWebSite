@@ -10,18 +10,17 @@ const Rol = {
 					"/": true,
           "/admin": true,
           "/informacion": false,
-          "/ingresar": false,
           "/login":true,
-          "/notificaciones": false,
           "/repitlogin": false,
           "/salas": false,
 					"/permissionDenied": true,
 					"/changepassword": true,
-          "/profile": false
+          "/profile": false,
+          "/director" : false
         },
         "patient" : false,
         "user" : true,
-        "notification" : false,
+        "notification" : true,
         "operation" : false
       },
       "post": {
@@ -51,14 +50,13 @@ const Rol = {
 					"/": true,
           "/admin": false,
           "/informacion": true,
-          "/ingresar": true,
           "/login":true,
-          "/notificaciones": true,
           "/repitlogin": true,
           "/salas": true,
 					"/permissionDenied": true,
 					"/changepassword": true,
-          "/profile":true
+          "/profile":true,
+          "/director" : false,
         },
         "patient" : true,
         "user" : false,
@@ -92,14 +90,13 @@ const Rol = {
 					"/": true,
           "/admin": false,
           "/informacion": true,
-          "/ingresar": true,
           "/login":true,
-          "/notificaciones": true,
           "/repitlogin": true,
           "/salas": true,
 					"/permissionDenied": true,
 					"/changepassword": true,
-          "/profile": true
+          "/profile": true,
+          "/director":true
         },
         "patient" : true,
         "user" : true,
@@ -133,14 +130,13 @@ const Rol = {
 					"/": true,
           "/admin": false,
           "/informacion": true,
-          "/ingresar": false,
           "/login":true,
-          "/notificaciones": true,
           "/repitlogin": true,
           "/salas": true,
 					"/permissionDenied": true,
 					"/changepassword": true,
-          "/profile":true
+          "/profile":true,
+          "/director" : false
         },
         "patient" : true,
         "user" : false,
@@ -174,14 +170,13 @@ const Rol = {
 					"/": true,
           "/admin": false,
           "/informacion": true,
-          "/ingresar": true,
           "/login":true,
-          "/notificaciones": true,
           "/repitlogin": true,
           "/salas": true,
 					"/permissionDenied": true,
 					"/changepassword": true,
-          "/profile": true
+          "/profile": true,
+          "/director":false
         },
         "patient" : true,
         "user" : true,
@@ -213,7 +208,7 @@ const Rol = {
 const roles = ["Admin", "Director", "Doctor", "Nurse", "Recepcionist"]
 const actions = ["get", "post", "patch", "delete"]
 const resources = ["patient", "user", "notification", "operation"]
-const templates = ["/", "/admin", "/informacion", "/ingresar", "/login", "/notificaciones", "/repitlogin", "/salas", "/permissionDenied", "/changepassword", "/profile"]
+const templates = ["/", "/admin", "/informacion", "/login", "/repitlogin", "/salas", "/permissionDenied", "/changepassword", "/profile", "/director"]
 const staticEndpoints = ["js", "css", "img", "assets"]
 
 export async function actionAccessControl(a = 0/*ROL*/, b = 0/*ACTION*/, c = 0/*RESOURCE*/, notification_id = "", username = "", operation_id = ""){

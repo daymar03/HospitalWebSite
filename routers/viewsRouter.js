@@ -7,38 +7,6 @@ import fs from 'fs'
 
 const roles = ["Admin", "Director", "Doctor", "Enfermera/o", "Recepcionista"]
 
-const links = {
-	salas: `<li><a href="/salas"><i class="fas fa-procedures"></i>Informacion de Salas</a></li>`,
-	paciente: `<li><a href="/informacion"><i class="fas fa-notes-medical"></i>Información del Paciente</a></li>`,
-	ingreso: `<li><a href="/ingresar"><i class="fas fa-user-plus"></i>Ingresar Pacientes</a></li>`,
-	notificaciones: `<li><a href="/notificaciones"><i class="fas fa-bell"></i>Notificaciones</a></li>`
-}
-
-const nav = {
-	admin: links.notificaciones,
-	doctor: links.salas+links.paciente+links.ingreso+links.notificaciones,
-	nurse: links.salas+links.paciente+links.notificaciones,
-	recepcionist: links.salas+links.paciente+links.ingreso+links.notificaciones
-}
-
-const javs = {
-	salas: `<script src="/js/script-salas.js"></script>`,
-	informacion: `
-<script src="/js/script-informacion.js"></script>
-<script src="/js/get_by_bed-informacion.js"></script>
-<script src="/js/update-informacion.js"></script>
-`,
-	ingresar: `<script src="/js/script-ingresar.js"></script>`,
-	notificaciones: `<script src="/js/script-motoficaciones.js"></script>`
-}
-
-const titulos = {
-	salas: `<h1 class="topnav-titulo"><i class='fas fa-bed' style='font-size:24px;'></i> Salas </h1>`,
-	informacion: `<h1 class="topnav-titulo"><i class='fas fa-bed' style='font-size:24px;'></i> Información </h1>`,
-	ingresar: `<h1 class="topnav-titulo"><i class='fas fa-bed' style='font-size:24px;'></i> Ingresar </h1>`,
-	notificaciones: `<h1 class="topnav-titulo"><i class='fas fa-bed' style='font-size:24px;'></i> Notificaciones </h1>`
-}
-
 dotenv.config()
 const appPath = process.env.APP_PATH
 const auth = new Auth()
@@ -89,13 +57,13 @@ router.get('/informacion',auth.login, async (req, res)=>{
 		res.sendFile(`${appPath}/plantilla/informacion.html`, 'utf8')
 })
 
-router.get('/director', async (req, res)=>{
+router.get('/director', auth.login, async (req, res)=>{
 		res.sendFile(`${appPath}/plantilla/director.html`, 'utf8')
 })
 
 
-router.get('/ingresar', async (req, res)=>{
-		res.sendFile(`${appPath}/plantilla/ingresar.html`, 'utf8')
+router.get('/admin', async (req, res)=>{
+		res.sendFile(`${appPath}/plantilla/admin.html`, 'utf8')
 })
 
 router.get('/notificaciones',auth.login, async (req, res)=>{
@@ -110,10 +78,6 @@ router.get('/notificaciones',auth.login, async (req, res)=>{
 	} else{
 		next()
 	}
-})
-
-router.get('/admin',auth.login, async (req, res)=>{
-  res.render(`${appPath}/templates/admin.ejs`,{name:req.username})
 })
 
 router.get('/permissionDenied',auth.login, async (req, res)=>{
