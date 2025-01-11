@@ -92,7 +92,7 @@ class User {
 
       for(let rol of roles){
         console.log("rol: ",rol)
-        if (rol < 1 || rol > 3){
+        if (rol < 1 || rol > 4){
           reject({error: "Invalid Rol"})
           return
         }
@@ -124,6 +124,7 @@ class User {
 //Comprobando el historial de contaseñas:
 //      const getPasswordsQuery = "SELECT passwords FROM User JOIN Password_History ON User.id = Password_History.user_id WHERE User.username = ?" 
 //      const getPasswordsQueryResult = await this.pool.query(getPasswordsQuery, [username])
+
 //Insersion en la tabla User:
       const result = await this.pool.query('INSERT INTO User (name, username, password) VALUES (?, ?, ?)',
         [name, username, hasedPassword])
@@ -157,6 +158,36 @@ class User {
       } catch (err) {
         await this.pool.query('ROLLBACK');
         reject(err)
+      }
+    })
+  }
+
+  async deleteUser(user_id){
+    return new Promise(async (resolve, reject)=>{
+      try{
+        const deleteFromUser = "DELETE FROM User WHERE id = ?"
+        const deleteFromUser_Rol = "DELETE FROM User_Rol WHERE user_id = ?"
+        const deleteFromPasswordHistory = "DELETE FROM Password_History WHERE user_id = ?"
+
+        const result1 = await this.pool.query(deleteFromPasswordHistory, [user_id])
+        const result2 = await this.pool.query(deleteFromUser_Rol, [user_id])
+        const result3 = await this.pool.query(deleteFromUser, [user_id])
+
+        return resolve({success: true})
+      }catch(err){
+        console.log(err)
+        return reject({success: false, error: "Something went wrong"})
+      }
+    })
+  }
+
+  async updateUser(user){
+    return new Promise(async (resolve, reject)=>{
+      try{
+
+      }catch(err){
+        console.log(err)
+        return reject({success: false, error: "Something went wrong"});
       }
     })
   }

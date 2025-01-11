@@ -9,7 +9,7 @@ export const passwordSchema = z.string()
 
 export const userSchema = z.object({
   name: z.string(),
-  roles: z.array(z.union([z.literal(1), z.literal(2), z.literal(3), z.literal(4)]))
+  roles: z.array(z.union([z.literal("1"), z.literal("2"), z.literal("3"), z.literal("4")]))
 });
 
 export const patientSchema = z.object({

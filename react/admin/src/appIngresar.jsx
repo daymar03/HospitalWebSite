@@ -2,8 +2,6 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { useState, useEffect } from 'react'
 import { Header } from './Header/Header.jsx'
-import { Aside } from './Aside/Aside.jsx'
-import { AsideNotifications } from './AsideNotifications/AsideNotifications.jsx'
 import { Admin } from './Admin/Admin.jsx'
 import { Footer } from './Footer/Footer.jsx'
 import './styles.css'
@@ -47,9 +45,7 @@ export function App(){
 
   return (
     <>
-      < Header downAsides={downAsides} toggleNotifAside={toggleNotifAside} toggleAside={toggleAside} isAsideVisible={isSomeAside} isNormalAsideVisible={isAsideVisible} title="Dirección"/>
-      < Aside isDirector={roles.includes("1")} isVisible={isAsideVisible} toggleNotifAside={toggleNotifAside} toggleAside={toggleAside}/>
-      < AsideNotifications toggleNotifAside={toggleNotifAside} isVisible={isAsideNotifVisible} toggleAside={toggleAside} />
+      < Header downAsides={downAsides} toggleNotifAside={toggleNotifAside} toggleAside={toggleAside} isAsideVisible={isSomeAside} isNormalAsideVisible={isAsideVisible} title="Administración"/>
       < Admin />
       < Footer />
     </>

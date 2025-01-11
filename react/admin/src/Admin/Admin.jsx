@@ -15,6 +15,8 @@ export function Admin() {
   const [data, setData] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
   const [isOpen, setIsOpen] = useState(false)
+  const [modalShowUserData, setModalShowUserData] = useState(false)
+  const [userData, setUserData] = useState({})
 
   const incrementPage = ()=>{
     setCurrentPage(currentPage + 1)
@@ -29,12 +31,36 @@ export function Admin() {
     setIsOpen(!isOpen)
   }
 
-  const postUser = ()=>{
-    const name = document.querySelector("#name")
-
+  const toggleModalShowUserData = ()=>{
+    setModalShowUserData(!modalShowUserData)
   }
 
-  useEffect(()=>{
+  const postUser = ()=>{
+    const name = document.querySelector("#name").value
+    const rol = [document.querySelector("#Director"), document.querySelector("#Doctor"), document.querySelector("#Nurse"), document.querySelector("#Recepcionist")]
+    let roles = []
+    rol.map(r=>{
+      if (r.checked) roles.push(r.value)
+    })
+    const user = {name, roles}
+    fetch("http://localhost:3000/api/users/register", {
+      method: "POST",
+      headers: {
+        "Content-Type":"application/json"
+      },
+      body: JSON.stringify({user})
+    })
+    .then(res=>res.json())
+    .then(res=>{
+      if (res.success){
+        setUserData(res)
+        toggleModal()
+        toggleModalShowUserData()
+      }
+    })
+  }
+
+  const getUsers = ()=>{
     setLoading(true)
     fetch(`http://localhost:3000/api/users?page=${currentPage}`)
     .then(res=>res.json())
@@ -42,9 +68,18 @@ export function Admin() {
       setData(res)
       setLoading(false)
     })
+  }
+
+  useEffect(()=>{
+    getUsers()
   },[currentPage])
   return (
     <>
+      <WmModal classN="wm-modal-bg-white wm-modal-center" Open={modalShowUserData} closeButton={{open: true, toggleModal: toggleModalShowUserData}}>
+        <p>Usuario Agregado Satisfactoriamente</p>
+        <p>con el nombre de usuario: {userData.username}</p>
+        <p>y la contraseña: {userData.password}</p>
+      </WmModal>
       <WmModal classN="wm-modal-bg-white wm-modal-center" Open={isOpen} closeButton={{open: true, toggleModal}}>
         <p className="wm-text-blue"><strong>INGRESAR NUEVO USUARIO</strong></p>
         <div style={{display:"flex", flexDirection:"column", alignItems: "start", minWidth: "100%"}}>
@@ -70,10 +105,10 @@ export function Admin() {
             </div>
           </div>
         </div>
-        <button style={{minWidth: "200px"}} className="wm-button wm-lightblue">INGRESAR USUARIO</button>
+        <button onClick={postUser} style={{minWidth: "200px"}} className="wm-button wm-lightblue">INGRESAR USUARIO</button>
       </WmModal>
       <section style={{overflow: "scroll", marginTop: "130px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
-        <h1 >ADMIN TEMPLATE</h1>
+        <h1 className="wm-text-blue">Panel de Administración de Usuarios</h1>
         {loading && <h2>Loading...</h2>}
         {!loading &&
           <div style={{display: "flex", flexDirection: "column", alignItems: "center", maxWidth: "90%"}}>
@@ -83,7 +118,7 @@ export function Admin() {
                 <div style={{display: "flex", alignItems: "center", padding: "8px"}}>{currentPage}</div>
               <button className="wm-button-pagination" style={{color: "white", border: "none", borderRadius: "4px", padding: "4px 8px", marginRight: "10px"}} onClick={incrementPage}><i class="fas fa-forward"></i></button>
             </div>
-            < Table d={data} />
+            < Table d={data} get={getUsers}/>
             <button onClick={toggleModal} style={{minWidth: "300px"}} className="wm-button wm-lightblue">INGRESAR NUEVO USUARIO</button>
           </div>
         }

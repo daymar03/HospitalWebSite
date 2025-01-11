@@ -215,4 +215,24 @@ user.post('/changepassword', async (req, res)=>{
   }
 })
 
+user.delete('/delete', async (req, res)=>{
+  try{
+    const {user_id} = req.body
+    if (!user_id){
+      res.status(400).json({success: false, error: "Bad Request"})
+    }else {
+      const result = await User_Endpoints.deleteUser(user_id)
+      if(result.success){
+        res.json({success: true})
+        return
+      }else{
+        res.status(500).json({success: false, error: "Internal Server Error"})
+      }
+    }
+  }catch(err){
+    console.log(err)
+    res.status(500).json({error: "Internal Server Error"})
+  }
+})
+
 export default user
