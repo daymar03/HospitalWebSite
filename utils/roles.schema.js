@@ -16,7 +16,8 @@ const Rol = {
 					"/permissionDenied": true,
 					"/changepassword": true,
           "/profile": false,
-          "/director" : false
+          "/director" : false,
+          "/operaciones" : false
         },
         "patient" : false,
         "user" : true,
@@ -57,6 +58,7 @@ const Rol = {
 					"/changepassword": true,
           "/profile":true,
           "/director" : false,
+          "/operaciones" : false
         },
         "patient" : true,
         "user" : false,
@@ -96,7 +98,8 @@ const Rol = {
 					"/permissionDenied": true,
 					"/changepassword": true,
           "/profile": true,
-          "/director":true
+          "/director":true,
+          "/operaciones" : true
         },
         "patient" : true,
         "user" : true,
@@ -136,7 +139,8 @@ const Rol = {
 					"/permissionDenied": true,
 					"/changepassword": true,
           "/profile":true,
-          "/director" : false
+          "/director" : false,
+          "/operaciones" : false
         },
         "patient" : true,
         "user" : false,
@@ -176,7 +180,8 @@ const Rol = {
 					"/permissionDenied": true,
 					"/changepassword": true,
           "/profile": true,
-          "/director":false
+          "/director":false,
+          "/operaciones" : false
         },
         "patient" : true,
         "user" : true,
@@ -208,7 +213,7 @@ const Rol = {
 const roles = ["Admin", "Director", "Doctor", "Nurse", "Recepcionist"]
 const actions = ["get", "post", "patch", "delete"]
 const resources = ["patient", "user", "notification", "operation"]
-const templates = ["/", "/admin", "/informacion", "/login", "/repitlogin", "/salas", "/permissionDenied", "/changepassword", "/profile", "/director"]
+const templates = ["/", "/admin", "/informacion", "/login", "/repitlogin", "/salas", "/permissionDenied", "/changepassword", "/profile", "/director", "/operaciones"]
 const staticEndpoints = ["js", "css", "img", "assets"]
 
 export async function actionAccessControl(a = 0/*ROL*/, b = 0/*ACTION*/, c = 0/*RESOURCE*/, notification_id = "", username = "", operation_id = ""){

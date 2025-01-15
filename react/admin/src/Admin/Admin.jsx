@@ -17,6 +17,8 @@ export function Admin() {
   const [isOpen, setIsOpen] = useState(false)
   const [modalShowUserData, setModalShowUserData] = useState(false)
   const [userData, setUserData] = useState({})
+  const [filteredName, setFilteredName] = useState("")
+  const [filteredRole, setFilteredRole] = useState("")
 
   const incrementPage = ()=>{
     setCurrentPage(currentPage + 1)
@@ -62,7 +64,7 @@ export function Admin() {
 
   const getUsers = ()=>{
     setLoading(true)
-    fetch(`http://localhost:3000/api/users?page=${currentPage}`)
+    fetch(`http://localhost:3000/api/users?page=${currentPage}&name=${filteredName}&rol=${filteredRole}`)
     .then(res=>res.json())
     .then(res=>{
       setData(res)
@@ -70,9 +72,30 @@ export function Admin() {
     })
   }
 
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === 'Backspace' && (event.target.nodeName !== 'INPUT' && event.target.nodeName !== 'TEXTAREA')) {
+        event.preventDefault();
+      }
+    }
+    document.addEventListener('keydown', handleKeyDown); // Limpia el eventListener cuando el componente se desmonte
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+
+  useEffect(() => {
+//    const delayDebounceFn = setTimeout(() => {
+      getUsers(filteredName);
+//    }, 1000); // Añadir un retraso para evitar demasiadas solicitudes
+
+//    return () => clearTimeout(delayDebounceFn);
+  }, [filteredName, filteredRole]);
+
   useEffect(()=>{
     getUsers()
   },[currentPage])
+
   return (
     <>
       <WmModal classN="wm-modal-bg-white wm-modal-center" Open={modalShowUserData} closeButton={{open: true, toggleModal: toggleModalShowUserData}}>
@@ -109,19 +132,33 @@ export function Admin() {
       </WmModal>
       <section style={{overflow: "scroll", marginTop: "130px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
         <h1 className="wm-text-blue">Panel de Administración de Usuarios</h1>
-        {loading && <h2>Loading...</h2>}
-        {!loading &&
           <div style={{display: "flex", flexDirection: "column", alignItems: "center", maxWidth: "90%"}}>
-            <div style={{display: "flex", justifyContent: "end", alignItems: "center", minWidth: "100%", padding: "16px"}}>
-              <span>Página actual: </span>
-              <button className="wm-button-pagination" style={{color: "white", border: "none", borderRadius: "4px", padding: "4px 8px", marginLeft: "10px"}} onClick={decrementPage}><i class="fas fa-backward"></i></button>
-                <div style={{display: "flex", alignItems: "center", padding: "8px"}}>{currentPage}</div>
-              <button className="wm-button-pagination" style={{color: "white", border: "none", borderRadius: "4px", padding: "4px 8px", marginRight: "10px"}} onClick={incrementPage}><i class="fas fa-forward"></i></button>
+            <div className="wm-search-filters">
+              <div style={{display: "flex", alignItems: "center"}}>
+                <label htmlFor="search">Buscar por nombre:</label>
+                <input onChange={(e)=> setFilteredName(e.target.value)} value={filteredName} style={{marginLeft: "4px", border: "none", borderRadius: "8px", borderBottom: "solid 1px #1977cc", backgroundColor: "transparent" }} type="text" id="search" placeholder="Filtre por nombre aquí"/>
+              </div>
+              <div>
+                <select value={filteredRole} onChange={(e)=>setFilteredRole(e.target.value)} id="search-roles" style={{backgroundColor: "transparent", fontSize: "14px", minWidth: "90%" }} className="wm-select">
+                  <option value="" disabled selected>Filtre por Rol</option>
+                  <option value="">Todos</option>
+                  <option value="Admin">Admin</option>
+                  <option value="Director">Director</option>
+                  <option value="Doctor">Doctor</option>
+                  <option value="Nurse">Enfermero/a</option>
+                  <option value="Recepcionist">Recepcionista</option>
+                </select>
+              </div>
+              <div style={{display:"flex", alignItems: "center"}}>
+                <span>Página actual: </span>
+                <button className="wm-button-pagination" style={{color: "white", border: "none", borderRadius: "4px", padding: "4px 8px", marginLeft: "10px"}} onClick={decrementPage}><i class="fas fa-backward"></i></button>
+                  <div style={{display: "flex", alignItems: "center", padding: "8px"}}>{currentPage}</div>
+                <button className="wm-button-pagination" style={{color: "white", border: "none", borderRadius: "4px", padding: "4px 8px", marginRight: "10px"}} onClick={incrementPage}><i class="fas fa-forward"></i></button>
+              </div>
             </div>
-            < Table d={data} get={getUsers}/>
+            {!loading && < Table d={data} get={getUsers}/>}
             <button onClick={toggleModal} style={{minWidth: "300px"}} className="wm-button wm-lightblue">INGRESAR NUEVO USUARIO</button>
           </div>
-        }
       </section>
     </>
   )

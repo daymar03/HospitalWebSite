@@ -1,0 +1,59 @@
+.wm-header{
+  position:fixed;
+  top:0;
+  z-index: 100;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px;
+  height: 45px;
+  background-color: #1977cc;
+}
+
+.wm-header-name {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.wm-header-title {
+  color: white;
+}
+
+.wm-header-name > img{
+  margin-right: 5px;
+  cursor: pointer;
+}
+
+.wm-header-button{
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.wm-header-nav{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-right: 20px;
+  gap: 10px;
+}
+
+.wm-header-close {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.wm-header-notif {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+i {
+  font-size: 20px;
+  color: white;
+}

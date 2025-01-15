@@ -1,0 +1,51 @@
+th, td{
+  margin: 0;
+  padding: 10px;
+  border-width: 0 1px 1px;
+  text-align: left;
+}
+
+tr{
+  display: grid;
+  grid-template-columns: minmax(auto, 80px) repeat(4, minmax(230px, 1fr));
+  justify-content: space-between;
+  min-width: 100%;
+}
+
+table {
+	border-collapse: collapse;
+	display: inline-block;
+	text-align: left;
+	border-top: 1px solid #888;
+  min-width: 90%;
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+}
+
+tbody{
+  display: flex;
+  flex-direction: column;
+  align-items: inherit;
+  min-width: 100%;
+  justify-content: space-between;
+}
+
+table tr:nth-child(even) {
+	background: #1977cc33;
+}
+
+
+button{
+  cursor: pointer;
+  transition: background-color .3s ease;
+}
+
+.wm-button-pagination{
+  background-color: rgba(25, 119, 204, 0.467);
+}
+
+.wm-button-pagination:hover{
+  background-color: #1977cc44;
+  cursor: pointer;
+}

@@ -134,6 +134,16 @@ operation.get('/', async (req, res)=>{
   }
 })
 
+operation.get('/requests', async (req, res)=>{
+  try{
+    const r = await Operation_Endpoints.getRequestOperations()
+    res.json(r)
+  }catch(err){
+    console.log(err)
+    res.status(500).json({success: false, error: "Something went wrong"})
+  }
+})
+
 operation.post('/', async (req, res)=>{
   const { operation } = req.body
   operation.responsable = req.username
@@ -155,6 +165,29 @@ operation.patch('/approve', async (req, res)=>{
   const {date} = operation_approval
 
   if (!validateDateTime(date)){
+    res.status(400).json({success: false, error: "Invalid Date Format"})
+    return
+  }
+  const roles = req.roles
+  console.log("ROLESSS",roles)
+  if (!roles.includes('1')){
+    res.status(403).json({error: "Permission Denied"})
+    return
+  }
+  try{
+    const results = await Operation_Endpoints.approveOperation(operation_approval)
+    res.json(results)
+  } catch(err){
+    console.log(err)
+    res.status(500).json({error: err})
+  }
+
+})
+
+operation.patch('/reprogramate', async (req, res)=>{
+  const { id, date } = req.body
+
+  if (!validateDateTime(date)){
     res.status(400).json({success: false, error: "Invalid Date Format", e})
     return
   }
@@ -165,8 +198,9 @@ operation.patch('/approve', async (req, res)=>{
     return
   }
   try{
-    const results = await Operation_Endpoints.operation.oveOperation(operation_approval)
-    res.json(results)
+    const results = await Operation_Endpoints.reprogramateOperation(id, date)
+    if(results.success) return res.json(results)
+    else return res.status(500).json({success: false})
   } catch(err){
     console.log(err)
     res.status(500).json({error: err})

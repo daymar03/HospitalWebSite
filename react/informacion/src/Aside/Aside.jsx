@@ -19,7 +19,8 @@ export function Aside({isVisible, toggleNotifAside, toggleAside, isDirector = fa
     pacientes: '/img/icons8-treatment.gif',
     ingreso: '/img/icons8-ambulance.gif',
     notif: '/img/icons8-notification.gif',
-    director: '/img/icons8-manager-40.png'
+    director: '/img/icons8-manager-40.png',
+    operaciones: '/img/icons8-operation-64.png'
   }
 
   const hrefs = {
@@ -75,13 +76,13 @@ export function Aside({isVisible, toggleNotifAside, toggleAside, isDirector = fa
             <Button icon={icons.pacientes} title="Pacientes" href="/informacion" typeElement="a"/>
           </li>
           <li>
-            <Button icon={icons.ingreso} title="Ingreso" typeElement="a"/>
-          </li>
-          <li>
             <Button icon={icons.notif} title="Notificaciones" on={showNotif} typeElement="button"/>
           </li>
           <li>
-            { isDirector && <Button icon={icons.director} title="Dirección" href="/director" on={showNotif} typeElement="a"/>}
+            { isDirector && <Button icon={icons.director} title="Dirección" href="/director" typeElement="a"/>}
+          </li>
+          <li>
+            { isDirector && <Button icon={icons.operaciones} title="Operaciones" href="/operaciones" typeElement="a"/>}
           </li>
         </ul>
       </nav>

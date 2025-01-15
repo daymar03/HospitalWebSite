@@ -43,7 +43,7 @@ class User {
   async getUsers(options = {}){
     return new Promise(async (resolve, reject)=>{
       try{
-        const {limit=10, page=1} = options
+        const {limit=10, page=1, name="", rol = ""} = options
         const offset = (page - 1) * limit
     const selectQuery = `SELECT
         u.id AS id,
@@ -59,11 +59,16 @@ class User {
       JOIN
         Rol r
       ON ur.rol_id = r.id
+      WHERE LOWER(u.name) LIKE LOWER(?)
+      ${rol ? "AND LOWER(r.name) = LOWER(?)" : ""}
       GROUP BY
         u.id
       LIMIT ? OFFSET ?;`
 
-      const users = await this.pool.query(selectQuery, [limit, offset])
+      const queryParams = [`%${name}%`]
+      if (rol) { queryParams.push(rol.toLowerCase()); } queryParams.push(limit, offset);
+
+      const users = await this.pool.query(selectQuery, queryParams)
       if (users[0].length == 0){
         resolve([])
         return
@@ -181,10 +186,13 @@ class User {
     })
   }
 
-  async updateUser(user){
+  async searchUsersByName(name){
     return new Promise(async (resolve, reject)=>{
       try{
-
+        const q = "SELECT * FROM User WHERE LOWER(name) LIKE LOWER('%?%')"
+        const result = await this.pool.query(q)
+        console.log("USEEEEERS:", result[0])
+        return resolve({success: true, results: result[0]})
       }catch(err){
         console.log(err)
         return reject({success: false, error: "Something went wrong"});

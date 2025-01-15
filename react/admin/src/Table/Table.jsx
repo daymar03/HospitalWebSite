@@ -34,8 +34,8 @@ export function Table ({d = [], get = {}}){
 	  <>
       <WmModal classN="wm-modal-bg-white wm-modal-center" Open={isOpen} closeButton={{open:true, toggleModal:toggleDeleteModal}}>
         <p>¿Está seguro que desea Eliminar este usuario?</p>
-        <button onClick={deleteUser} style={{borderRadius: "4px", backgroundColor: "#fa2b2b", color: "white", border: "none", padding: "4px 8px", cursor: "pointer", hover: {backgroundColor: "#fcef2d77"}}}>
-          <i className="fas fa-trash" />
+        <button className="wm-button-delete" onClick={deleteUser} style={{borderRadius: "4px", color: "white", border: "none", padding: "4px 8px", cursor: "pointer", hover: {backgroundColor: "#fcef2d77"}}}>
+          <i style={{fontSize: "14px", padding: "2px 4px"}} className="fas fa-trash" />
         </button>
       </WmModal>
 		  <table style={{backgroundColor: "transparent", borderRadius: "8px", padding: "20px", margin: "auto", textAlign: "center"}}>
@@ -56,11 +56,11 @@ export function Table ({d = [], get = {}}){
               <th data-label="Usuario">{user.username}</th>
               <th data-label="Rol">{user.rol}</th>
               <th data-label="Acciones">
-                <button style={{margin: "5px", borderRadius: "4px", backgroundColor: "#fcef2d", color: "white", border: "none", padding: "4px 8px", cursor: "pointer", hover: {backgroundColor: "#fcef2d77"}}}>
-                  <i className="fas fa-edit" />
+                <button className="wm-button-edit" style={{margin: "5px", borderRadius: "4px", color: "white", border: "none", padding: "4px 8px", cursor: "pointer", hover: {backgroundColor: "#fcef2d77"}}}>
+                  <i style={{fontSize: "14px", padding: "2px 4px"}} className="fas fa-edit" />
                 </button>
-                <button onClick={()=>{let id=user.id; toggleDeleteModal(id)}} style={{borderRadius: "4px", backgroundColor: "#fa2b2b", color: "white", border: "none", padding: "4px 8px", cursor: "pointer", hover: {backgroundColor: "#fcef2d77"}}}>
-                  <i className="fas fa-trash" />
+                <button className="wm-button-delete" onClick={()=>{let id=user.id; toggleDeleteModal(id)}} style={{borderRadius: "4px", color: "white", border: "none", padding: "4px 8px", cursor: "pointer"}}>
+                  <i style={{fontSize: "14px", padding: "2px 4px"}} className="fas fa-trash" />
                 </button>
               </th>
             </tr>

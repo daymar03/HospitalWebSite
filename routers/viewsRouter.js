@@ -66,6 +66,10 @@ router.get('/admin', async (req, res)=>{
 		res.sendFile(`${appPath}/plantilla/admin.html`, 'utf8')
 })
 
+router.get('/operaciones', auth.login, (req, res)=>{
+  res.sendFile(`${appPath}/plantilla/operations.html`)
+})
+
 router.get('/notificaciones',auth.login, async (req, res)=>{
 		const content = fs.readFileSync(`${appPath}/plantilla/notificaciones.html`, 'utf8')
 		if (req.roles.includes('1') || req.roles.includes('2')){

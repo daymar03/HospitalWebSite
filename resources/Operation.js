@@ -74,6 +74,30 @@ class Operation {
     })
   }
 
+  async reprogramateOperation(id, newDate){
+    return new Promise(async ()=>{
+      try{
+//Comprobar si la operacion existe:
+        const getOperationQuery = "SELECT * from Operation WHERE id = ?"
+        const consult = this.pool.query(getOperationQuery, [id])
+        if (consult[0].length === 0){
+          return reject({success: false, error: "The operation does not exist"})
+        }else{
+          const changeDateQuery = "UPDATE Operation SET scheduled_date = ?"
+          const results = this.pool.query(changeDateQuery, [newDate])
+        if (results[0].affectedRows === 0){
+          return reject({success: false, error: "Something went wrong"})
+        }else{
+          return resolve({success: true})
+        }
+        }
+      }catch(err){
+        console.log(err)
+        return reject({success: false, error: "Something went wrong"})
+      }
+    })
+  }
+
   async approveOperation(operation_approval){
     return new Promise(async (resolve, reject)=>{
       try{
@@ -88,7 +112,8 @@ class Operation {
         }
 
 //Comprobando si la operación ya está aprobada:
-          let selectQuery = 'SELECT approved, request_date as date FROM Operation WHERE id = ?'
+          let selectQuery = 'SELECT approved, priority, request_date as date FROM Operation WHERE id = ?'
+          const priority = selectQuery[0][0].priority
           let selectQueryResults = await this.pool.query(selectQuery, [id])
           if (selectQueryResults[0][0].approved){
             reject({error: "The Operation is already approved"})
@@ -102,11 +127,14 @@ class Operation {
 				}
 
 //Comprobar si ya están las 5 operaciones de riesgo en el dia:
-				const riskOperatios = await this.pool.query("SELECT COUNT(*) as o FROM Operation WHERE priority = 0 and DATE(scheduled_date) = DATE(?)", [date])
-				const cant = riskOperatios[0][0].o
-				if(cant == 5){
-					return reject({success:false, error: "Today is already full of risks operations"})
-				}
+        if(priority === 0){
+				  const riskOperatios = await this.pool.query("SELECT COUNT(*) as o FROM Operation WHERE priority = 0 and DATE(scheduled_date) = DATE(?)", [date])
+				  const cant = riskOperatios[0][0].o
+				  if(cant == 5){
+				  	return reject({success:false, error: "Today is already full of risks operations"})
+				  }
+        }
+
 //Actualizar la Operacion si todo esta correcto:
         const updateOperationQuery = "UPDATE Operation SET scheduled_date = ?, approved = true WHERE id = ?"
         let updateResults = await this.pool.query(updateOperationQuery, [date, id])
@@ -335,12 +363,13 @@ async getOperationsRange(start, end){ //DATE FORMAT: YYYY-MM-DD HH:MM:SS
   async getRequestOperations(){
     return new Promise(async (resolve, reject)=>{
       try{
-        const selectQuery = "SELECT * FROM Operation WHERE approved = false"
+        const selectQuery = "SELECT o.id, p.bed, o.description, o.priority, o.estimated_duration as duration, o.request_date, p.name as patient, u.name as responsable FROM Patient p JOIN Operation o ON p.id = o.patient_id JOIN User u ON o.responsable = u.username WHERE approved = false"
         const selectQueryResults = await this.pool.query(selectQuery)
         const operations = selectQueryResults[0]
         if (operations.length == 0){
-          resolve({"operations":"the are no request operations in list"})
+          resolve([])
         } else {
+          operations.map(o=>{o.request_date = o.request_date.toISOString().split("T")[0]; return o})
           resolve(operations)
         }
       }catch (err){

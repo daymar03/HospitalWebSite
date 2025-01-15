@@ -91,7 +91,10 @@ export function Info({canModify = false}) {
         },
         body: JSON.stringify(data)
       }).then(res=>res.json())
-      .then(res=>console.log(res))
+      .then(res=>{
+        toggleModal()
+      }
+      )
     }
 
 

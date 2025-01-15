@@ -49,3 +49,21 @@ button{
   background-color: #1977cc44;
   cursor: pointer;
 }
+
+.wm-button-delete{
+  background-color: #fe2a27;
+  transition: background-color .3s ease;
+}
+
+.wm-button-delete:hover{
+  background-color: #fe2a2777;
+}
+
+.wm-button-edit{
+  background-color: #fff74f;
+  transition: background-color .3s ease;
+}
+
+.wm-button-edit:hover{
+  background-color: #fff74f77;
+}

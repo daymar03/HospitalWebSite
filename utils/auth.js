@@ -18,7 +18,7 @@ if (!secretKey) {
 class Auth{
 	constructor(){
 		this.secretKey = createSecretKey(process.env.JWT_SECRET, 'utf-8');
-		this.templates = ["/admin", "/informacion", "/login", "/repitlogin", "/salas", "/permissionDenied", "/changepassword", "/profile", "/director"]
+		this.templates = ["/admin", "/informacion", "/login", "/repitlogin", "/salas", "/permissionDenied", "/changepassword", "/profile", "/director", "operations"]
 		this.actions = ["GET", "POST", "PATCH", "DELETE"]
 		this.resources = {
   		"api" : ["patients", "users", "notifications", "operations"],

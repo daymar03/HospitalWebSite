@@ -42,7 +42,9 @@ user.get('/',auth.login, async (req,res)=>{
   try{
     const limit = req.query.limit ?? 10
     const page = req.query.page ?? 1
-    const options = {page : parseInt(page) ?? 1, limit: parseInt(limit) ?? 10}
+    const name = req.query.name ?? ""
+    const rol = req.query.rol ?? ""
+    const options = {page : parseInt(page) ?? 1, limit: parseInt(limit) ?? 10, name, rol}
     console.log("OPTIONS:", options)
     const users = await User_Endpoints.getUsers(options)
     res.json(users)
@@ -232,6 +234,25 @@ user.delete('/delete', async (req, res)=>{
   }catch(err){
     console.log(err)
     res.status(500).json({error: "Internal Server Error"})
+  }
+})
+
+user.get('/search', async (req, res)=>{
+  try{
+    const {name} = req.query
+    if (!name) {
+      res.status(400).json({success: false, error: "Bad Request"})
+    }else{
+      const resp = await User_Endpoints.searchUsersByName
+      if (resp.success){
+        return res.json(resp.results)
+      }else{
+        res.status(500).json({success: false, error: "Something Went Wrong"})
+      }
+    }
+  }catch(err){
+    console.log(err)
+    res.status(500).json({success: false, error: "Something Went Wrong"})
   }
 })
 
