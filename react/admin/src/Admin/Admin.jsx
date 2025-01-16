@@ -45,7 +45,7 @@ export function Admin() {
       if (r.checked) roles.push(r.value)
     })
     const user = {name, roles}
-    fetch("http://localhost:3000/api/users/register", {
+    fetch("/api/users/register", {
       method: "POST",
       headers: {
         "Content-Type":"application/json"
@@ -64,7 +64,7 @@ export function Admin() {
 
   const getUsers = ()=>{
     setLoading(true)
-    fetch(`http://localhost:3000/api/users?page=${currentPage}&name=${filteredName}&rol=${filteredRole}`)
+    fetch(`/api/users?page=${currentPage}&name=${filteredName}&rol=${filteredRole}`)
     .then(res=>res.json())
     .then(res=>{
       setData(res)

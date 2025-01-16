@@ -10,7 +10,7 @@
     "start": "app.js",
     "dev": "nodemon app.js"
   },
-  "author": "Calana2 AND daymar03",
+  "author": "daymar03",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.1",

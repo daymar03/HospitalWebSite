@@ -120,7 +120,7 @@ user.post('/login', async (req, res)=>{
     res.redirect( "/repitlogin")
     return
   } else{
-    const isValidUser = await User_Endpoints.loginUser(password, username)
+    const isValidUser = await User_Endpoints.loginUser(password, username,req.ip)
 		if (isValidUser.status === "blocked"){
 			res.status(403).render(`${appPath}/templates/blocked.ejs`, {username})
 			return

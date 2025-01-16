@@ -1,4 +1,4 @@
-const DELETE_URL = "http://localhost:3000/api/notifications/delete"
+const DELETE_URL = "/api/notifications/delete"
 
 export async function deleteNotif(id){
   const data = {"notification_id" : id}

@@ -13,7 +13,7 @@ async function update(obj){
     patient.currentMedications = medications
   }
 
-  const res = await fetch(`http://localhost:3000/api/patients/update?bed=${bed}`, {
+  const res = await fetch(`/api/patients/update?bed=${bed}`, {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json'

@@ -8,7 +8,7 @@ export function Operation() {
 
   const getOperations = ()=>{
     setLoading(true)
-    fetch("http://localhost:3000/api/operations/requests")
+    fetch("/api/operations/requests")
     .then(res=>res.json())
     .then(res=>{
         setData(res)

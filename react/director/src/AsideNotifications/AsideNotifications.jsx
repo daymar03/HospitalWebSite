@@ -5,8 +5,8 @@ import './AsideNotifications.css'
 
 export function AsideNotifications({toggleNotifAside, isVisible, toggleAside}) {
   const left = isVisible ? 0 : -370
-  const NOTIFICATION_URL = "http://localhost:3000/api/notifications"
-  const READ_NOTIFICATION_URL = "http://localhost:3000/api/notifications/read"
+  const NOTIFICATION_URL = "/api/notifications"
+  const READ_NOTIFICATION_URL = "/api/notifications/read"
 
   const [noti, setNoti] = useState([])
   const [loading, setLoading] = useState(true);
@@ -88,7 +88,7 @@ export function AsideNotifications({toggleNotifAside, isVisible, toggleAside}) {
             {body}
           </div>
         </button>
-        <form action="http://localhost:3000/api/notifications/delete" method="DELETE">
+        <form action="/api/notifications/delete" method="DELETE">
           <input type="hidden" value={Id} name="notification_id"/>
           <button type="submit" className="wm-notification-delete" onClick={toggleDeleteNotif}>
             <img className="wm-notification-icon" width="24" height="24" src="https://img.icons8.com/ios-glyphs/50/FA5252/filled-trash.png" alt="filled-trash"/>

@@ -10,7 +10,7 @@ function get_by_room(room){
   let classes = {add: "add", remove: "delete"}
   let titles = {add: "Ingresar Paciente", remove: "Egresar Paciente"}
 
-  fetch(`http://localhost:3000/api/patients?room=${room}`)
+  fetch(`/api/patients?room=${room}`)
   .then(res => res.json())
   .then(patients => {
     let html1 = []
@@ -89,7 +89,7 @@ async function deletePatient(bedToDelete, roomOfBed){
   let confirmacion = confirm(`¿Está seguro que desea EGRESAR al paciente de la cama ${bedToDelete}?`);
   if (confirmacion) {
   try {
-  await fetch(`http://localhost:3000/api/patients/delete?bed=${bedToDelete}`, {
+  await fetch(`/api/patients/delete?bed=${bedToDelete}`, {
     method: "DELETE"
   })
   get_by_room(roomOfBed)

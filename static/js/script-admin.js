@@ -46,7 +46,7 @@ async function addUser() {
 }};
 
 
-await fetch('http://localhost:3000/user/register', {
+await fetch('/user/register', {
   method: "POST",
   headers: {
     "Content-Type": "application/json"

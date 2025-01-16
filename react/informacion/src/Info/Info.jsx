@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { WmModal } from '../Wm-Modal/Wm-Modal.jsx'
 import './Info.css'
-const PATIENT_URL = "http://localhost:3000/api/patients?bed="
+const PATIENT_URL = "/api/patients?bed="
 
 export function Info({canModify = false}) {
   const r = window.location.href.toString().split("bed=")[1] ? window.location.href.toString().split("bed=")[1].split('').slice(0,1).join() : "1"
@@ -84,7 +84,7 @@ export function Info({canModify = false}) {
       const description = document.querySelector("#description").value
       const patient_bed = document.querySelector("#room").value + document.querySelector("#bed").value
       const data = {operation : {priority, estimated_duration, description, patient_bed}}
-      fetch("http://localhost:3000/api/operations", {
+      fetch("/api/operations", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -310,7 +310,7 @@ export function Info({canModify = false}) {
                 risk_patient : document.getElementById("riskP").value === 0 ? true : true
               }
             }
-            fetch("http://localhost:3000/api/patients/create", {
+            fetch("/api/patients/create", {
               method : "POST",
               headers : {
                 "Content-Type" : "application/json"
@@ -321,7 +321,7 @@ export function Info({canModify = false}) {
             .then(res=>{
               if (res.success) {
                 alert("Paciente Insertado Con Exito")
-                window.location.replace(`http://localhost:3000/informacion?bed=${roomToGet+""+bedToGet}`)
+                window.location.replace(`/informacion?bed=${roomToGet+""+bedToGet}`)
               }
             })
           }
@@ -402,7 +402,7 @@ export function Info({canModify = false}) {
         {currentPtient === undefined && !modoIngreso && canModify &&
           <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
             <p>Paciente no Encontrado</p>
-            <a href={`http://localhost:3000/informacion?ingresar=true&bed=${roomToGet+""+bedToGet}`} className="wm-button" style={{padding: "8px 64px", marginTop: "20px", border: "none", borderRadius: "8px", cursor: "pointer", color: "black", textDecoration: "none"}}>Ingresar Paciente</a>
+            <a href={`/informacion?ingresar=true&bed=${roomToGet+""+bedToGet}`} className="wm-button" style={{padding: "8px 64px", marginTop: "20px", border: "none", borderRadius: "8px", cursor: "pointer", color: "black", textDecoration: "none"}}>Ingresar Paciente</a>
           </div>
         }
         {currentPtient === undefined && !modoIngreso && !canModify &&

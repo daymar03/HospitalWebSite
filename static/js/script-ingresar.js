@@ -130,7 +130,7 @@ async function ingresar(e){
     }
   }
   try {
-    const res = await fetch('http://localhost:3000/api/patients/create', {
+    const res = await fetch('/api/patients/create', {
       method: "POST",
       headers: {
         'Content-Type':'application/json'

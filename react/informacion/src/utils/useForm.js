@@ -8,7 +8,7 @@ export async function useForm ({lastPassword, newPassword, confirmPassword}) {
   }
 
   try {
-    const response = await fetch('http://localhost:3000/api/users/changepassword', {
+    const response = await fetch('/api/users/changepassword', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
