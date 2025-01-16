@@ -9,6 +9,7 @@ import operation from './routers/operationRouter.js'
 import notification from './routers/notificationRouter.js'
 import router from './routers/viewsRouter.js'
 import Auth from './utils/auth.js'
+import { writeMaxLogins } from './utils/utils.js'
 
 const auth = new Auth()
 
@@ -47,11 +48,20 @@ app.use('/api/operations', operation)
 
 app.use('/api/notifications/', notification)
 
+app.post("/api/users/change_max_try", auth.login, async (req, res) => {
+  const result = await writeMaxLogins(req.body)
+  if (result.success) {
+   return res.json({ success: true })
+  }
+  return res.json({ success: false, error: result.error })
+})
+
 app.use(auth.login, (req, res, next) => {
-	res.status(404).render(`${appPath}/templates/notFound.ejs`);
+  res.status(404).render(`${appPath}/templates/notFound.ejs`);
 });
 
+
 //SERVER
-app.listen(port, ()=> {
- console.log(`Server listening on port ${port}`)
+app.listen(port, () => {
+  console.log(`Server listening on port ${port}`)
 })

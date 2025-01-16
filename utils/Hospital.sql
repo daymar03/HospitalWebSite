@@ -176,3 +176,20 @@ ALTER TABLE `Operation` ADD FOREIGN KEY (`responsable`) REFERENCES `User` (`user
 ALTER TABLE `Password_History` ADD FOREIGN KEY (`user_id`) REFERENCES `User` (`id`);
 
 ALTER TABLE `Operation` ADD FOREIGN KEY (`patient_id`) REFERENCES `Patient` (`id`);
+
+/* IP */
+CREATE TABLE IF NOT EXISTS login_bans (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    ip_address VARCHAR(45) UNIQUE NOT NULL,
+    attempt_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    attempts INT DEFAULT 1,
+    ban_start_time TIMESTAMP NULL,
+    ban_end_time TIMESTAMP NULL,
+    is_banned BOOLEAN DEFAULT FALSE,
+    reason VARCHAR(255) NULL,
+    INDEX (ip_address),
+    INDEX (attempt_time),
+    INDEX (ban_end_time),
+    INDEX (is_banned)
+);
+
