@@ -7,9 +7,9 @@ import { AsideNotifications } from './AsideNotifications/AsideNotifications.jsx'
 import { Director } from './Director/Director.jsx'
 import { Footer } from './Footer/Footer.jsx'
 import './styles.css'
-const USER_URL = "http://localhost:3000/api/users/self"
-const USER_ROLE_URL = "http://localhost:3000/api/users/rol"
-const ROOM_URL = "http://localhost:3000/api/patients?room="
+const USER_URL = "/api/users/self"
+const USER_ROLE_URL = "/api/users/rol"
+const ROOM_URL = "/api/patients?room="
 
 export function App(){
   const [isAsideVisible, setIsAsideVisible] = useState(false);

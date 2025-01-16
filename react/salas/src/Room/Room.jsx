@@ -23,7 +23,7 @@ export function Room({room="1", canModify=false}) {
 
   const getPatients = ()=>{
     if(!["1","2","3","4"].includes(roomSelected)) setRoomSelected("1")
-    fetch(`http://localhost:3000/api/patients?room=${roomSelected}`)
+    fetch(`/api/patients?room=${roomSelected}`)
     .then(res=>res.json())
     .then(response=>{
       setPatients(response)
@@ -41,7 +41,7 @@ export function Room({room="1", canModify=false}) {
   };
 
   const handleDelete = async (bed)=>{
-    fetch(`http://localhost:3000/api/patients/delete?bed=${bed}`, {
+    fetch(`/api/patients/delete?bed=${bed}`, {
       method: "DELETE"
     }).then(res =>{
       getPatients()

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import './Aside.css'
-const USER_URL = "http://localhost:3000/api/users/self"
+const USER_URL = "/api/users/self"
 
 export function Aside({isVisible, toggleNotifAside, toggleAside, isDirector = false}) {
   const left = isVisible ? 0 : -370

@@ -10,6 +10,8 @@ import notification from './routers/notificationRouter.js'
 import router from './routers/viewsRouter.js'
 import Auth from './utils/auth.js'
 import { writeMaxLogins } from './utils/utils.js'
+import { readFileSync } from "fs"
+import { createServer } from 'https'
 
 const auth = new Auth()
 
@@ -17,6 +19,12 @@ dotenv.config()
 const app = express()
 const port = 3000
 const appPath = process.env.APP_PATH
+
+// SSL/TLS Certificate
+const options = {
+    key: readFileSync("server.key"),
+    cert: readFileSync("server.cert"),
+};
 
 //VIEW ENGINE
 app.set('view engine', 'ejs');
@@ -48,8 +56,8 @@ app.use('/api/operations', operation)
 
 app.use('/api/notifications/', notification)
 
-app.post("/api/users/change_max_try", auth.login, async (req, res) => {
-  const result = await writeMaxLogins(req.body)
+app.post("/api/users/change_max_try", auth.login, (req, res) => {
+  const result = writeMaxLogins(req.body)
   if (result.success) {
    return res.json({ success: true })
   }
@@ -62,6 +70,7 @@ app.use(auth.login, (req, res, next) => {
 
 
 //SERVER
-app.listen(port, () => {
+const server = createServer(options,app);
+server.listen(port, () => {
   console.log(`Server listening on port ${port}`)
 })

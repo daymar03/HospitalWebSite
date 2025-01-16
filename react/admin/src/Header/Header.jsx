@@ -21,7 +21,7 @@ export function Header({isNormalAsideVisible, toggleNotifAside, toggleAside, isA
         <h2 style={{marginLeft: "10px"}} className="wm-header-title">{title}</h2>
       </div>
       <div className="wm-header-nav">
-			  <form action="http://localhost:3000/api/users/logout" method="POST">
+			  <form action="/api/users/logout" method="POST">
           <button type="submit" className="wm-header-close" title="Cerrar sesión">
             <i className="fas fa-sign-out-alt"/>
           </button>

@@ -24,7 +24,7 @@ export function Director() {
     setLoading(true)
     const dateStart = document.querySelector("#date-start").value
     const dateEnd = document.querySelector("#date-end").value
-    fetch(`http://localhost:3000/api/operations/range?start=${dateStart}&end=${dateEnd}`)
+    fetch(`/api/operations/range?start=${dateStart}&end=${dateEnd}`)
     .then(res=>res.json())
     .then(res=>{
       if (res.success){
@@ -38,7 +38,7 @@ export function Director() {
 //Obtener Porcentaje de Ocupación por sala
   const getTwo = ()=>{
     setLoading(true)
-    fetch("http://localhost:3000/api/patients/ocupation")
+    fetch("/api/patients/ocupation")
     .then(res=>res.json())
     .then(res=>{
       toggleTwo(res)
@@ -49,7 +49,7 @@ export function Director() {
 //Obtener Operaciones que duraron mas de lo previsto
   const getThree = ()=>{
     setLoading(true)
-    fetch("http://localhost:3000/api/operations/overdue")
+    fetch("/api/operations/overdue")
     .then(res=>res.json())
     .then(res=>{
       toggleThree(res.results)
@@ -61,7 +61,7 @@ export function Director() {
 //Obtener Operaciones del dia
   const getFour = ()=>{
     setLoading(true)
-    fetch("http://localhost:3000/api/operations/day")
+    fetch("/api/operations/day")
     .then(res=>res.json())
     .then(res=>{
       setLoading(false)
@@ -71,7 +71,7 @@ export function Director() {
 
   const getFive = ()=>{
     setLoading(true)
-    fetch("http://localhost:3000/api/users/bestDoctor")
+    fetch("/api/users/bestDoctor")
     .then(res=>res.json())
     .then(res=>{
       setLoading(false)
@@ -85,7 +85,7 @@ export function Director() {
     setLoading(true)
     const month = document.querySelector('#month').value
     const year = document.querySelector('#year').value
-    fetch(`http://localhost:3000/api/operations/highpriority?month=${month}&year=${year}`)
+    fetch(`/api/operations/highpriority?month=${month}&year=${year}`)
     .then(res=>res.json())
     .then(res=>{
       setLoading(false)
@@ -96,7 +96,7 @@ export function Director() {
 
   const getSeven = ()=>{
     setLoading(true)
-    fetch("http://localhost:3000/api/operations/risk")
+    fetch("/api/operations/risk")
     .then(res=>res.json())
     .then(res=>{
       setLoading(false)

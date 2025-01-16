@@ -27,7 +27,7 @@ export function Table ({d = [], get = {}}){
   }
 
   const approveOperation = ()=>{
-    fetch("http://localhost:3000/api/operations/approve", {
+    fetch("/api/operations/approve", {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json"
