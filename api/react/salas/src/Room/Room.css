@@ -1,0 +1,108 @@
+.wm-button{
+  border: none;
+  background-color: #1977cc77;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.wm-button:hover{
+  background-color: #1977cc44;
+  cursor: pointer;
+}
+
+.wm-room-side-bed-button{
+  padding: 8px 16px;
+  margin-right: 4px;
+}
+
+
+.wm-green{
+  color: white;
+  background-color: #21ee5c;
+}
+
+.wm-red{
+  color: white;
+  background-color: #fe2a27;
+}
+
+.wm-text-green{
+  color: #21ee5c;
+}
+
+.wm-text-blue{
+  color: #1977cc;
+}
+
+.wm-green:hover{
+  background-color: #21ee5c77;
+}
+
+.wm-red:hover{
+  background-color: #fe2a2777;
+}
+
+.wm-room{
+  display: grid;
+  margin-top: 100px;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: minmax(100px, 100px) auto;
+  grid-template-areas:
+    "title title"
+    "search search"
+    "left-side rigth-side";
+  gap: 10px;
+  padding: 10px;
+  min-height: 600px;
+}
+
+.wm-room-title{
+  grid-area: title;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #1977cc;
+  flex-direction: row;
+  gap: 20px;
+  max-height: 100px;
+}
+
+.wm-room-title > i{
+  color: #1977cc;
+}
+
+.fas.fa-searc{
+  font-size: 14px;
+}
+.wm-room-search{
+  grid-area: search;
+  max-height: 150px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.wm-room-search-form{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.wm-room-search-form > select > option{
+  padding: 6px;
+}
+
+.wm-room-side{
+  display: flex;
+  flex-direction: column;
+}
+
+.wm-room-side-1{
+  grid-area: left-side;
+}
+
+
+.wm-room-side-2{
+  grid-area: rigth-side;
+}
