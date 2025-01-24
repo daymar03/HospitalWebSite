@@ -18,13 +18,15 @@ const auth = new Auth()
 dotenv.config()
 const app = express()
 const port = 3000
-const appPath = process.env.APP_PATH
+const appPath = process.cwd()
 
 // SSL/TLS Certificate
+/*
 const options = {
     key: readFileSync("server.key"),
     cert: readFileSync("server.cert"),
 };
+*/
 
 //VIEW ENGINE
 app.set('view engine', 'ejs');
@@ -69,8 +71,16 @@ app.use(auth.login, (req, res, next) => {
 });
 
 
+app.listen(port, () => {
+  console.log(`Server listening on port ${port}`)
+})
+
+
 //SERVER
+/*
 const server = createServer(options,app);
 server.listen(port, () => {
   console.log(`Server listening on port ${port}`)
-})
+}) 
+*/
+

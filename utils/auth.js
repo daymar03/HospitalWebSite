@@ -9,7 +9,7 @@ const User_Endpoints = new User()
 
 dotenv.config()
 
-const appPath = process.env.APP_PATH
+const appPath = process.cwd()
 
 if (!secretKey) {
   console.error("JWT_SECRET environment variable not set!");
