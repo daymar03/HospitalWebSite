@@ -17,7 +17,8 @@ const auth = new Auth()
 
 dotenv.config()
 const app = express()
-const port = 3000
+//const port = 3000
+const port = 443
 const appPath = process.cwd()
 
 // SSL/TLS Certificate
