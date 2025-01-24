@@ -1,6 +1,10 @@
 # local env files
 .env*.local
 
+# certs and private keys
+.cert
+.key
+
 # dependencies
 /node_modules
 

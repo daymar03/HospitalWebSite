@@ -7,10 +7,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "app.js",
     "dev": "nodemon app.js"
   },
-  "author": "daymar03",
+  "author": "daymar03, Calana2",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.1",
@@ -30,5 +29,24 @@
     "unique-username-generator": "^1.4.0",
     "yargs": "^17.7.2",
     "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.26.4",
+    "@babel/core": "^7.26.7",
+    "@babel/preset-env": "^7.26.7",
+    "@babel/preset-react": "^7.26.3",
+    "babel-cli": "^6.26.0",
+    "babel-loader": "^9.2.1",
+    "babel-preset-env": "^1.7.0",
+    "css-loader": "^7.1.2",
+    "html-webpack-plugin": "^5.6.3",
+    "mini-css-extract-plugin": "^2.9.2",
+    "sass": "^1.83.4",
+    "sass-loader": "^16.0.4",
+    "style-loader": "^4.0.0",
+    "webpack": "^5.97.1",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^5.2.0",
+    "webpack-node-externals": "^3.0.0"
   }
 }

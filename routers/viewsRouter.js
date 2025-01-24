@@ -8,7 +8,7 @@ import fs from 'fs'
 const roles = ["Admin", "Director", "Doctor", "Enfermera/o", "Recepcionista"]
 
 dotenv.config()
-const appPath = process.env.APP_PATH
+const appPath = process.cwd()
 const auth = new Auth()
 const router = express.Router()
 

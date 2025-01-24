@@ -7,7 +7,7 @@ import dotenv from 'dotenv'
 
 dotenv.config()
 
-const appPath = process.env.APP_PATH
+const appPath = process.cwd()
 const user = express.Router()
 const User_Endpoints = new User()
 const auth = new Auth()
