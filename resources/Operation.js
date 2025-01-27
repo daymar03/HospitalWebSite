@@ -15,7 +15,8 @@ class Operation {
           estimated_duration,
           description,
           responsable,
-          patient_bed
+          patient_bed,
+          request_date,
         } = operation
 
 //Validacion de entrada:
@@ -51,16 +52,20 @@ class Operation {
 
 //Insertar Solicitud de operacion:
     let insertQuery = `
-        INSERT INTO Operation (priority, estimated_duration, description, responsable, patient_id)
-        VALUES (?, ?, ?, ?, ?)
+        INSERT INTO Operation (priority, estimated_duration, description, responsable, patient_id, request_date)
+        VALUES (?, ?, ?, ?, ?, ?)
         `
         let insertResults = await this.pool.query(insertQuery, [
           priority,
           estimated_duration,
           description,
           responsable,
-          patient_id
+          patient_id,
+          request_date,
         ])
+        console.log("INSERT RESULTS")
+        console.log(insertResults)
+        console.log(request_date)
         if (insertResults[0].affectedRows === 0){
           reject({error: "Error Inserting Operation"})
           return
@@ -72,6 +77,30 @@ class Operation {
         reject({error: err})
       }
     })
+  }
+
+   async deleteOperation(username) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const query = 'DELETE FROM Operation WHERE responsable = ?';
+        const [result] = await this.pool.query(query, [username]);
+        resolve({success: "true"});
+      } catch (err) {
+        reject({error: err});
+      }
+    });
+  }
+
+   async deleteOperationById(id) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const query = 'DELETE FROM Operation WHERE id = ?';
+        const [result] = await this.pool.query(query, [id]);
+        resolve({success: "true"});
+      } catch (err) {
+        reject({error: err});
+      }
+    });
   }
 
   async reprogramateOperation(id, newDate){
@@ -138,7 +167,7 @@ class Operation {
 //Actualizar la Operacion si todo esta correcto:
         const updateOperationQuery = "UPDATE Operation SET scheduled_date = ?, approved = true WHERE id = ?"
         let updateResults = await this.pool.query(updateOperationQuery, [date, id])
-        resolve({succes: "true"})
+        resolve({success: "true"})
       }catch(err){
         reject({error: err})
         return
@@ -363,13 +392,18 @@ async getOperationsRange(start, end){ //DATE FORMAT: YYYY-MM-DD HH:MM:SS
   async getRequestOperations(){
     return new Promise(async (resolve, reject)=>{
       try{
-        const selectQuery = "SELECT o.id, p.bed, o.description, o.priority, o.estimated_duration as duration, o.request_date, p.name as patient, u.name as responsable FROM Patient p JOIN Operation o ON p.id = o.patient_id JOIN User u ON o.responsable = u.username WHERE approved = false"
+        const selectQuery = "SELECT o.id, p.bed, o.description, o.priority, o.estimated_duration as duration, o.request_date, p.name as patient, u.name as responsable FROM Patient p JOIN Operation o ON p.id = o.patient_id JOIN User u ON o.responsable = u.username WHERE approved = 0"
         const selectQueryResults = await this.pool.query(selectQuery)
         const operations = selectQueryResults[0]
         if (operations.length == 0){
           resolve([])
         } else {
-          operations.map(o=>{o.request_date = o.request_date.toISOString().split("T")[0]; return o})
+          operations.map(o=>{
+            if (o.request_date) {
+            o.request_date = o.request_date.toISOString().split("T")[0];
+            } 
+            return o 
+          })
           resolve(operations)
         }
       }catch (err){

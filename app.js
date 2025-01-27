@@ -20,8 +20,8 @@ const app = express()
 const port = 3000
 const appPath = process.cwd()
 
-// SSL/TLS Certificate
 /*
+// SSL/TLS Certificate
 const options = {
     key: readFileSync("server.key"),
     cert: readFileSync("server.cert"),
@@ -75,12 +75,10 @@ app.listen(port, () => {
   console.log(`Server listening on port ${port}`)
 })
 
-
-//SERVER
 /*
+//SERVER
 const server = createServer(options,app);
 server.listen(port, () => {
   console.log(`Server listening on port ${port}`)
 }) 
 */
-

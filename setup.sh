@@ -16,7 +16,7 @@ echo 'DB_HOST="127.0.0.1"' >> .env
 echo 'DB_USER="admin"' >> .env
 echo 'DB_NAME="Hospital"' >> .env
 echo 'DB_PASSWORD="admin"' >> .env
-echo 'PORT=3306' >> .env
+echo 'DB_PORT=3306' >> .env
 
 # Crear certificados TLS v1.3
 openssl req -nodes -new -x509 -keyout server.key -out server.cert

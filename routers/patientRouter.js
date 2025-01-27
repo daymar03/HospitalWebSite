@@ -97,9 +97,11 @@ patient.post('/create', async (req,res)=>{
 
 patient.patch('/update', async (req, res)=>{
   const { id, bed } = req.query;
+  console.log("BODYYYYYY")
+  console.log(req.body)
   // search by id or bed
-  const { age, weight, height, phoneNumber, name,
-          currentMedications } = req.body;
+  const { age, weight, height, phoneNumber, name, risk_patient,
+          medications, allergies, bed_body } = req.body;
   if (!id && !bed) {
     return res.status(400).json({ success: false, message: "Bad request: id or bed is required" })
   }
@@ -108,9 +110,11 @@ patient.patch('/update', async (req, res)=>{
   if (weight !== undefined) fieldsToUpdate.weight = weight;
   if (height !== undefined) fieldsToUpdate.height = height;
   if (phoneNumber !== undefined) fieldsToUpdate.phoneNumber = phoneNumber;
+  if (risk_patient !== undefined) fieldsToUpdate.risk_patient = risk_patient;
   if (name !== undefined) fieldsToUpdate.name = name;
+  if (bed_body !== undefined) fieldsToUpdate.bed = bed_body;
   try {
-    const results = await Patient_Endpoints.PATCH_Patient(fieldsToUpdate,id,bed, currentMedications)
+    const results = await Patient_Endpoints.PATCH_Patient(fieldsToUpdate,id,bed, medications, allergies)
     res.json(results)
   } catch(err) {
     console.error('Error updating patient:', err);

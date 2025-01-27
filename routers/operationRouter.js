@@ -149,6 +149,7 @@ operation.post('/', async (req, res)=>{
   operation.responsable = req.username
   if (operation){
     try {
+      console.log(operation)
       let insertResults = await Operation_Endpoints.requestOperation(operation)
       res.status(200).json(insertResults)
     } catch (err){
@@ -225,5 +226,26 @@ operation.patch('/made', async (req, res)=>{
     res.status(500).json({error: "Internal Server Error"})
   }
 })
+
+operation.delete("/delete", auth.login, async (req,res)=> {
+  try {
+   const {username} = req.body
+   await Operation_Endpoints.deleteOperation(username)
+   res.json({success: true})
+  } catch(err) {
+   res.status(500).json({error: "Internal Server Error"})
+  }
+})
+
+operation.delete("/delete/id", auth.login, async (req,res)=> {
+  try {
+   const {id} = req.body
+   await Operation_Endpoints.deleteOperationById(id)
+   res.json({success: true})
+  } catch(err) {
+   res.status(500).json({error: "Internal Server Error"})
+  }
+})
+
 
 export default operation
