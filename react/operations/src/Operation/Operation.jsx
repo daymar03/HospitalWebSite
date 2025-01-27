@@ -12,6 +12,7 @@ export function Operation() {
     .then(res=>res.json())
     .then(res=>{
         setData(res)
+
         console.log(res)
         setLoading(false)
     })
@@ -27,7 +28,7 @@ export function Operation() {
   return (
     <section style={{marginTop:"100px"}} className="wm-section">
       <div style={{display:"flex", flexDirection:"column", justifyContent: "center", alignItems: "center"}}>
-        <h1 className="wm-text-blue">Gestión de Operaciones</h1>
+        <h1 className="wm-text-blue">Operaciones Solicitadas</h1>
       </div>
       {loading && <p>Cargando...</p>}
       {!loading &&

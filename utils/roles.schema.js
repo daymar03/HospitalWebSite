@@ -39,8 +39,8 @@ const Rol = {
       "delete": {
         "patient" : false,
         "user" : true,
-        "notification" : false,
-        "operation" : false
+        "notification" : true,
+        "operation" : true
       }
     }
   },
@@ -110,10 +110,10 @@ const Rol = {
         "patient" : true,
         "user" : false,
         "notification" : true,
-        "operation" : false
+        "operation" : true
       },
       "patch": {
-        "patient" : true,
+        "patient" : false,
         "user" : false,
         "notification" : true,
         "operation" : true
@@ -122,7 +122,7 @@ const Rol = {
         "patient" : true,
         "user" : false,
         "notification" : true,
-        "operation" : false
+        "operation" : true
       }
     }
   },

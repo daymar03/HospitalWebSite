@@ -12,15 +12,18 @@
   width: 300px;
   border: solid 1px #1977cc;
   box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.2);
+  z-index:50;
 }
 
 .wm-modal-size1{
   min-width: 300px;
   min-height: 350px;
+  z-index:50;
 }
 
 .wm-modal-size2{
   min-width: 500px;
+  z-index:50;
 }
 .wm-modal-center{
   justify-content: center;

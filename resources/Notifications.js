@@ -56,6 +56,7 @@ class Notification {
 	return new Promise(async (resolve, reject)=>{
 		try{
 			const userId = await this.pool.query("Select id FROM User WHERE username = ?", username)
+      console.log(userId)
 			const id = userId[0][0].id
 			const getNotificationsQuery = "SELECT n.body as body, n.id as id, n.titulo as title, n.readed as readed, n.date as date FROM Notification n JOIN User_Notification un ON n.id = un.notification_id JOIN User ON un.user_id = User.id WHERE n.deleted IS NULL and un.user_id = ?"
 			const result = await this.pool.query(getNotificationsQuery, id)
@@ -95,10 +96,12 @@ class Notification {
 				return reject({error: "Someting went wrong"})
 			}
     //Comprobacion
+      const currentUser = await this.pool.query("SELECT department FROM User WHERE username = ?",[username])
       const isOwn = await this.pool.query("SELECT user_id FROM User_Notification WHERE notification_id = ? and user_id = (SELECT id FROM User WHERE username = ?)", [notification_id, username])
       console.log("TRAZA",username, notification_id, isOwn[0].length)
-      if(isOwn[0].length === 0) return reject({success: false, error: "Not Own Notification"})
-      const User_id = isOwn[0][0].user_id
+      console.log("Departamento:",currentUser[0][0].department)
+      if(currentUser[0][0].department != "Admin" && isOwn[0].length === 0) return reject({success: false, error: "Not Own Notification"})
+      //const User_id = isOwn[0][0].user_id
 			this.pool.query("START TRANSACTION")
 			const deleteItermQuery = "DELETE FROM User_Notification WHERE notification_id = ?"
 			const deleteNotificationQuery = "DELETE FROM Notification where id = ?"

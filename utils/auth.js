@@ -74,7 +74,7 @@ class Auth{
       				})
       				res.cookie('access_token', access_jwt,{ //testing
         				expires: new Date(expirationTimeRefresh * 1000),
-       				 	httpOnly: true
+       				 	httpOnly: false // Despues cambiamos
       				})
         			next();
 						} else {
@@ -99,11 +99,11 @@ class Auth{
 	async login(req, res, next){
   	console.log("Entrando al middleware LOGIN")
   	if (!req.session){
-    	console.log("PORBANDO, ENTRO A !SESSION")
+    	console.log("NO SESSION")
     	res.redirect(`/login`)
     	return
   	} else if(!req.permission){
-    	console.log("PORBANDO, ENTRO A !PERMISSION")
+    	console.log("NO PERMISSION")
     	res.render(`${appPath}/templates/notFound.ejs`)
     	return
   	}

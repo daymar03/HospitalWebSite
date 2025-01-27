@@ -17,6 +17,22 @@ export function Table ({d = [], get = {}}){
     setIsOpen(!isOpen)
   }
 
+  const handleOperationRemove = ({id = null}) => {
+    fetch("/api/operations/delete/id", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({id: id})
+    }).then(res=>res.json())
+    .then(res=>{
+      if(res.success) {
+       alert("La operación ha sido eliminada")
+       window.location.reload()
+      }
+    })
+  }
+
   const toggleInfoModal = ( { op = null } )=>{
     setCurrent(op ?? null)
     setIsOpenInfo(!isOpenInfo)
@@ -44,10 +60,12 @@ export function Table ({d = [], get = {}}){
           alert("Debe Introducir una fecha válida")
           toggleApproveModal({id : null})
         }
+        console.log("ERROR ERROR")
+        console.log(res.error)
       } else {
-        get()
-        toggleApproveModal({id : null})
+        setIsOpen(!isOpen)
         alert("La operación ha sido aprobada")
+        window.location.reload()
       }
     })
   }
@@ -93,12 +111,12 @@ export function Table ({d = [], get = {}}){
           setTime(e.target.value)
         }} className="wm-select" type="time" />
         </div>
-        <button type="submit" style={{borderRadius: "4px", backgroundColor: "#fa2b2b", color: "white", border: "none", padding: "4px 8px", cursor: "pointer", hover: {backgroundColor: "#fcef2d77"}}}>
+        <button type="submit" style={{borderRadius: "4px", backgroundColor: "#228B22", color: "white", border: "none", padding: "4px 8px", cursor: "pointer"}}>
           Aprobar Operación
         </button>
         </form>
       </WmModal>
-		  <table style={{backgroundColor: "transparent", borderRadius: "8px", padding: "20px", margin: "auto", textAlign: "center"}}>
+		  <table style={{backgroundColor: "transparent", borderRadius: "8px", padding: "30px", margin: "auto", textAlign: "center"}}>
 			<thead style={{borderBottom: "solid 1px #333", background: "#1977cc77"}}>
 				<tr>
 					<th>Id</th>
@@ -119,11 +137,14 @@ export function Table ({d = [], get = {}}){
                 <button onClick={()=>{
                   let op = o ?? null
                   toggleInfoModal({op})
-                }} style={{margin: "5px", borderRadius: "4px", backgroundColor: "#fcef2d", color: "white", border: "none", padding: "4px 8px", cursor: "pointer", hover: {backgroundColor: "#fcef2d77"}}}>
+                }} style={{margin: "5px", borderRadius: "4px", backgroundColor: "#DAA520", color: "white", border: "none", padding: "4px 8px", cursor: "pointer", hover: {backgroundColor: "#fcef2d77"}}}>
                   Ver Más
                 </button>
-                <button onClick={()=>{let id=o.id ?? null; toggleApproveModal({id})}} style={{borderRadius: "4px", backgroundColor: "#fa2b2b", color: "white", border: "none", padding: "4px 8px", cursor: "pointer", hover: {backgroundColor: "#fcef2d77"}}}>
+                <button onClick={()=>{let id=o.id ?? null; toggleApproveModal({id})}} style={{borderRadius: "4px", backgroundColor: "#228B22", color: "white", border: "none", padding: "4px 8px", cursor: "pointer", hover: {backgroundColor: "#fcef2d77"}}}>
                   Aprobar
+                </button>
+                <button onClick={()=>{let id=o.id ?? null; handleOperationRemove({id})}} style={{borderRadius: "4px", backgroundColor: "#B22222", color: "white", border: "none", padding: "4px 8px", cursor: "pointer", hover: {backgroundColor: "#fcef2d77"}}}>
+                  Descartar
                 </button>
               </th>
             </tr>

@@ -443,16 +443,14 @@ async CreatePatient(patient) {
   }
  }
 
-
-
-async PATCH_Patient(fields, id, bed, currentMedications) {
+async PATCH_Patient(fields, id, bed, currentMedications, allergies) {
   const setString = Object.keys(fields).map(key => `${key} = '${fields[key]}'`).join(', ');
   const whereClause = id ? 'id = ?' : 'bed = ?';
 
   try {
     // No update
-    if (Object.keys(fields).length === 0 && !currentMedications) {
-      throw new Error("Neither the fields nor the medicines were given");
+    if (Object.keys(fields).length === 0 && !currentMedications && !allergies) {
+      throw new Error("Neither the fields nor the medicines nor the allergies were given");
     }
 
     // Patient table update
@@ -462,8 +460,8 @@ async PATCH_Patient(fields, id, bed, currentMedications) {
 
     // Current_Medications update
     if (currentMedications) {
-      currentMedications = [...new Set(currentMedications)]
-      currentMedications = currentMedications.map(val=>val.toLowerCase())
+      currentMedications = currentMedications.split(',').map(val => val.trim().toLowerCase());
+      currentMedications = [...new Set(currentMedications)];
       // Check if currentMedications exist in Current_Medications table
       const existingMedications = await this.pool.query(`SELECT id, name FROM Current_Medications WHERE name IN (?)`, [currentMedications]);
       const existingMedNames = new Set(existingMedications[0].map(row => row.name));
@@ -501,11 +499,54 @@ async PATCH_Patient(fields, id, bed, currentMedications) {
       }
     }
 
+    // Allergies update
+    if (allergies) {
+      allergies = allergies.split(',').map(val => val.trim().toLowerCase());
+      allergies = [...new Set(allergies)];
+      // Check if allergies exist in Allergies table
+      const existingAllergies = await this.pool.query(`SELECT id, name FROM Allergies WHERE name IN (?)`, [allergies]);
+      const existingAllergiesNames = new Set(existingAllergies[0].map(row => row.name));
+      const newAllergiesNames = allergies.filter(name => !existingAllergiesNames.has(name));
+
+      // Insert new allergies that don't exist in the Allergies table
+      if (newAllergiesNames.length > 0) {
+        for (const name of newAllergiesNames) {
+          await this.pool.query(`INSERT INTO Allergies (name) VALUES (?)`, [name]);
+        }
+      }
+
+      // Get updated allergy IDs
+      const allergyIds = await this.pool.query(`SELECT id FROM Allergies WHERE name IN (?)`, [allergies]);
+      const allergyIdArray = allergyIds[0].map(row => row["id"]);
+
+      // Get patient ID
+      let patientId = null;
+      if (!id) {
+        const patient = await this.pool.query(`SELECT id FROM Patient WHERE bed = ?`, [bed]);
+        patientId = patient[0][0].id;
+      } else {
+        const patient = await this.pool.query(`SELECT id FROM Patient WHERE id = ?`, [id]);
+        patientId = patient[0][0].id;
+      }
+
+      if (!patientId) {
+        throw new Error("Patient does not exist");
+      }
+
+      // Update Patient_Allergies table
+      await this.pool.query(`DELETE FROM Patient_Allergies WHERE patient_id = ?`, [patientId]);
+      for (const allergyId of allergyIdArray) {
+        await this.pool.query(`INSERT INTO Patient_Allergies (patient_id, allergies_id) VALUES (?, ?)`, [patientId, allergyId]);
+      }
+    }
+
     return { success: true, message: "Patient successfully updated" };
   } catch (err) {
     throw err;
   }
 }
+
+
 
 }
 

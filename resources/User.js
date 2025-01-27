@@ -252,6 +252,11 @@ class User {
           console.log(getHashQueyResult)
           let isValidPassword = await bcrypt.compare(password, hash)
           if (isValidPassword) {
+              // Reiniciar los intentos
+                  await this.pool.query(
+                    "UPDATE login_bans SET attempts = ?, is_banned = ?, ban_end_time = NULL, ban_start_time = NULL WHERE ip_address = ?",
+                    [1, false, ip]
+                  );
             return resolve({ success: true, "roles": rol, message: "Valid User", status: "logged" })
           } 
         }
@@ -349,12 +354,12 @@ class User {
     })
   }
 
-  async changePassword(username, passwords) {
+  async changePassword(username, passwords,ip) {
     return new Promise(async (resolve, reject) => {
       try {
         const { password, lastPassword } = passwords
         //Comprobar si la contraseña es correcta:
-        const login = await this.loginUser(lastPassword, username, req.ip)
+        const login = await this.loginUser(lastPassword, username, ip)
         console.log("LOOOGIN:", login)
         if (!login.success) {
           return reject({ success: false, error: "Invalid Password" })
@@ -508,6 +513,37 @@ class User {
       }
     })
   }
+
+async updateUser({ id, name, username, rol }) {
+  try {
+    const query = `UPDATE User SET name = ?, username = ? WHERE id = ?`;
+    const values = [name, username, id];
+
+    const rolQuery = `SELECT id FROM Rol WHERE name = ?`;
+    const [rolResult] = await this.pool.query(rolQuery, [rol]);
+    
+    if (rolResult.length === 0) {
+      throw new Error('Rol no encontrado');
+    }
+
+    const rolId = rolResult[0].id;
+
+    const secondQuery = `DELETE FROM User_Rol WHERE user_id = ?`
+
+    const thirdQuery = `INSERT INTO User_Rol (user_id, rol_id) VALUES (?, ?)`;
+    const thirdValues = [id, rolId];
+
+    await this.pool.query(query, values);
+    await this.pool.query(secondQuery,[id])
+    await this.pool.query(thirdQuery, thirdValues);
+
+    return { success: true };
+  } catch (err) {
+    console.error(err);
+    return { success: false, error: err.message };
+  }
+};
+
 
 }
 

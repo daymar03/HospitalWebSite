@@ -12,6 +12,27 @@ const user = express.Router()
 const User_Endpoints = new User()
 const auth = new Auth()
 
+user.patch('/update',auth.login, async (req, res) => {
+  try {
+    const { id, name, username, rol } = req.body;
+
+    if (!id || !name || !username || !rol) {
+      res.status(400).json({ success: false, error: "Bad Request" });
+      return;
+    }
+
+    const result = await User_Endpoints.updateUser({ id, name, username, rol });
+
+    if (result.success) {
+      res.json({ success: true });
+    } else {
+      res.status(500).json({ success: false, error: "Internal Server Error" });
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ success: false, error: "Internal Server Error" });
+  }
+});
 
 
 user.get('/rol', (req,res) =>{
@@ -98,7 +119,11 @@ user.post('/register',auth.login, async (req, res)=>{
   const validUser = userSchema.safeParse(user)
 
   if(validUser.success){
+    console.log("ORIGINAL USERRRRR")
+    console.log(user)
     user = validUser.data
+    console.log("VALIDATED USERRRRR")
+    console.log(user)
     try {
       const resp = await User_Endpoints.registerUser(user)
       res.json(resp)
@@ -135,7 +160,7 @@ user.post('/login', async (req, res)=>{
       })
       res.cookie('access_token', jwt,{ //testing
         expires: new Date(expirationTimeAccess * 1000),
-        httpOnly: true
+        httpOnly: false // cambiar luego
       })
       const refresh_jwt = await createJWT({
 				"refresh":true,
@@ -206,7 +231,7 @@ user.post('/changepassword', async (req, res)=>{
     res.status(400).json({success:false, error:"La contraseña debe tener 24 caracteres, ademas debe contener: Mayúsculas, Minúsculas, Números, Letras, Simbolos"})
     return
   }
-  const hist = await User_Endpoints.changePassword(username, passwords)
+  const hist = await User_Endpoints.changePassword(username, passwords,req.ip)
   if (hist.success){
     res.json(hist)
   } else {
@@ -255,5 +280,6 @@ user.get('/search', async (req, res)=>{
     res.status(500).json({success: false, error: "Something Went Wrong"})
   }
 })
+
 
 export default user

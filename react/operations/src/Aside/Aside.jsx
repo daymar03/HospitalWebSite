@@ -82,7 +82,7 @@ export function Aside({isVisible, toggleNotifAside, toggleAside, isDirector = fa
             { isDirector && <Button icon={icons.director} title="Dirección" href="/director" typeElement="a"/>}
           </li>
           <li>
-            { isDirector && <Button icon={icons.operaciones} title="Operciones" href="/operaciones"  typeElement="a"/>}
+            { isDirector && <Button icon={icons.operaciones} title="Operaciones" href="/operaciones"  typeElement="a"/>}
           </li>
         </ul>
       </nav>
