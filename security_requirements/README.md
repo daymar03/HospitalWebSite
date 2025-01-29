@@ -1,20 +1,4 @@
 
----
-
-**Autores:**
-- Christopher Fernando Frias Ramos
-- Daymar David Guerrero Santiago
-- Marc Anthony Echemendia Romero
-- Kevin Calaña Castellón
-- Ramón Alejandro Mateo Ochoa
-
-<br/>
-<br/>
-<br/>
-
-
----
-
 ## Requerimientos
 #### 1- Se solicita usuario y contraseña para la autenticación de acceso.
 
