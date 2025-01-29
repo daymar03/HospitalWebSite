@@ -162,16 +162,41 @@ export async function writeMaxLogins(num) {
   const __dirname = path.dirname(__filename);
   const configPath = path.join(__dirname, '..', 'config.json');
   let data = JSON.parse(fs.readFileSync(configPath));
-  if (num.MAX_LOGIN_ATTEMPTS > 6) {
-    data.MAX_LOGIN_ATTEMPTS = 6
+  console.log(num) 
+  console.log(data)
+  if (num > 6) {
+    data.MAX_LOGIN_ATTEMPTS = 6;
   } else {
-    data.MAX_LOGIN_ATTEMPTS = num.MAX_LOGIN_ATTEMPTS
+    data.MAX_LOGIN_ATTEMPTS = num;
   }
+  
   try {
-    fs.writeFileSync(configPath, JSON.stringify(data))
-    return {success: true}
+    fs.writeFileSync(configPath, JSON.stringify(data, null, 4));
   } catch (err) {
-    console.log(err)
-    return { success: false, error: err }
+    throw err;
   }
 }
+
+export async function writePasswordHistorySize(size) {
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = path.dirname(__filename);
+  const configPath = path.join(__dirname, '..', 'config.json');
+  let data = JSON.parse(fs.readFileSync(configPath));
+  console.log(size) 
+  console.log(data)
+  
+  // Actualizar PASSWORD_HISTORY_SIZE
+  if (size < 24) {
+   data.PASSWORD_HISTORY_SIZE = 24; 
+  } else {
+   data.PASSWORD_HISTORY_SIZE = size; 
+  }
+  
+  try {
+    fs.writeFileSync(configPath, JSON.stringify(data, null, 4));
+    return { success: true };
+  } catch (err) {
+    throw err;
+  }
+}
+

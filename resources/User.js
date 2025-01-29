@@ -233,109 +233,111 @@ class User {
       }
     })
   }
+async loginUser(password, username, ip) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      // IP BAN
+      const maxAttempts = readConfig().MAX_LOGIN_ATTEMPTS;
+      const banDurationMinutes = readConfig().BAN_IP_TIME_MINUTES;
+      let existingRecord;
 
-  async loginUser(password, username, ip) {
-    return new Promise(async (resolve, reject) => {
       try {
-        //Obtener el hash de la contraseña para el Usuario: username
-        const getHashQuey = "select password, GROUP_CONCAT(DISTINCT Rol.id) as rol, tryes as tries, blocked as block from User join User_Rol on User.id = User_Rol.user_id join Rol on User_Rol.rol_id = Rol.id where username = ?;"
-        const getHashQueyResult = await this.pool.query(getHashQuey, [username])
-        let tries
-        let block
-        let hash
-        let rol
-        if (getHashQueyResult[0].length != 0 && getHashQueyResult[0][0].password != null) {
-          hash = getHashQueyResult[0][0].password
-          rol = getHashQueyResult[0][0].rol
-          tries = getHashQueyResult[0][0].tries
-          block = getHashQueyResult[0][0].block 
-          console.log(getHashQueyResult)
-          let isValidPassword = await bcrypt.compare(password, hash)
-          if (isValidPassword) {
-              // Reiniciar los intentos
-                  await this.pool.query(
-                    "UPDATE login_bans SET attempts = ?, is_banned = ?, ban_end_time = NULL, ban_start_time = NULL WHERE ip_address = ?",
-                    [1, false, ip]
-                  );
-            return resolve({ success: true, "roles": rol, message: "Valid User", status: "logged" })
-          } 
+        // 1. Buscar si la IP ya tiene registros
+        const query = await this.pool.query("SELECT * FROM login_bans WHERE ip_address = ?", [ip]);
+        existingRecord = query[0]?.[0];
+        if (existingRecord && existingRecord.is_banned) {
+          // 1.1 La IP ya está baneada, comprobar si el baneo ha expirado
+          console.log(existingRecord.ban_end_time);
+          console.log(new Date());
+          if (new Date(existingRecord.ban_end_time) > new Date()) {
+            return resolve({
+              success: false,
+              error: "Too many failed attempts, your IP is banned!",
+              status: "blocked",
+            });
+          } else {
+            // 1.2 El baneo ha expirado, actualizar el registro y continuar
+            await this.pool.query(
+              "UPDATE login_bans SET attempts = ?, is_banned = ?, ban_end_time = NULL, ban_start_time = NULL WHERE ip_address = ?",
+              [1, false, ip]
+            );
+          }
         }
-
-           // IP BAN
-            const maxAttempts = readConfig().MAX_LOGIN_ATTEMPTS
-            const banDurationMinutes = readConfig().BAN_IP_TIME_MINUTES
-            try {
-              // 1. Buscar si la IP ya tiene registros
-              const query =  await this.pool.query("SELECT * FROM login_bans WHERE ip_address = ?",[ip]);
-              const existingRecord = query[0]?.[0]
-              if (existingRecord && existingRecord.is_banned) {
-                // 1.1 La IP ya está baneada, comprobar si el baneo ha expirado
-                console.log(existingRecord.ban_end_time)
-                console.log(new Date())
-                if (new Date(existingRecord.ban_end_time) > new Date()) {
-                  return resolve({
-                    success: false,
-                    error: "Too many failed attempts, your IP is banned!",
-                    status: "blocked",
-                  });
-                } else {
-                  // 1.2 El baneo ha expirado, actualizar el registro y continuar
-                  await this.pool.query(
-                    "UPDATE login_bans SET attempts = ?, is_banned = ?, ban_end_time = NULL, ban_start_time = NULL WHERE ip_address = ?",
-                    [1, false, ip]
-                  );
-                }
-              } else if (existingRecord) {
-                // 2.1 La IP ya existe y no está baneada
-                const newAttempts = existingRecord.attempts + 1;
-                //2.2 Actualizar los intentos
-                await this.pool.query(
-                  "UPDATE login_bans SET attempts = ?, attempt_time = ? WHERE ip_address = ?",
-                  [newAttempts, new Date(), ip]
-                );
-                if (newAttempts >= maxAttempts) {
-                  // 3. La IP supera el límite de intentos, banearla
-                  const banEndTime = new Date();
-                  banEndTime.setMinutes(banEndTime.getMinutes() + banDurationMinutes);
-
-                  await this.pool.query(
-                    "UPDATE login_bans SET is_banned = ?, ban_start_time = ?, ban_end_time = ? WHERE ip_address = ?",
-                    [true, new Date(), banEndTime, ip]
-                  );
-
-                  return resolve({
-                    success: false,
-                    error: "Too many failed attempts, your IP has been banned!",
-                    status: "blocked",
-                  });
-                }
-              } else {
-                // 3. La IP no existe en la tabla, crear un nuevo registro
-                await this.pool.query("INSERT INTO login_bans (ip_address) VALUES (?)", [
-                  ip,
-                ]);
-              }
-              // 4.  Devolver error general de login fallido
-              return resolve({
-                success: false,
-                error: "Wrong Credentials",
-                status: "nologged",
-              });
-
-            } catch (error) {
-              console.error("Error handling login attempt:", error);
-              return resolve({
-                success: false,
-                error: "Internal Server Error",
-                status: "error",
-              });
-            }
-      } catch (err) {
-        reject({ success: false, err })
-        return
+      } catch (error) {
+        console.error("Error handling login attempt:", error);
+        return resolve({
+          success: false,
+          error: "Internal Server Error",
+          status: "error",
+        });
       }
-    })
-  }
+
+      // Obtener el hash de la contraseña para el Usuario: username
+      const getHashQuey = "select password, GROUP_CONCAT(DISTINCT Rol.id) as rol, tryes as tries, blocked as block from User join User_Rol on User.id = User_Rol.user_id join Rol on User_Rol.rol_id = Rol.id where username = ?;"
+      const getHashQueyResult = await this.pool.query(getHashQuey, [username]);
+      let tries;
+      let block;
+      let hash;
+      let rol;
+      if (getHashQueyResult[0].length != 0 && getHashQueyResult[0][0].password != null) {
+        hash = getHashQueyResult[0][0].password;
+        rol = getHashQueyResult[0][0].rol;
+        tries = getHashQueyResult[0][0].tries;
+        block = getHashQueyResult[0][0].block;
+        console.log(getHashQueyResult);
+        let isValidPassword = await bcrypt.compare(password, hash);
+        if (isValidPassword) {
+          // Reiniciar los intentos
+          await this.pool.query(
+            "UPDATE login_bans SET attempts = ?, is_banned = ?, ban_end_time = NULL, ban_start_time = NULL WHERE ip_address = ?",
+            [1, false, ip]
+          );
+          return resolve({ success: true, "roles": rol, message: "Valid User", status: "logged" });
+        }
+      }
+
+      // La IP no existe en la tabla, crear un nuevo registro si no se encuentra un match de IP ban
+      if (!existingRecord) {
+        await this.pool.query("INSERT INTO login_bans (ip_address) VALUES (?)", [ip]);
+      }
+
+      // Aumentar el conteo de intentos y verificar si debe banear la IP
+      const newAttempts = existingRecord ? existingRecord.attempts + 1 : 1;
+      await this.pool.query(
+        "UPDATE login_bans SET attempts = ?, attempt_time = ? WHERE ip_address = ?",
+        [newAttempts, new Date(), ip]
+      );
+      if (newAttempts >= maxAttempts) {
+        // Banear la IP si supera el límite de intentos
+        const banEndTime = new Date();
+        banEndTime.setMinutes(banEndTime.getMinutes() + banDurationMinutes);
+        await this.pool.query(
+          "UPDATE login_bans SET is_banned = ?, ban_start_time = ?, ban_end_time = ? WHERE ip_address = ?",
+          [true, new Date(), banEndTime, ip]
+        );
+
+        return resolve({
+          success: false,
+          error: "Too many failed attempts, your IP has been banned!",
+          status: "blocked",
+        });
+      }
+
+      // Devolver error general de login fallido
+      return resolve({
+        success: false,
+        error: "Wrong Credentials",
+        status: "nologged",
+      });
+
+    } catch (err) {
+      reject({ success: false, err });
+      return;
+    }
+  });
+}
+
+
 
   async logoutUser(username, iat) {
     return new Promise(async (resolve, reject) => {

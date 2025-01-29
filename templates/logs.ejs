@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trazas del Servidor</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f4f8; /* Fondo claro */
+            color: #333333; /* Texto oscuro */
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1000px; /* Más ancho */
+            margin: auto;
+            padding: 20px;
+            border: 2px solid #d1d5db; /* Borde gris claro */
+            border-radius: 10px;
+            background-color: #ffffff; /* Blanco */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #1976d2; /* Título azul */
+        }
+        .logs {
+            background-color: #f9fafb; /* Fondo de trazas claro */
+            padding: 20px;
+            border: 1px solid #d1d5db; /* Borde gris claro */
+            border-radius: 5px;
+            font-size: 1.1em; /* Tamaño de fuente */
+            color: #111827; /* Texto de trazas oscuro */
+            max-height: 400px; /* Altura máxima con scroll */
+            overflow-y: auto; /* Scroll vertical */
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .log-entry {
+            margin-bottom: 10px; /* Separación entre trazas */
+            padding: 10px;
+            background-color: #e3f2fd; /* Fondo de entrada azul claro */
+            border-left: 4px solid #3b82f6; /* Borde izquierdo azul */
+            transition: background-color 0.3s;
+        }
+        .log-entry:hover {
+            background-color: #bbdefb; /* Fondo de entrada al pasar el ratón */
+        }
+        .log-entry i {
+            margin-right: 10px;
+            color: #3b82f6; /* Icono azul */
+        }
+        .btn-refresh {
+            display: block;
+            width: 100px;
+            margin: 20px auto;
+            padding: 10px;
+            background-color: #3b82f6;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .btn-refresh:hover {
+            background-color: #1976d2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Trazas del Servidor</h1>
+        <div class="logs">
+            <% logs.split('\n').reverse().forEach(log => { %>
+                <% if (!log.includes('GET /admin/trazas')) { %>
+                    <div class="log-entry">
+                        <i class="fas fa-info-circle"></i><%= log %>
+                    </div>
+                <% } %>
+            <% }); %>
+        </div>
+        <button class="btn-refresh" onclick="location.reload();">Actualizar</button>
+    </div>
+</body>
+</html>
+
