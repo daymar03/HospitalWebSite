@@ -53,7 +53,7 @@ class Auth{
         	req.session = false;
         	next();
       	}
-    	} else if (refresh) { //Tiene Token de Refresco (zuko o fruti)
+    	} else if (refresh) { //Tiene Token de Refresco 
       		const payload = await decryptJWT(refresh);
       		if (payload.payload.refresh) { // El token es válido
 						let iat = payload.payload.iat
@@ -115,7 +115,7 @@ class Auth{
 
 	async access(req, res, next) {
   	const { session, roles, endpoint, resource, action } = req;
-  	console.log("SESSSIOOON:", session);
+  	console.log("Session:", session);
   	if (session) {
     	console.log("Entrando en access()");
     	req.permission = false;

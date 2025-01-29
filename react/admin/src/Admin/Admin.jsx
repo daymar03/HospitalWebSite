@@ -102,6 +102,55 @@ export function Admin() {
     getUsers();
   }, [currentPage]);
 
+const [maxIp, setMaxIP] = useState('');
+  const [maxPass, setMaxPass] = useState('');
+
+  const handleMaxIPChange = (e) => {
+    const value = e.target.value;
+    if (/^\d*$/.test(value)) {
+      setMaxIP(value);
+    }
+  };
+
+  const handleMaxPassChange = (e) => {
+    const value = e.target.value;
+    if (/^\d*$/.test(value)) {
+      setMaxPass(value);
+    }
+  };
+
+  const postMaxLoginAtt = () => {
+    fetch("/admin/setMaxLoginAtt", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ maxIp: Number(maxIp) }),
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        alert('Max Login Attempts set successfully!');
+      })
+      .catch(error => console.error('Error:', error));
+  };
+
+  const postMaxPasswordSaved = () => {
+    fetch("/admin/setMaxPasswordSaved", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ maxPass: Number(maxPass) }),
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        alert('Max Password Saved set successfully!');
+      })
+      .catch(error => console.error('Error:', error));
+   };
+
   return (
     <>
       <WmModal classN="wm-modal-bg-white wm-modal-center" Open={modalShowUserData} closeButton={{ open: true, toggleModal: toggleModalShowUserData }}>
@@ -164,6 +213,43 @@ export function Admin() {
           </div>
           {!loading && <Table d={data} get={getUsers} />}
           <button onClick={toggleModal} style={{ minWidth: "300px" }} className="wm-button wm-lightblue">INGRESAR NUEVO USUARIO</button>
+      <div>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '20px', padding: '10px' }}>
+        <label  style={{marginBottom: '2px'}} htmlFor="maxIP">Número máximo de intentos de inicio de sesión:</label>
+        <input
+          type="text"
+          id="maxIP"
+          value={maxIp}
+          onChange={handleMaxIPChange}
+          placeholder="6"
+        />
+        <button 
+          onClick={postMaxLoginAtt} 
+          style={{ minWidth: "300px", marginTop: '10px' }} 
+          className="wm-button wm-lightblue"
+        >
+          CAMBIAR
+        </button>
+      </div>
+
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '20px', padding: '10px' }}>
+        <label style={{marginBottom: '2px'}} htmlFor="maxPass">Número máximo de contraseñas guardadas:</label>
+        <input
+          type="text"
+          id="maxPass"
+          value={maxPass}
+          onChange={handleMaxPassChange}
+          placeholder="24"
+        />
+        <button 
+          onClick={postMaxPasswordSaved} 
+          style={{ minWidth: "300px", marginTop: '10px' }} 
+          className="wm-button wm-lightblue"
+        >
+          CAMBIAR
+        </button>
+      </div>
+    </div>
         </div>
       </section>
     </>
